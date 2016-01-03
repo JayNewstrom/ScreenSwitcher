@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Screen Switcher</string>
+    <string name="first_screen">First Screen</string>
+    <string name="second_screen">Second Screen</string>
+    <string name="third_screen">Third Screen</string>
+    <string name="pop">Pop</string>
+    <string name="pop_two">Pop Two</string>
+</resources>
