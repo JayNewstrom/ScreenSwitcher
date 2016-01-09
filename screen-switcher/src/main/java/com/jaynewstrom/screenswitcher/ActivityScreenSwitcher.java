@@ -65,6 +65,8 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
             prepareTransitionToScreen(screens.get(screens.size() - 2));
             performPopTransition(screens.get(screens.size() - 1));
         } else {
+            View matchingView = Utils.createViewWithDrawMatching(activity.findViewById(android.R.id.content));
+            activity.addContentView(matchingView, new WindowManager.LayoutParams());
             for (Screen screen : new ArrayList<>(screenViewMap.keySet())) {
                 removeScreen(screen);
             }

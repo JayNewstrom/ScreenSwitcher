@@ -13,7 +13,6 @@ Here is the start of the TODO list:
 - Thoughts on how to do split screen
 - ScreenAnimationConfiguration needs javadoc on viewToAnimate.getParent won't be null, so that you can do animations, etc.
 - Screen could use a method createScreen, for being symmetric with destroyScreen
-- Capture bitmap of view before destroying the last one before finishing, and set that as the foreground
 - Ideas on how to handle dialogs
 - Global onTransition method so the client can be notified when transitions occur
 
