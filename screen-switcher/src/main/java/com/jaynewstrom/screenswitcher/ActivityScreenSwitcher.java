@@ -60,13 +60,13 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
         List<Screen> screens = state.getScreens();
         if (screens.size() > numberToPop) {
             for (int i = 1; i < numberToPop; i++) {
-                new RemoveScreenRunnable(screens.get(screens.size() - i - 1), screenViewMap, state).run();
+                removeScreen(screens.get(screens.size() - i - 1));
             }
             prepareTransitionToScreen(screens.get(screens.size() - 2));
             performPopTransition(screens.get(screens.size() - 1));
         } else {
             for (Screen screen : new ArrayList<>(screenViewMap.keySet())) {
-                new RemoveScreenRunnable(screen, screenViewMap, state).run();
+                removeScreen(screen);
             }
             activity.finish();
         }
@@ -97,7 +97,7 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
 
     private void performPopTransition(Screen screenToRemove) {
         View viewToRemove = screenViewMap.get(screenToRemove);
-        Runnable completionRunnable = new RemoveScreenRunnable(screenToRemove, screenViewMap, state, new EndTransitionRunnable());
+        Runnable completionRunnable = new RemoveScreenRunnable(screenToRemove, new EndTransitionRunnable());
         screenToRemove.animationConfiguration().animateOut(viewToRemove, completionRunnable);
     }
 
@@ -115,7 +115,14 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
         }
     }
 
-    final class EndTransitionRunnable implements Runnable {
+    void removeScreen(Screen screen) {
+        View view = screenViewMap.remove(screen);
+        screen.destroyScreen(view);
+        ((ViewGroup) view.getParent()).removeView(view);
+        state.getScreens().remove(screen);
+    }
+
+    private final class EndTransitionRunnable implements Runnable {
 
         EndTransitionRunnable() {
             setTransitioning(true);
@@ -127,32 +134,19 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
         }
     }
 
-    private static final class RemoveScreenRunnable implements Runnable {
+    private final class RemoveScreenRunnable implements Runnable {
 
         private final Screen screen;
-        private final Map<Screen, View> screenViewMap;
-        private final ScreenSwitcherState state;
         private final Runnable completionRunnable;
 
-        RemoveScreenRunnable(Screen screen, Map<Screen, View> screenViewMap, ScreenSwitcherState state) {
-            this(screen, screenViewMap, state, null);
-        }
-
-        RemoveScreenRunnable(Screen screen, Map<Screen, View> screenViewMap, ScreenSwitcherState state, Runnable completionRunnable) {
+        RemoveScreenRunnable(Screen screen, Runnable completionRunnable) {
             this.screen = screen;
-            this.screenViewMap = screenViewMap;
-            this.state = state;
             this.completionRunnable = completionRunnable;
         }
 
         @Override public void run() {
-            View view = screenViewMap.remove(screen);
-            screen.destroyScreen(view);
-            ((ViewGroup) view.getParent()).removeView(view);
-            state.getScreens().remove(screen);
-            if (completionRunnable != null) {
-                completionRunnable.run();
-            }
+            removeScreen(screen);
+            completionRunnable.run();
         }
     }
 }
