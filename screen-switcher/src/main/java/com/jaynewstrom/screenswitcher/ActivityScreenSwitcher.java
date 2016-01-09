@@ -17,7 +17,7 @@ import static com.jaynewstrom.screenswitcher.Preconditions.checkNotNull;
 
 final class ActivityScreenSwitcher implements ScreenSwitcher {
 
-    boolean transitioning;
+    private boolean transitioning;
 
     private final Activity activity;
     private final ScreenSwitcherState state;
@@ -34,6 +34,7 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
         for (Screen screen : state.getScreens()) {
             createView(screen);
         }
+        hideAllButTopScreen();
     }
 
     private View createView(Screen screen) {
@@ -61,10 +62,8 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
             for (int i = 1; i < numberToPop; i++) {
                 new RemoveScreenRunnable(screens.get(screens.size() - i - 1), screenViewMap, state).run();
             }
-            final Screen screenToRemove = screens.get(screens.size() - 1);
-            View viewToRemove = screenViewMap.get(screenToRemove);
-            Runnable completionRunnable = new RemoveScreenRunnable(screenToRemove, screenViewMap, state, new EndTransitionRunnable());
-            screenToRemove.animationConfiguration().animateOut(viewToRemove, completionRunnable);
+            prepareTransitionToScreen(screens.get(screens.size() - 2));
+            performPopTransition(screens.get(screens.size() - 1));
         } else {
             for (Screen screen : new ArrayList<>(screenViewMap.keySet())) {
                 new RemoveScreenRunnable(screen, screenViewMap, state).run();
@@ -92,14 +91,39 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
         }
     }
 
+    private void prepareTransitionToScreen(Screen screenToBecomeVisible) {
+        screenViewMap.get(screenToBecomeVisible).setVisibility(View.VISIBLE);
+    }
+
+    private void performPopTransition(Screen screenToRemove) {
+        View viewToRemove = screenViewMap.get(screenToRemove);
+        Runnable completionRunnable = new RemoveScreenRunnable(screenToRemove, screenViewMap, state, new EndTransitionRunnable());
+        screenToRemove.animationConfiguration().animateOut(viewToRemove, completionRunnable);
+    }
+
+    void setTransitioning(boolean transitioning) {
+        this.transitioning = transitioning;
+    }
+
+    void hideAllButTopScreen() {
+        List<Screen> screens = state.getScreens();
+        Screen lastScreen = screens.get(screens.size() - 1);
+        for (Screen screen : screens) {
+            if (screen != lastScreen) {
+                screenViewMap.get(screen).setVisibility(View.GONE);
+            }
+        }
+    }
+
     final class EndTransitionRunnable implements Runnable {
 
         EndTransitionRunnable() {
-            transitioning = true;
+            setTransitioning(true);
         }
 
         @Override public void run() {
-            transitioning = false;
+            setTransitioning(false);
+            hideAllButTopScreen();
         }
     }
 
