@@ -24,4 +24,11 @@
         android:layout_height="wrap_content"
         android:text="@string/pop_two"
         />
+
+    <Button
+        android:id="@+id/btn_pop_three"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pop_three"
+        />
 </merge>

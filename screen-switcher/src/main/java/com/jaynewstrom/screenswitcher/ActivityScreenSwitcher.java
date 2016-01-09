@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,6 +65,9 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
             Runnable removeScreenRunnable = new RemoveScreenRunnable(screenToRemove, screenViewMap, state);
             screenToRemove.animationConfiguration().animateOut(viewToRemove, removeScreenRunnable);
         } else {
+            for (Screen screen : new ArrayList<>(screenViewMap.keySet())) {
+                new RemoveScreenRunnable(screen, screenViewMap, state).run();
+            }
             activity.finish();
         }
     }

@@ -33,4 +33,8 @@ final class ThirdView extends LinearLayout {
     @OnClick(R.id.btn_pop_two) void onPopTwoButtonClicked() {
         screenManager.pop(2);
     }
+
+    @OnClick(R.id.btn_pop_three) void onPopThreeButtonClicked() {
+        screenManager.pop(3);
+    }
 }
