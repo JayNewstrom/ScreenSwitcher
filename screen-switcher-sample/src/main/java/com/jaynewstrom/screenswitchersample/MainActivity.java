@@ -3,6 +3,7 @@ package com.jaynewstrom.screenswitchersample;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.MotionEvent;
 
 import com.jaynewstrom.concrete.Concrete;
 import com.jaynewstrom.concrete.ConcreteWall;
@@ -34,6 +35,10 @@ public final class MainActivity extends Activity {
         if (isFinishing()) {
             activityConcreteWall.destroy();
         }
+    }
+
+    @Override public boolean dispatchTouchEvent(MotionEvent ev) {
+        return activityScreenSwitcher.isTransitioning() || super.dispatchTouchEvent(ev);
     }
 
     @Override public void onBackPressed() {

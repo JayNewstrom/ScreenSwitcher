@@ -10,7 +10,6 @@ Here is the start of the TODO list:
 	- void replaceCurrentScreenWith(Screen screen);
     - void replaceCurrentScreenWith(List<Screen> screens);
     - void replaceTo(Screen screen);
-- Capture touch events while animating between screens
 - Thoughts on how to do split screen
 - Hide and or remove views from the content view when they aren't the top view
 - ScreenAnimationConfiguration needs javadoc on viewToAnimate.getParent won't be null, so that you can do animations, etc.
