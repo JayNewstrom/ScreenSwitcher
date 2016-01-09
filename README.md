@@ -14,7 +14,6 @@ Here is the start of the TODO list:
 - Thoughts on how to do split screen
 - Hide and or remove views from the content view when they aren't the top view
 - ScreenAnimationConfiguration needs javadoc on viewToAnimate.getParent won't be null, so that you can do animations, etc.
-- Disable subsequent screen switches if one is already running
 - Screen could use a method createScreen, for being symmetric with destroyScreen
 - Capture bitmap of view before destroying the last one before finishing, and set that as the foreground
 

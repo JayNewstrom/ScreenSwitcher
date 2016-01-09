@@ -37,7 +37,9 @@ public final class MainActivity extends Activity {
     }
 
     @Override public void onBackPressed() {
-        screenManager.pop();
+        if (!activityScreenSwitcher.isTransitioning()) {
+            screenManager.pop();
+        }
     }
 
     @Override public Object getSystemService(@NonNull String name) {
