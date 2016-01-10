@@ -1,19 +1,8 @@
 Screen Switcher
 =========
 
-Screen Switcher is still a major work in progress.
-
-Here is the start of the TODO list:
-- ViewScreenSwitcher
-- more screen switcher methods
-	- void replaceCurrentScreenWith(Screen screen);
-    - void replaceCurrentScreenWith(List<Screen> screens);
-    - void replaceTo(Screen screen);
-- Thoughts on how to do split screen
-- ScreenAnimationConfiguration needs javadoc on viewToAnimate.getParent won't be null, so that you can do animations, etc.
-- Screen could use a method createScreen, for being symmetric with destroyScreen
-- Ideas on how to handle dialogs
-- Global onTransition method so the client can be notified when transitions occur
+Screen Switcher is in its infancy. 
+It's still being actively worked on, but the basic features are complete and working.
 
 License
 -------
