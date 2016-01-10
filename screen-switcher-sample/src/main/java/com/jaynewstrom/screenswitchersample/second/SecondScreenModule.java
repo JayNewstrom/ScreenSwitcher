@@ -3,6 +3,7 @@ package com.jaynewstrom.screenswitchersample.second;
 import com.jaynewstrom.screenswitchersample.MainActivityModule;
 
 import dagger.Module;
+import dagger.Provides;
 
 @Module(
         injects = {
@@ -12,4 +13,13 @@ import dagger.Module;
 )
 final class SecondScreenModule {
 
+    private final SecondScreen screen;
+
+    SecondScreenModule(SecondScreen screen) {
+        this.screen = screen;
+    }
+
+    @Provides SecondScreen provideSecondScreen() {
+        return screen;
+    }
 }

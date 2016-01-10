@@ -17,4 +17,12 @@
         android:layout_height="wrap_content"
         android:text="@string/third_screen"
         />
+
+    <Button
+        android:id="@+id/btn_confirm_pop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/confirm_pop"
+        android:visibility="gone"
+        />
 </merge>

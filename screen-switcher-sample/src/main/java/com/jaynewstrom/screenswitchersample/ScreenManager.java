@@ -1,13 +1,18 @@
 package com.jaynewstrom.screenswitchersample;
 
 import com.jaynewstrom.screenswitcher.Screen;
+import com.jaynewstrom.screenswitcher.ScreenPopListener;
 import com.jaynewstrom.screenswitcher.ScreenSwitcher;
+import com.jaynewstrom.screenswitcher.ScreenSwitcherState;
 
 public final class ScreenManager {
 
     private ScreenSwitcher screenSwitcher;
 
-    ScreenManager() {
+    private final ScreenSwitcherState screenSwitcherState;
+
+    ScreenManager(ScreenSwitcherState screenSwitcherState) {
+        this.screenSwitcherState = screenSwitcherState;
     }
 
     boolean isSameImplementation(ScreenSwitcher screenSwitcher) {
@@ -22,6 +27,10 @@ public final class ScreenManager {
         if (isSameImplementation(screenSwitcher)) {
             this.screenSwitcher = null;
         }
+    }
+
+    public void registerPopListener(Screen screen, ScreenPopListener popListener) {
+        screenSwitcherState.registerPopListener(screen, popListener);
     }
 
     public void pop(int numberToPop) {

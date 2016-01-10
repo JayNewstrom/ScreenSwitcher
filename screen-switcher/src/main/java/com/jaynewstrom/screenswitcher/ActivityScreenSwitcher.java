@@ -58,20 +58,15 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
         check(numberToPop >= 1, "numberToPop < 1");
         hideKeyboard();
         List<Screen> screens = state.getScreens();
-        if (screens.size() > numberToPop) {
-            for (int i = 1; i < numberToPop; i++) {
-                removeScreen(screens.get(screens.size() - i - 1));
+        for (int i = 1; i <= numberToPop; i++) {
+            if (state.handlesPop(screens.get(screens.size() - i))) {
+                if (i > 1) {
+                    performPop(i - 1);
+                }
+                return;
             }
-            prepareTransitionToScreen(screens.get(screens.size() - 2));
-            performPopTransition(screens.get(screens.size() - 1));
-        } else {
-            View matchingView = Utils.createViewWithDrawMatching(activity.findViewById(android.R.id.content));
-            activity.addContentView(matchingView, new WindowManager.LayoutParams());
-            for (Screen screen : new ArrayList<>(screenViewMap.keySet())) {
-                removeScreen(screen);
-            }
-            activity.finish();
         }
+        performPop(numberToPop);
     }
 
     @Override public boolean isTransitioning() {
@@ -90,6 +85,24 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
     private void ensureTransitionIsNotOccurring(String transitionType) {
         if (transitioning) {
             throw new IllegalStateException(String.format("Can't %s while a transition is occurring", transitionType));
+        }
+    }
+
+    private void performPop(int numberToPop) {
+        List<Screen> screens = state.getScreens();
+        if (screens.size() > numberToPop) {
+            for (int i = 1; i < numberToPop; i++) {
+                removeScreen(screens.get(screens.size() - i - 1));
+            }
+            prepareTransitionToScreen(screens.get(screens.size() - 2));
+            performPopTransition(screens.get(screens.size() - 1));
+        } else {
+            View matchingView = Utils.createViewWithDrawMatching(activity.findViewById(android.R.id.content));
+            activity.addContentView(matchingView, new WindowManager.LayoutParams());
+            for (Screen screen : new ArrayList<>(screenViewMap.keySet())) {
+                removeScreen(screen);
+            }
+            activity.finish();
         }
     }
 

@@ -18,7 +18,7 @@ public final class SecondScreen extends ConcreteScreen {
     }
 
     @Override public Object daggerModule() {
-        return new SecondScreenModule();
+        return new SecondScreenModule(this);
     }
 
     @Override public ScreenAnimationConfiguration animationConfiguration() {

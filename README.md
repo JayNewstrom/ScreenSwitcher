@@ -5,7 +5,6 @@ Screen Switcher is still a major work in progress.
 
 Here is the start of the TODO list:
 - ViewScreenSwitcher
-- ScreenPopListener (state held in ScreenSwitcher State)
 - more screen switcher methods
 	- void replaceCurrentScreenWith(Screen screen);
     - void replaceCurrentScreenWith(List<Screen> screens);

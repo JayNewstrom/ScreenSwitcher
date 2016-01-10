@@ -19,8 +19,8 @@ import dagger.Provides;
 )
 public final class MainActivityModule {
 
-    @Provides @Singleton ScreenManager provideScreenManager() {
-        return new ScreenManager();
+    @Provides @Singleton ScreenManager provideScreenManager(ScreenSwitcherState screenSwitcherState) {
+        return new ScreenManager(screenSwitcherState);
     }
 
     @Provides @Singleton ScreenSwitcherState provideScreenSwitcherState() {
