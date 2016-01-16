@@ -3,8 +3,8 @@ package com.jaynewstrom.screenswitchersample.second;
 import android.content.Context;
 import android.view.View;
 
-import com.jaynewstrom.screenswitcher.ScreenAnimationConfiguration;
-import com.jaynewstrom.screenswitchersample.DefaultAnimationConfiguration;
+import com.jaynewstrom.screenswitcher.ScreenTransition;
+import com.jaynewstrom.screenswitchersample.DefaultScreenTransition;
 import com.jaynewstrom.screenswitchersample.concrete.ConcreteScreen;
 
 public final class SecondScreen extends ConcreteScreen {
@@ -21,7 +21,7 @@ public final class SecondScreen extends ConcreteScreen {
         return new SecondScreenModule(this);
     }
 
-    @Override public ScreenAnimationConfiguration animationConfiguration() {
-        return new DefaultAnimationConfiguration();
+    @Override public ScreenTransition transition() {
+        return DefaultScreenTransition.INSTANCE;
     }
 }

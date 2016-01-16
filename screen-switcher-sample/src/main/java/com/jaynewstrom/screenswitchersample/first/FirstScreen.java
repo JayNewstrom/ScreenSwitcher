@@ -3,14 +3,14 @@ package com.jaynewstrom.screenswitchersample.first;
 import android.content.Context;
 import android.view.View;
 
-import com.jaynewstrom.screenswitcher.ScreenAnimationConfiguration;
-import com.jaynewstrom.screenswitchersample.DefaultAnimationConfiguration;
+import com.jaynewstrom.screenswitcher.ScreenTransition;
+import com.jaynewstrom.screenswitchersample.DefaultScreenTransition;
 import com.jaynewstrom.screenswitchersample.concrete.ConcreteScreen;
 
 public final class FirstScreen extends ConcreteScreen {
 
-    @Override public ScreenAnimationConfiguration animationConfiguration() {
-        return new DefaultAnimationConfiguration();
+    @Override public ScreenTransition transition() {
+        return DefaultScreenTransition.INSTANCE;
     }
 
     @Override public View createViewWithConcreteContext(Context context) {

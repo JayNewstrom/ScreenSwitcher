@@ -9,5 +9,5 @@ public interface Screen {
 
     void destroyScreen(View viewToDestroy);
 
-    ScreenAnimationConfiguration animationConfiguration();
+    ScreenTransition transition();
 }
