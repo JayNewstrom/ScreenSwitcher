@@ -1,6 +1,7 @@
 package com.jaynewstrom.screenswitchersample.third;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.jaynewstrom.screenswitcher.ScreenTransition;
@@ -9,7 +10,7 @@ import com.jaynewstrom.screenswitchersample.concrete.ConcreteScreen;
 
 public final class ThirdScreen extends ConcreteScreen {
 
-    @Override public View createViewWithConcreteContext(Context context) {
+    @Override public View createViewWithConcreteContext(@NonNull Context context) {
         return new ThirdView(context);
     }
 

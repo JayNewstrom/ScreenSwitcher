@@ -1,6 +1,7 @@
 package com.jaynewstrom.screenswitchersample.first;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.jaynewstrom.screenswitcher.ScreenTransition;
@@ -13,7 +14,7 @@ public final class FirstScreen extends ConcreteScreen {
         return DefaultScreenTransition.INSTANCE;
     }
 
-    @Override public View createViewWithConcreteContext(Context context) {
+    @Override public View createViewWithConcreteContext(@NonNull Context context) {
         return new FirstView(context);
     }
 
