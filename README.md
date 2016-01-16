@@ -4,6 +4,47 @@ Screen Switcher
 Screen Switcher is in its infancy. 
 It's still being actively worked on, but the basic features are complete and working.
 
+Bootstrap
+-------
+```java
+public final class MainActivity extends Activity {
+
+    // Use dependency injection to keep the state of the ScreenSwitcher as a Singleton.
+    @Inject ScreenSwitcherState screenSwitcherState;
+    // Use the presenter pattern for calling screen switcher methods throughout the app.
+    @Inject ScreenManager screenManager;
+
+    private ScreenSwitcher screenSwitcher;
+
+    @Override protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        
+        // Initialize dependency injection here.
+        
+        screenSwitcher = ScreenSwitcherFactory.activityScreenSwitcher(this, screenSwitcherState);
+        screenManager.take(screenSwitcher);
+    }
+
+    @Override protected void onDestroy() {
+        super.onDestroy();
+        screenManager.drop(screenSwitcher);
+    }
+
+    @Override public boolean dispatchTouchEvent(MotionEvent ev) {
+        // Disable touches while transitioning between screens.
+        return screenSwitcher.isTransitioning() || super.dispatchTouchEvent(ev);
+    }
+
+    @Override public void onBackPressed() {
+        // Only one transition can be executed at a time, swallow the back button if a transition
+        // is already in progress.
+        if (!screenSwitcher.isTransitioning()) {
+            screenManager.pop();
+        }
+    }
+}
+```
+
 License
 -------
 
