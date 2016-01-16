@@ -2,6 +2,7 @@ package com.jaynewstrom.screenswitcher;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -45,7 +46,7 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
         return view;
     }
 
-    @Override public void push(Screen screen) {
+    @Override public void push(@NonNull Screen screen) {
         ensureTransitionIsNotOccurring("push");
         checkNotNull(screen, "screen == null");
         List<Screen> screens = state.getScreens();

@@ -1,6 +1,8 @@
 package com.jaynewstrom.screenswitcher;
 
+import android.support.annotation.NonNull;
+
 public interface ScreenPopListener {
 
-    boolean onScreenPop(Screen screen);
+    boolean onScreenPop(@NonNull Screen screen);
 }

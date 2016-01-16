@@ -1,5 +1,7 @@
 package com.jaynewstrom.screenswitchersample;
 
+import android.support.annotation.IntRange;
+
 import com.jaynewstrom.screenswitcher.Screen;
 import com.jaynewstrom.screenswitcher.ScreenPopListener;
 import com.jaynewstrom.screenswitcher.ScreenSwitcher;
@@ -33,7 +35,7 @@ public final class ScreenManager {
         screenSwitcherState.registerPopListener(screen, popListener);
     }
 
-    public void pop(int numberToPop) {
+    public void pop(@IntRange(from = 1) int numberToPop) {
         if (screenSwitcher != null) {
             screenSwitcher.pop(numberToPop);
         }
