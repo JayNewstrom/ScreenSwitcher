@@ -9,9 +9,15 @@ final class Preconditions {
         return t;
     }
 
-    static void check(boolean condition, String message) {
-        if (!condition) {
+    static void checkArgument(boolean expectedArgument, String message) {
+        if (!expectedArgument) {
             throw new IllegalArgumentException(message);
+        }
+    }
+
+    static void checkState(boolean expectedState, String message) {
+        if (!expectedState) {
+            throw new IllegalStateException(message);
         }
     }
 }

@@ -12,8 +12,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.jaynewstrom.screenswitcher.Preconditions.check;
+import static com.jaynewstrom.screenswitcher.Preconditions.checkArgument;
 import static com.jaynewstrom.screenswitcher.Preconditions.checkNotNull;
+import static com.jaynewstrom.screenswitcher.Preconditions.checkState;
 
 final class ActivityScreenSwitcher implements ScreenSwitcher {
 
@@ -47,15 +48,22 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
     @Override public void push(Screen screen) {
         ensureTransitionIsNotOccurring("push");
         checkNotNull(screen, "screen == null");
+        List<Screen> screens = state.getScreens();
+        checkState(!screens.isEmpty(), "no screens to transition from");
+
         hideKeyboard();
-        state.getScreens().add(screen);
+
+        View backgroundView = screenViewMap.get(screens.get(screens.size() - 1));
+
+        screens.add(screen);
         View view = createView(screen);
-        screen.animationConfiguration().animateIn(view, new EndTransitionRunnable());
+
+        screen.transition().transitionIn(view, backgroundView, new EndTransitionRunnable());
     }
 
     @Override public void pop(int numberToPop) {
         ensureTransitionIsNotOccurring("pop");
-        check(numberToPop >= 1, "numberToPop < 1");
+        checkArgument(numberToPop >= 1, "numberToPop < 1");
         hideKeyboard();
         List<Screen> screens = state.getScreens();
         for (int i = 1; i <= numberToPop; i++) {
@@ -83,9 +91,7 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
     }
 
     private void ensureTransitionIsNotOccurring(String transitionType) {
-        if (transitioning) {
-            throw new IllegalStateException(String.format("Can't %s while a transition is occurring", transitionType));
-        }
+        checkState(!transitioning, String.format("Can't %s while a transition is occurring", transitionType));
     }
 
     private void performPop(int numberToPop) {
@@ -94,8 +100,7 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
             for (int i = 1; i < numberToPop; i++) {
                 removeScreen(screens.get(screens.size() - i - 1));
             }
-            prepareTransitionToScreen(screens.get(screens.size() - 2));
-            performPopTransition(screens.get(screens.size() - 1));
+            performPopTransition(screens.get(screens.size() - 1), screens.get(screens.size() - 2));
         } else {
             View matchingView = Utils.createViewWithDrawMatching(activity.findViewById(android.R.id.content));
             activity.addContentView(matchingView, new WindowManager.LayoutParams());
@@ -106,14 +111,12 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
         }
     }
 
-    private void prepareTransitionToScreen(Screen screenToBecomeVisible) {
-        screenViewMap.get(screenToBecomeVisible).setVisibility(View.VISIBLE);
-    }
-
-    private void performPopTransition(Screen screenToRemove) {
+    private void performPopTransition(Screen screenToRemove, Screen screenToBecomeVisible) {
+        View viewToBecomeVisible = screenViewMap.get(screenToBecomeVisible);
+        viewToBecomeVisible.setVisibility(View.VISIBLE);
         View viewToRemove = screenViewMap.get(screenToRemove);
         Runnable completionRunnable = new RemoveScreenRunnable(screenToRemove, new EndTransitionRunnable());
-        screenToRemove.animationConfiguration().animateOut(viewToRemove, completionRunnable);
+        screenToRemove.transition().transitionOut(viewToRemove, viewToBecomeVisible, completionRunnable);
     }
 
     void setTransitioning(boolean transitioning) {
