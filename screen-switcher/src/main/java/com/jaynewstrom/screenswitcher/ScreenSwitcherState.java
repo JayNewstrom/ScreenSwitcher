@@ -10,11 +10,18 @@ import java.util.Map;
 import static com.jaynewstrom.screenswitcher.Preconditions.checkArgument;
 import static com.jaynewstrom.screenswitcher.Preconditions.checkNotNull;
 
+/**
+ * This object is designed to persist in memory when an {@link android.app.Activity} configuration change occurs.
+ */
 public final class ScreenSwitcherState {
 
     private final List<Screen> screens;
     private final Map<Screen, ScreenPopListener> popListenerMap;
 
+    /**
+     * @param screens The initial screens that the {@link ScreenSwitcher} should show.
+     * @throws IllegalArgumentException if screens is empty
+     */
     public ScreenSwitcherState(@NonNull List<Screen> screens) {
         checkNotNull(screens, "screens == null");
         checkArgument(!screens.isEmpty(), "screens must contain at least one screen");
@@ -22,6 +29,13 @@ public final class ScreenSwitcherState {
         popListenerMap = new LinkedHashMap<>();
     }
 
+    /**
+     * The pop listener will be automatically unregistered when the {@link Screen} is popped.
+     * See documentation for {@link ScreenPopListener} for what objects should be registered.
+     *
+     * @param screen The {@link Screen} to be notified of before it gets popped.
+     * @param popListener The {@link ScreenPopListener} to call when the {@link Screen} is trying to be popped.
+     */
     public void registerPopListener(@NonNull Screen screen, @NonNull ScreenPopListener popListener) {
         checkNotNull(screen, "screen == null");
         checkNotNull(popListener, "popListener == null");
