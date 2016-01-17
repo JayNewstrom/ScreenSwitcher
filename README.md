@@ -4,6 +4,78 @@ Screen Switcher
 Screen Switcher is in its infancy. 
 It's still being actively worked on, but the basic features are complete and working.
 
+Getting Started
+-------
+
+There is a fair amount of bootstrapping that needs to happen in order to get your app setup.
+It's probably easiest to clone the repo and checkout the sample to see how things work.
+
+Usage
+-------
+
+Use the presenter pattern to delegate calls to a `ScreenSwitcher`.
+```java
+public final class ScreenManager {
+
+    private ScreenSwitcher screenSwitcher;
+
+    private final ScreenSwitcherState screenSwitcherState;
+
+    ScreenManager(ScreenSwitcherState screenSwitcherState) {
+        this.screenSwitcherState = screenSwitcherState;
+    }
+
+    boolean isSameImplementation(ScreenSwitcher screenSwitcher) {
+        return this.screenSwitcher == screenSwitcher;
+    }
+
+    void take(ScreenSwitcher screenSwitcher) {
+        this.screenSwitcher = screenSwitcher;
+    }
+
+    void drop(ScreenSwitcher screenSwitcher) {
+        if (isSameImplementation(screenSwitcher)) {
+            this.screenSwitcher = null;
+        }
+    }
+
+    public void pop(@IntRange(from = 1) int numberToPop) {
+        if (screenSwitcher != null) {
+            screenSwitcher.pop(numberToPop);
+        }
+    }
+
+    public void push(Screen screen) {
+        if (screenSwitcher != null) {
+            screenSwitcher.push(screen);
+        }
+    }
+}
+```
+
+Change screens by calling a screen switcher method (through the `ScreenManager` delegate).
+
+```java
+final class FirstView extends LinearLayout {
+
+    @Inject ScreenManager screenManager;
+
+    FirstView(Context context) {
+        super(context);
+        setOrientation(VERTICAL);
+        setBackgroundResource(android.R.color.white);
+        
+        // Initialize dependencies using dependency injection.
+        
+        LayoutInflater.from(context).inflate(R.layout.first_view, this, true);
+        ButterKnife.bind(this);
+    }
+
+    @OnClick(R.id.btn_second) void onSecondScreenButtonClicked() {
+        screenManager.push(new SecondScreen());
+    }
+}
+```
 Bootstrap
 -------
 ```java
