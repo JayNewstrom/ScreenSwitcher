@@ -25,6 +25,9 @@ public final class ScreenSwitcherState {
     public ScreenSwitcherState(@NonNull List<Screen> screens) {
         checkNotNull(screens, "screens == null");
         checkArgument(!screens.isEmpty(), "screens must contain at least one screen");
+        for (int i = 0, size = screens.size(); i < size; i++) {
+            checkNotNull(screens.get(i), String.format("screen at index %d was null", i));
+        }
         this.screens = new ArrayList<>(screens);
         popListenerMap = new LinkedHashMap<>();
     }
