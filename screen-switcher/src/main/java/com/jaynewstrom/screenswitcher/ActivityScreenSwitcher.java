@@ -65,8 +65,12 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
     @Override public void pop(int numberToPop) {
         ensureTransitionIsNotOccurring("pop");
         checkArgument(numberToPop >= 1, "numberToPop < 1");
-        hideKeyboard();
         List<Screen> screens = state.getScreens();
+        String tooManyScreensErrorMessage = String.format("%d screens exists, can't pop %d screens.", screens.size(), numberToPop);
+        checkArgument(numberToPop <= screens.size(), tooManyScreensErrorMessage);
+
+        hideKeyboard();
+
         for (int i = 1; i <= numberToPop; i++) {
             if (state.handlesPop(screens.get(screens.size() - i))) {
                 if (i > 1) {
