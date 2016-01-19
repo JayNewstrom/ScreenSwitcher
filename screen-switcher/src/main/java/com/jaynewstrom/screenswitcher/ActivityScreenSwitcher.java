@@ -26,8 +26,8 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
     private final Map<Screen, View> screenViewMap;
 
     ActivityScreenSwitcher(Activity activity, ScreenSwitcherState state) {
-        this.activity = checkNotNull(activity, "activity == null");
-        this.state = checkNotNull(state, "state == null");
+        this.activity = activity;
+        this.state = state;
         this.screenViewMap = new LinkedHashMap<>();
         initializeActivityState();
     }
