@@ -7,6 +7,7 @@ import android.view.View;
 import com.jaynewstrom.concrete.Concrete;
 import com.jaynewstrom.concrete.ConcreteBlock;
 import com.jaynewstrom.screenswitcher.Screen;
+import com.jaynewstrom.screenswitchersample.ScreenSwitcherApplication;
 
 public abstract class ConcreteScreen implements Screen, ConcreteBlock {
 
@@ -18,6 +19,8 @@ public abstract class ConcreteScreen implements Screen, ConcreteBlock {
     public abstract View createViewWithConcreteContext(@NonNull Context context);
 
     @Override public final void destroyScreen(@NonNull View viewToDestroy) {
+        ScreenSwitcherApplication.watchObject(viewToDestroy.getContext(), this);
+        ScreenSwitcherApplication.watchObject(viewToDestroy.getContext(), viewToDestroy);
         Concrete.findWall(viewToDestroy.getContext()).destroy();
     }
 }
