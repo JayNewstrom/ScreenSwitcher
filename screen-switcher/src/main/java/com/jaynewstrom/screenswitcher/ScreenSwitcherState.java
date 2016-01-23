@@ -21,14 +21,15 @@ public final class ScreenSwitcherState {
     /**
      * @param screens The initial screens that the {@link ScreenSwitcher} should show.
      * @throws IllegalArgumentException if screens is empty
+     * @throws IllegalArgumentException if the same screen is passed
      */
     public ScreenSwitcherState(@NonNull List<Screen> screens) {
         checkNotNull(screens, "screens == null");
         checkArgument(!screens.isEmpty(), "screens must contain at least one screen");
+        this.screens = new ArrayList<>(screens.size());
         for (int i = 0, size = screens.size(); i < size; i++) {
-            checkNotNull(screens.get(i), String.format("screen at index %d was null", i));
+            addScreen(screens.get(i));
         }
-        this.screens = new ArrayList<>(screens);
         popListenerMap = new LinkedHashMap<>();
     }
 
@@ -47,6 +48,12 @@ public final class ScreenSwitcherState {
 
     List<Screen> getScreens() {
         return screens;
+    }
+
+    void addScreen(Screen screen) {
+        checkNotNull(screen, "screen == null");
+        checkArgument(!screens.contains(screen), "screen already exists");
+        screens.add(screen);
     }
 
     boolean handlesPop(Screen screen) {

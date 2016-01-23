@@ -2,6 +2,7 @@ package com.jaynewstrom.screenswitcher;
 
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -45,7 +46,17 @@ public final class ScreenSwitcherStateTest {
             new ScreenSwitcherState(Collections.<Screen>singletonList(null));
             fail();
         } catch (NullPointerException expected) {
-            assertThat(expected).hasMessage("screen at index 0 was null");
+            assertThat(expected).hasMessage("screen == null");
+        }
+    }
+
+    @Test public void constructorRejectsDuplicateScreens() {
+        try {
+            Screen screen = mock(Screen.class);
+            new ScreenSwitcherState(Arrays.asList(screen, screen));
+            fail();
+        } catch (IllegalArgumentException expected) {
+            assertThat(expected).hasMessage("screen already exists");
         }
     }
 
@@ -90,5 +101,27 @@ public final class ScreenSwitcherStateTest {
         when(popListener.onScreenPop(screen)).thenReturn(true);
         assertThat(state.handlesPop(screen)).isTrue();
         assertThat(state.handlesPop(screen)).isFalse(); // False because it doesn't exist.
+    }
+
+    @Test public void addScreenRejectsDuplicateScreen() {
+        try {
+            Screen screen = mock(Screen.class);
+            ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(screen));
+            state.addScreen(screen);
+            fail();
+        } catch (IllegalArgumentException expected) {
+            assertThat(expected).hasMessage("screen already exists");
+        }
+    }
+
+    @Test public void addScreenRejectsNullScreen() {
+        try {
+            Screen screen = mock(Screen.class);
+            ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(screen));
+            state.addScreen(null);
+            fail();
+        } catch (NullPointerException expected) {
+            assertThat(expected).hasMessage("screen == null");
+        }
     }
 }
