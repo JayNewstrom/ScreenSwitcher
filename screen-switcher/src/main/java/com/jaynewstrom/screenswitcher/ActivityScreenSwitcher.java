@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.jaynewstrom.screenswitcher.Preconditions.checkArgument;
-import static com.jaynewstrom.screenswitcher.Preconditions.checkNotNull;
 import static com.jaynewstrom.screenswitcher.Preconditions.checkState;
 
 final class ActivityScreenSwitcher implements ScreenSwitcher {
@@ -48,7 +47,6 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
 
     @Override public void push(@NonNull Screen screen) {
         ensureTransitionIsNotOccurring("push");
-        checkNotNull(screen, "screen == null");
         List<Screen> screens = state.getScreens();
         checkState(!screens.isEmpty(), "no screens to transition from");
 
@@ -56,7 +54,7 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
 
         View backgroundView = screenViewMap.get(screens.get(screens.size() - 1));
 
-        screens.add(screen);
+        state.addScreen(screen);
         View view = createView(screen);
 
         screen.transition().transitionIn(view, backgroundView, new EndTransitionRunnable());
