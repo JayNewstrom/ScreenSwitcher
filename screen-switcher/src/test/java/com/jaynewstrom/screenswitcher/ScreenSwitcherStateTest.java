@@ -81,4 +81,14 @@ public final class ScreenSwitcherStateTest {
         when(popListener.onScreenPop(screen)).thenReturn(true);
         assertThat(state.handlesPop(mock(Screen.class))).isFalse();
     }
+
+    @Test public void handlesPopRemovesPopListenerWhenReturnsTrue() {
+        Screen screen = mock(Screen.class);
+        ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(screen));
+        ScreenPopListener popListener = mock(ScreenPopListener.class);
+        state.registerPopListener(screen, popListener);
+        when(popListener.onScreenPop(screen)).thenReturn(true);
+        assertThat(state.handlesPop(screen)).isTrue();
+        assertThat(state.handlesPop(screen)).isFalse(); // False because it doesn't exist.
+    }
 }
