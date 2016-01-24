@@ -54,6 +54,13 @@ public final class ScreenSwitcherState {
         return screens.indexOf(screen);
     }
 
+    /**
+     * @return number of screens that will be used in any associated {@link ScreenSwitcher}.
+     */
+    public int screenCount() {
+        return screens.size();
+    }
+
     List<Screen> getScreens() {
         return screens;
     }

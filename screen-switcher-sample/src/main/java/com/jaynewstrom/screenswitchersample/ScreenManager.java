@@ -50,4 +50,8 @@ public final class ScreenManager {
             screenSwitcher.push(screen);
         }
     }
+
+    public void popTo(Screen screen) {
+        pop(screenSwitcherState.screenCount() - screenSwitcherState.indexOf(screen) - 1);
+    }
 }
