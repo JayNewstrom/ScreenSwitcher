@@ -14,8 +14,7 @@ import static org.mockito.Mockito.when;
 public final class ScreenSwitcherStateTest {
 
     @Test public void constructorMakesDefensiveCopyOfScreensPassedIn() {
-        Screen screen = mock(Screen.class);
-        List<Screen> passedList = Collections.singletonList(screen);
+        List<Screen> passedList = Collections.singletonList(mock(Screen.class));
         ScreenSwitcherState state = new ScreenSwitcherState(passedList);
         state.getScreens().add(mock(Screen.class));
         assertThat(passedList).hasSize(1);
@@ -51,8 +50,8 @@ public final class ScreenSwitcherStateTest {
     }
 
     @Test public void constructorRejectsDuplicateScreens() {
+        Screen screen = mock(Screen.class);
         try {
-            Screen screen = mock(Screen.class);
             new ScreenSwitcherState(Arrays.asList(screen, screen));
             fail();
         } catch (IllegalArgumentException expected) {
@@ -104,9 +103,9 @@ public final class ScreenSwitcherStateTest {
     }
 
     @Test public void addScreenRejectsDuplicateScreen() {
+        Screen screen = mock(Screen.class);
+        ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(screen));
         try {
-            Screen screen = mock(Screen.class);
-            ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(screen));
             state.addScreen(screen);
             fail();
         } catch (IllegalArgumentException expected) {
@@ -115,13 +114,36 @@ public final class ScreenSwitcherStateTest {
     }
 
     @Test public void addScreenRejectsNullScreen() {
+        ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(mock(Screen.class)));
         try {
-            Screen screen = mock(Screen.class);
-            ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(screen));
             state.addScreen(null);
             fail();
         } catch (NullPointerException expected) {
             assertThat(expected).hasMessage("screen == null");
         }
+    }
+
+    @Test public void indexOfRejectsNullScreen() {
+        ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(mock(Screen.class)));
+        try {
+            //noinspection ConstantConditions
+            state.indexOf(null);
+            fail();
+        } catch (NullPointerException expected) {
+            assertThat(expected).hasMessage("screen == null");
+        }
+    }
+
+    @Test public void indexOfReturnsNegativeOneIfTheScreenDoesNotExist() {
+        ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(mock(Screen.class)));
+        assertThat(state.indexOf(mock(Screen.class))).isEqualTo(-1);
+    }
+
+    @Test public void indexOfReturnsTheCorrectIndexOfAnExistingScreen() {
+        Screen screen0 = mock(Screen.class);
+        Screen screen1 = mock(Screen.class);
+        Screen screen2 = mock(Screen.class);
+        ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen0, screen1, screen2));
+        assertThat(state.indexOf(screen1)).isEqualTo(1);
     }
 }
