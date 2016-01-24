@@ -46,6 +46,14 @@ public final class ScreenSwitcherState {
         popListenerMap.put(screen, popListener);
     }
 
+    /**
+     * @return the index of the screen if it exists, or -1 if it doesn't.
+     */
+    public int indexOf(@NonNull Screen screen) {
+        checkNotNull(screen, "screen == null");
+        return screens.indexOf(screen);
+    }
+
     List<Screen> getScreens() {
         return screens;
     }
