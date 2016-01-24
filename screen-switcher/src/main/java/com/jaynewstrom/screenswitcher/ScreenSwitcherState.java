@@ -74,7 +74,7 @@ public final class ScreenSwitcherState {
     boolean handlesPop(Screen screen) {
         ScreenPopListener popListener = popListenerMap.get(screen);
         boolean handlesPop = popListener != null && popListener.onScreenPop(screen);
-        if (handlesPop) {
+        if (!handlesPop) {
             popListenerMap.remove(screen);
         }
         return handlesPop;
