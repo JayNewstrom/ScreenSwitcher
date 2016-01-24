@@ -1,17 +1,17 @@
 package com.jaynewstrom.screenswitcher;
 
 import android.app.Activity;
-import android.content.Context;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static com.jaynewstrom.screenswitcher.ScreenTestUtils.addTransitionOut;
+import static com.jaynewstrom.screenswitcher.ScreenTestUtils.initialActivityScreenSwitcher;
+import static com.jaynewstrom.screenswitcher.ScreenTestUtils.mockCreateView;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
@@ -76,7 +76,7 @@ public final class ActivityScreenSwitcherPopTest {
         mockCreateView(activity, screen1);
         Screen screen2 = mock(Screen.class);
         mockCreateView(activity, screen2);
-        AtomicReference<Runnable> transitionCompletedRunnable = addTransition(screen2);
+        AtomicReference<Runnable> transitionCompletedRunnable = addTransitionOut(screen2);
         ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2));
         ScreenPopListener popListener = mock(ScreenPopListener.class);
         when(popListener.onScreenPop(screen1)).thenReturn(true);
@@ -94,7 +94,7 @@ public final class ActivityScreenSwitcherPopTest {
         mockCreateView(activity, screen1);
         Screen screen2 = mock(Screen.class);
         mockCreateView(activity, screen2);
-        AtomicReference<Runnable> transitionCompletedRunnable = addTransition(screen2);
+        AtomicReference<Runnable> transitionCompletedRunnable = addTransitionOut(screen2);
         ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2));
         ActivityScreenSwitcher activityScreenSwitcher = new ActivityScreenSwitcher(activity, state);
         activityScreenSwitcher.pop(1);
@@ -111,7 +111,7 @@ public final class ActivityScreenSwitcherPopTest {
         mockCreateView(activity, screen2);
         Screen screen3 = mock(Screen.class);
         mockCreateView(activity, screen3);
-        AtomicReference<Runnable> transitionCompletedRunnable = addTransition(screen3);
+        AtomicReference<Runnable> transitionCompletedRunnable = addTransitionOut(screen3);
         ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2, screen3));
         ActivityScreenSwitcher activityScreenSwitcher = new ActivityScreenSwitcher(activity, state);
         activityScreenSwitcher.pop(2);
@@ -126,7 +126,7 @@ public final class ActivityScreenSwitcherPopTest {
         mockCreateView(activity, screen1);
         Screen screen2 = mock(Screen.class);
         mockCreateView(activity, screen2);
-        AtomicReference<Runnable> transitionCompletedRunnable = addTransition(screen2);
+        AtomicReference<Runnable> transitionCompletedRunnable = addTransitionOut(screen2);
         ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2));
         ActivityScreenSwitcher activityScreenSwitcher = new ActivityScreenSwitcher(activity, state);
         activityScreenSwitcher.pop(1);
@@ -141,7 +141,7 @@ public final class ActivityScreenSwitcherPopTest {
         mockCreateView(activity, screen1);
         Screen screen2 = mock(Screen.class);
         View view2 = mockCreateView(activity, screen2);
-        AtomicReference<Runnable> transitionCompletedRunnable = addTransition(screen2);
+        AtomicReference<Runnable> transitionCompletedRunnable = addTransitionOut(screen2);
         ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2));
         ActivityScreenSwitcher activityScreenSwitcher = new ActivityScreenSwitcher(activity, state);
         activityScreenSwitcher.pop(1);
@@ -156,48 +156,12 @@ public final class ActivityScreenSwitcherPopTest {
         View view1 = mockCreateView(activity, screen1);
         Screen screen2 = mock(Screen.class);
         mockCreateView(activity, screen2);
-        AtomicReference<Runnable> transitionCompletedRunnable = addTransition(screen2);
+        AtomicReference<Runnable> transitionCompletedRunnable = addTransitionOut(screen2);
         ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2));
         ActivityScreenSwitcher activityScreenSwitcher = new ActivityScreenSwitcher(activity, state);
         verify(view1, never()).setVisibility(View.VISIBLE);
         activityScreenSwitcher.pop(1);
         verify(view1).setVisibility(View.VISIBLE);
         transitionCompletedRunnable.get().run();
-    }
-
-    private static ActivityScreenSwitcher initialActivityScreenSwitcher() {
-        Activity activity = mock(Activity.class);
-        Screen screen1 = mock(Screen.class);
-        mockCreateView(activity, screen1);
-        Screen screen2 = mock(Screen.class);
-        mockCreateView(activity, screen2);
-        return new ActivityScreenSwitcher(activity, new ScreenSwitcherState(Arrays.asList(screen1, screen2)));
-    }
-
-    private static View mockCreateView(Context context, Screen screen) {
-        View view = mock(View.class);
-        ViewGroup viewParent = mock(FrameLayout.class);
-        when(view.getParent()).thenReturn(viewParent);
-        when(screen.createView(context)).thenReturn(view);
-        return view;
-    }
-
-    private static AtomicReference<Runnable> addTransition(Screen screen) {
-        final AtomicReference<Runnable> transitionCompletedRunnable = new AtomicReference<>();
-        ScreenTransition secondScreenTransition = new ScreenTransition() {
-            @Override
-            public void transitionIn(@NonNull View foregroundView, @NonNull View backgroundView,
-                    @NonNull Runnable onTransitionCompleted) {
-                fail();
-            }
-
-            @Override
-            public void transitionOut(@NonNull View foregroundView, @NonNull View backgroundView,
-                    @NonNull Runnable onTransitionCompleted) {
-                transitionCompletedRunnable.getAndSet(onTransitionCompleted);
-            }
-        };
-        when(screen.transition()).thenReturn(secondScreenTransition);
-        return transitionCompletedRunnable;
     }
 }
