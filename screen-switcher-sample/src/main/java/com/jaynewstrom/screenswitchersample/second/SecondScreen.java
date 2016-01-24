@@ -25,4 +25,12 @@ public final class SecondScreen extends ConcreteScreen {
     @Override public ScreenTransition transition() {
         return DefaultScreenTransition.INSTANCE;
     }
+
+    @Override public boolean equals(Object o) {
+        return o instanceof SecondScreen || super.equals(o);
+    }
+
+    @Override public int hashCode() {
+        return getClass().getName().hashCode();
+    }
 }

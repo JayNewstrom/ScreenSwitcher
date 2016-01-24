@@ -146,4 +146,11 @@ public final class ScreenSwitcherStateTest {
         ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen0, screen1, screen2));
         assertThat(state.indexOf(screen1)).isEqualTo(1);
     }
+
+    @Test public void screenCountIsUpdatedWhenScreensAreAdded() {
+        ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(mock(Screen.class), mock(Screen.class)));
+        assertThat(state.screenCount()).isEqualTo(2);
+        state.addScreen(mock(Screen.class));
+        assertThat(state.screenCount()).isEqualTo(3);
+    }
 }

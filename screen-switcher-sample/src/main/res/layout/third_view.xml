@@ -31,4 +31,11 @@
         android:layout_height="wrap_content"
         android:text="@string/pop_three"
         />
+
+    <Button
+        android:id="@+id/btn_pop_to_second_screen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pop_to_second_screen"
+        />
 </merge>
