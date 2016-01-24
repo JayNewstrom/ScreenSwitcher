@@ -9,6 +9,8 @@ import java.util.List;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public final class ScreenSwitcherStateTest {
@@ -92,14 +94,26 @@ public final class ScreenSwitcherStateTest {
         assertThat(state.handlesPop(mock(Screen.class))).isFalse();
     }
 
-    @Test public void handlesPopRemovesPopListenerWhenReturnsTrue() {
+    @Test public void handlesPopRemovesPopListenerWhenReturnsFalse() {
+        Screen screen = mock(Screen.class);
+        ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(screen));
+        ScreenPopListener popListener = mock(ScreenPopListener.class);
+        state.registerPopListener(screen, popListener);
+        when(popListener.onScreenPop(screen)).thenReturn(false);
+        assertThat(state.handlesPop(screen)).isFalse(); // Will be removed here.
+        assertThat(state.handlesPop(screen)).isFalse(); // Will return false because it's gone.
+        verify(popListener).onScreenPop(screen); // Will verify it was only used once, even though #handlesPop was called twice.
+    }
+
+    @Test public void handlesPopKeepsPopListenerWhenReturnsTrue() {
         Screen screen = mock(Screen.class);
         ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(screen));
         ScreenPopListener popListener = mock(ScreenPopListener.class);
         state.registerPopListener(screen, popListener);
         when(popListener.onScreenPop(screen)).thenReturn(true);
         assertThat(state.handlesPop(screen)).isTrue();
-        assertThat(state.handlesPop(screen)).isFalse(); // False because it doesn't exist.
+        assertThat(state.handlesPop(screen)).isTrue();
+        verify(popListener, times(2)).onScreenPop(screen);
     }
 
     @Test public void addScreenRejectsDuplicateScreen() {
