@@ -43,4 +43,8 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
 
     compile project(':screen-switcher')
+
+    androidTestCompile deps.androidTestRunner
+    androidTestCompile deps.androidTestRules
+    androidTestCompile deps.espressoCore
 }
