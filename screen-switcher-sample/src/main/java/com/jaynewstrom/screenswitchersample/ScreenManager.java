@@ -7,6 +7,8 @@ import com.jaynewstrom.screenswitcher.ScreenPopListener;
 import com.jaynewstrom.screenswitcher.ScreenSwitcher;
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState;
 
+import java.util.Collections;
+
 public final class ScreenManager {
 
     private ScreenSwitcher screenSwitcher;
@@ -53,5 +55,11 @@ public final class ScreenManager {
 
     public void popTo(Screen screen) {
         pop(screenSwitcherState.screenCount() - screenSwitcherState.indexOf(screen) - 1);
+    }
+
+    public void replaceScreenWith(Screen screen) {
+        if (screenSwitcher != null) {
+            screenSwitcher.replaceScreensWith(1, Collections.singletonList(screen));
+        }
     }
 }

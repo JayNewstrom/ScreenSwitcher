@@ -9,6 +9,7 @@ import java.util.Map;
 
 import static com.jaynewstrom.screenswitcher.Preconditions.checkArgument;
 import static com.jaynewstrom.screenswitcher.Preconditions.checkNotNull;
+import static com.jaynewstrom.screenswitcher.Utils.checkScreen;
 
 /**
  * This object is designed to persist in memory when an {@link android.app.Activity} configuration change occurs.
@@ -66,8 +67,7 @@ public final class ScreenSwitcherState {
     }
 
     void addScreen(Screen screen) {
-        checkNotNull(screen, "screen == null");
-        checkArgument(!screens.contains(screen), "screen already exists");
+        checkScreen(this, screen);
         screens.add(screen);
     }
 
