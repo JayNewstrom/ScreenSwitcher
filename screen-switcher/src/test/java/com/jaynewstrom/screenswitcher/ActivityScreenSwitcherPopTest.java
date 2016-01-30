@@ -88,22 +88,7 @@ public final class ActivityScreenSwitcherPopTest {
         assertThat(state.getScreens().size()).isEqualTo(1);
     }
 
-    @Test public void screensAreNotRemovedUntilTransitionIsComplete() {
-        Activity activity = mock(Activity.class);
-        Screen screen1 = mock(Screen.class);
-        mockCreateView(activity, screen1);
-        Screen screen2 = mock(Screen.class);
-        mockCreateView(activity, screen2);
-        AtomicReference<Runnable> transitionCompletedRunnable = addTransitionOut(screen2);
-        ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2));
-        ActivityScreenSwitcher activityScreenSwitcher = new ActivityScreenSwitcher(activity, state);
-        activityScreenSwitcher.pop(1);
-        assertThat(state.getScreens().size()).isEqualTo(2);
-        transitionCompletedRunnable.get().run();
-        assertThat(state.getScreens().size()).isEqualTo(1);
-    }
-
-    @Test public void whenPoppingMultipleScreensEnsureScreensInTheMiddleAreRemovedImmediately() {
+    @Test public void whenPoppingMultipleScreensEnsureScreensAreRemovedImmediately() {
         Activity activity = mock(Activity.class);
         Screen screen1 = mock(Screen.class);
         mockCreateView(activity, screen1);
@@ -115,7 +100,7 @@ public final class ActivityScreenSwitcherPopTest {
         ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2, screen3));
         ActivityScreenSwitcher activityScreenSwitcher = new ActivityScreenSwitcher(activity, state);
         activityScreenSwitcher.pop(2);
-        assertThat(state.getScreens().size()).isEqualTo(2);
+        assertThat(state.getScreens().size()).isEqualTo(1);
         transitionCompletedRunnable.get().run();
         assertThat(state.getScreens().size()).isEqualTo(1);
     }

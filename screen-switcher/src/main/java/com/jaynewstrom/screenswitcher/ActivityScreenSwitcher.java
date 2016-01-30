@@ -109,7 +109,7 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
             View topView = screenViewMap.get(topScreen);
             topView.setVisibility(View.VISIBLE);
 
-            topScreen.transition().transitionIn(topView, backgroundView, new RemoveScreenRunnable(screensToRemove));
+            topScreen.transition().transitionIn(topView, backgroundView, new RemoveScreenRunnable(screensToRemove, state));
         }
     }
 
@@ -171,7 +171,7 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
         View viewToBecomeVisible = screenViewMap.get(screenToBecomeVisible);
         viewToBecomeVisible.setVisibility(View.VISIBLE);
         View viewToRemove = screenViewMap.get(screenToRemove);
-        Runnable completionRunnable = new RemoveScreenRunnable(screenToRemove);
+        Runnable completionRunnable = new RemoveScreenRunnable(screenToRemove, state);
         screenToRemove.transition().transitionOut(viewToRemove, viewToBecomeVisible, completionRunnable);
     }
 
@@ -211,12 +211,15 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
 
         private List<Screen> screens;
 
-        RemoveScreenRunnable(Screen screen) {
-            this(Collections.singletonList(screen));
+        RemoveScreenRunnable(Screen screen, ScreenSwitcherState state) {
+            this(Collections.singletonList(screen), state);
         }
 
-        RemoveScreenRunnable(List<Screen> screens) {
+        RemoveScreenRunnable(List<Screen> screens, ScreenSwitcherState state) {
             this.screens = screens;
+            for (int i = 0, size = screens.size(); i < size; i++) {
+                state.getScreens().remove(screens.get(i));
+            }
             setTransitioning(true);
         }
 
