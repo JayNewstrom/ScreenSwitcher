@@ -5,6 +5,7 @@ import android.view.View;
 
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -82,5 +83,23 @@ public final class ActivityScreenSwitcherPushTest {
         transitionCompletedRunnable.get().run();
         assertThat(state.getScreens().indexOf(screen)).isEqualTo(0);
         assertThat(state.getScreens().indexOf(pushedScreen)).isEqualTo(1);
+    }
+
+    @Test public void isTransitioningWhenPushing() {
+        Activity activity = mock(Activity.class);
+        Screen screen1 = mock(Screen.class);
+        mockCreateView(activity, screen1);
+        Screen screen2 = mock(Screen.class);
+        mockCreateView(activity, screen2);
+        ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2));
+        ActivityScreenSwitcher activityScreenSwitcher = new ActivityScreenSwitcher(activity, state);
+        assertThat(activityScreenSwitcher.isTransitioning()).isFalse();
+        Screen newScreen = mock(Screen.class);
+        mockCreateView(activity, newScreen);
+        AtomicReference<Runnable> transitionCompletedRunnable = addTransitionIn(newScreen);
+        activityScreenSwitcher.push(newScreen);
+        assertThat(activityScreenSwitcher.isTransitioning()).isTrue();
+        transitionCompletedRunnable.get().run();
+        assertThat(activityScreenSwitcher.isTransitioning()).isFalse();
     }
 }

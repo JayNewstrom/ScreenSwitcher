@@ -217,6 +217,7 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
 
         RemoveScreenRunnable(List<Screen> screens) {
             this.screens = screens;
+            setTransitioning(true);
         }
 
         @Override public void run() {
