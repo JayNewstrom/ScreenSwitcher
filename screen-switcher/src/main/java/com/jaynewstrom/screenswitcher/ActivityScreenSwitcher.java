@@ -37,8 +37,9 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
     }
 
     private void initializeActivityState() {
-        for (Screen screen : state.getScreens()) {
-            createView(screen);
+        List<Screen> screens = state.getScreens();
+        for (int i = 0, size = screens.size(); i < size; i++) {
+            createView(screens.get(i));
         }
         hideAllButTopScreen();
     }
@@ -158,8 +159,9 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
         } else {
             View matchingView = Utils.createViewWithDrawMatching(activity.findViewById(android.R.id.content));
             activity.addContentView(matchingView, new WindowManager.LayoutParams());
-            for (Screen screen : new ArrayList<>(screenViewMap.keySet())) {
-                removeScreen(screen);
+            List<Screen> screensToRemove = new ArrayList<>(screenViewMap.keySet());
+            for (int i = 0, size = screensToRemove.size(); i < size; i++) {
+                removeScreen(screensToRemove.get(i));
             }
             activity.finish();
         }
@@ -179,10 +181,9 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
 
     void hideAllButTopScreen() {
         List<Screen> screens = state.getScreens();
-        Screen lastScreen = screens.get(screens.size() - 1);
-        for (Screen screen : screens) {
-            if (screen != lastScreen) {
-                screenViewMap.get(screen).setVisibility(View.GONE);
+        for (int i = 0, size = screens.size(); i < size; i++) {
+            if (i != size - 1) {
+                screenViewMap.get(screens.get(i)).setVisibility(View.GONE);
             }
         }
     }
