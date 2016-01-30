@@ -9,14 +9,19 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import static com.jaynewstrom.screenswitcher.Preconditions.checkArgument;
+import static com.jaynewstrom.screenswitcher.Preconditions.checkNotNull;
 import static com.jaynewstrom.screenswitcher.Preconditions.checkState;
+import static com.jaynewstrom.screenswitcher.Utils.checkScreen;
 
 final class ActivityScreenSwitcher implements ScreenSwitcher {
+
+    private static final String TOO_MANY_SCREENS_ERROR_FORMAT = "%d screens exists, can't pop %d screens.";
 
     private boolean transitioning;
 
@@ -62,22 +67,49 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
 
     @Override public void pop(int numberToPop) {
         ensureTransitionIsNotOccurring("pop");
-        checkArgument(numberToPop >= 1, "numberToPop < 1");
-        List<Screen> screens = state.getScreens();
-        String tooManyScreensErrorMessage = String.format("%d screens exists, can't pop %d screens.", screens.size(), numberToPop);
-        checkArgument(numberToPop <= screens.size(), tooManyScreensErrorMessage);
+        checkNumberToPop(numberToPop);
 
         hideKeyboard();
 
-        for (int i = 1; i <= numberToPop; i++) {
-            if (state.handlesPop(screens.get(screens.size() - i))) {
-                if (i > 1) {
-                    performPop(i - 1);
-                }
-                return;
-            }
+        if (!popListenerConsumedPop(numberToPop)) {
+            performPop(numberToPop);
         }
-        performPop(numberToPop);
+    }
+
+    @Override public void replaceScreensWith(int numberToPop, @NonNull List<Screen> screens) {
+        ensureTransitionIsNotOccurring("replaceScreensWith");
+        checkNumberToPop(numberToPop);
+        checkNotNull(screens, "screens == null");
+        checkArgument(!screens.isEmpty(), "screens must contain at least one screen");
+        screens = new ArrayList<>(screens); // Make defensive copy.
+        for (int i = 0, size = screens.size(); i < size; i++) {
+            checkScreen(state, screens.get(i));
+        }
+
+        hideKeyboard();
+
+        if (!popListenerConsumedPop(numberToPop)) {
+            List<Screen> screensToRemove = new ArrayList<>(numberToPop);
+            for (int i = numberToPop; i > 0; i--) {
+                screensToRemove.add(state.getScreens().get(state.getScreens().size() - i));
+            }
+
+            Screen backgroundScreen = state.getScreens().get(state.getScreens().size() - 1);
+            View backgroundView = screenViewMap.get(backgroundScreen);
+
+            for (int i = 0, size = screens.size(); i < size; i++) {
+                Screen screen = screens.get(i);
+                state.addScreen(screen);
+                View view = createView(screen);
+                view.setVisibility(View.GONE);
+            }
+
+            Screen topScreen = screens.get(screens.size() - 1);
+            View topView = screenViewMap.get(topScreen);
+            topView.setVisibility(View.VISIBLE);
+
+            topScreen.transition().transitionIn(topView, backgroundView, new RemoveScreenRunnable(screensToRemove));
+        }
     }
 
     @Override public boolean isTransitioning() {
@@ -87,7 +119,7 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
     private void hideKeyboard() {
         View currentFocus = activity.getCurrentFocus();
         if (currentFocus != null) {
-            InputMethodManager imm = (InputMethodManager) currentFocus.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
             currentFocus.clearFocus();
         }
@@ -95,6 +127,25 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
 
     private void ensureTransitionIsNotOccurring(String transitionType) {
         checkState(!transitioning, String.format("Can't %s while a transition is occurring", transitionType));
+    }
+
+    private void checkNumberToPop(int numberToPop) {
+        checkArgument(numberToPop >= 1, "numberToPop < 1");
+        String tooManyScreensErrorMessage = String.format(TOO_MANY_SCREENS_ERROR_FORMAT, state.getScreens().size(), numberToPop);
+        checkArgument(numberToPop <= state.getScreens().size(), tooManyScreensErrorMessage);
+    }
+
+    private boolean popListenerConsumedPop(int numberToPop) {
+        List<Screen> screens = state.getScreens();
+        for (int i = 1; i <= numberToPop; i++) {
+            if (state.handlesPop(screens.get(screens.size() - i))) {
+                if (i > 1) {
+                    performPop(i - 1);
+                }
+                return true;
+            }
+        }
+        return false;
     }
 
     private void performPop(int numberToPop) {
@@ -118,7 +169,7 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
         View viewToBecomeVisible = screenViewMap.get(screenToBecomeVisible);
         viewToBecomeVisible.setVisibility(View.VISIBLE);
         View viewToRemove = screenViewMap.get(screenToRemove);
-        Runnable completionRunnable = new RemoveScreenRunnable(screenToRemove, new EndTransitionRunnable());
+        Runnable completionRunnable = new RemoveScreenRunnable(screenToRemove);
         screenToRemove.transition().transitionOut(viewToRemove, viewToBecomeVisible, completionRunnable);
     }
 
@@ -157,17 +208,23 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
 
     private final class RemoveScreenRunnable implements Runnable {
 
-        private final Screen screen;
-        private final Runnable completionRunnable;
+        private List<Screen> screens;
 
-        RemoveScreenRunnable(Screen screen, Runnable completionRunnable) {
-            this.screen = screen;
-            this.completionRunnable = completionRunnable;
+        RemoveScreenRunnable(Screen screen) {
+            this(Collections.singletonList(screen));
+        }
+
+        RemoveScreenRunnable(List<Screen> screens) {
+            this.screens = screens;
         }
 
         @Override public void run() {
-            removeScreen(screen);
-            completionRunnable.run();
+            for (int i = 0, size = screens.size(); i < size; i++) {
+                removeScreen(screens.get(i));
+            }
+            screens = null;
+            setTransitioning(false);
+            hideAllButTopScreen();
         }
     }
 }

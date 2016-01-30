@@ -6,9 +6,17 @@ import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import static com.jaynewstrom.screenswitcher.Preconditions.checkArgument;
+import static com.jaynewstrom.screenswitcher.Preconditions.checkNotNull;
+
 final class Utils {
 
     private Utils() {
+    }
+
+    static void checkScreen(ScreenSwitcherState state, Screen screen) {
+        checkNotNull(screen, "screen == null");
+        checkArgument(!state.getScreens().contains(screen), "screen already exists");
     }
 
     static View createViewWithDrawMatching(View view) {

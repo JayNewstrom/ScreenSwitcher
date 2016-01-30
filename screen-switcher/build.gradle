@@ -32,7 +32,7 @@ android {
 }
 
 dependencies {
-    compile deps.supportAnnotations
+    provided deps.supportAnnotations
     testCompile deps.junit
     testCompile deps.mockitoCore
     testCompile deps.fest

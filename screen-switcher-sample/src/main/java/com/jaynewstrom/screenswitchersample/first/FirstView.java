@@ -30,4 +30,8 @@ final class FirstView extends LinearLayout {
     @OnClick(R.id.btn_second) void onSecondScreenButtonClicked() {
         screenManager.push(new SecondScreen());
     }
+
+    @OnClick(R.id.btn_replace_with_second) void onReplaceWithSecondScreenButtonClicked() {
+        screenManager.replaceScreenWith(new SecondScreen());
+    }
 }
