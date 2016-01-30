@@ -164,4 +164,20 @@ public final class ActivityScreenSwitcherPopTest {
         verify(view1).setVisibility(View.VISIBLE);
         transitionCompletedRunnable.get().run();
     }
+
+    @Test public void isTransitioningWhenPopping() {
+        Activity activity = mock(Activity.class);
+        Screen screen1 = mock(Screen.class);
+        mockCreateView(activity, screen1);
+        Screen screen2 = mock(Screen.class);
+        mockCreateView(activity, screen2);
+        AtomicReference<Runnable> transitionCompletedRunnable = addTransitionOut(screen2);
+        ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2));
+        ActivityScreenSwitcher activityScreenSwitcher = new ActivityScreenSwitcher(activity, state);
+        assertThat(activityScreenSwitcher.isTransitioning()).isFalse();
+        activityScreenSwitcher.pop(1);
+        assertThat(activityScreenSwitcher.isTransitioning()).isTrue();
+        transitionCompletedRunnable.get().run();
+        assertThat(activityScreenSwitcher.isTransitioning()).isFalse();
+    }
 }

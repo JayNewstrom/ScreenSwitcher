@@ -1,10 +1,16 @@
 package com.jaynewstrom.screenswitcher;
 
+import android.app.Activity;
+
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.concurrent.atomic.AtomicReference;
 
+import static com.jaynewstrom.screenswitcher.ScreenTestUtils.addTransitionIn;
 import static com.jaynewstrom.screenswitcher.ScreenTestUtils.initialActivityScreenSwitcher;
+import static com.jaynewstrom.screenswitcher.ScreenTestUtils.mockCreateView;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
@@ -72,5 +78,23 @@ public final class ActivityScreenSwitcherReplaceScreensWithTest {
         } catch (NullPointerException expected) {
             assertThat(expected).hasMessage("screen == null");
         }
+    }
+
+    @Test public void isTransitioningWhenReplacing() {
+        Activity activity = mock(Activity.class);
+        Screen screen1 = mock(Screen.class);
+        mockCreateView(activity, screen1);
+        Screen screen2 = mock(Screen.class);
+        mockCreateView(activity, screen2);
+        ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2));
+        ActivityScreenSwitcher activityScreenSwitcher = new ActivityScreenSwitcher(activity, state);
+        assertThat(activityScreenSwitcher.isTransitioning()).isFalse();
+        Screen newScreen = mock(Screen.class);
+        mockCreateView(activity, newScreen);
+        AtomicReference<Runnable> transitionCompletedRunnable = addTransitionIn(newScreen);
+        activityScreenSwitcher.replaceScreensWith(1, Collections.singletonList(newScreen));
+        assertThat(activityScreenSwitcher.isTransitioning()).isTrue();
+        transitionCompletedRunnable.get().run();
+        assertThat(activityScreenSwitcher.isTransitioning()).isFalse();
     }
 }
