@@ -103,3 +103,14 @@ final class FirstView extends LinearLayout {
     }
 }
 ```
+
+In order to prevent overdraw, your activity should have a null background, and each screen should specify a background.
+An example application theme is given below:
+```xml 
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowBackground">@null</item>
+    </style>
+</resources>
+```
