@@ -1,7 +1,21 @@
 Screen Switcher
 =========
 
-Screen Switcher is a library that makes transitioning between screens and managing the backstack trivial. 
+A small and configurable library that focuses on screen navigation.
+
+The following decisions and features make managing the backstack trivial:
+
+- Transition animations are performed on views
+- State is designed to survive configuration changes
+- State is kept separate from the transitions
+- Overriding back button pressed behavior at the screen level
+- Only one transition can occur at a time
+
+Screen Switcher encourages the use of the following, however, none of the following are required:
+
+- Single Activity
+- Dependency Injection
+- Proper handling of configuration changes
 
 Usage
 ------------
@@ -21,6 +35,16 @@ dependencies {
     compile 'com.jaynewstrom:screen-switcher:0.9.0'
 }
 ```
+
+Alternatives
+------------
+- [Fragments](http://developer.android.com/guide/components/fragments.html)
+- [Flow](https://github.com/square/flow)
+- [Paginize](https://github.com/neevek/Paginize)
+- [Pancakes](https://github.com/mattlogan/Pancakes)
+- [Pilot](https://github.com/doridori/Pilot)
+- [SimpleFragment](https://github.com/evant/simplefragment)
+- [StackLayout](https://github.com/konmik/StackLayout)
 
 License
 -------
