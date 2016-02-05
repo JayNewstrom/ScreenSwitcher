@@ -43,6 +43,7 @@ Alternatives
 - [Paginize](https://github.com/neevek/Paginize)
 - [Pancakes](https://github.com/mattlogan/Pancakes)
 - [Pilot](https://github.com/doridori/Pilot)
+- [Scoop](https://github.com/lyft/scoop)
 - [SimpleFragment](https://github.com/evant/simplefragment)
 - [StackLayout](https://github.com/konmik/StackLayout)
 
