@@ -181,10 +181,8 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
 
     void hideAllButTopScreen() {
         List<Screen> screens = state.getScreens();
-        for (int i = 0, size = screens.size(); i < size; i++) {
-            if (i != size - 1) {
-                screenViewMap.get(screens.get(i)).setVisibility(View.GONE);
-            }
+        for (int i = 0, max = screens.size() - 1; i < max; i++) {
+            screenViewMap.get(screens.get(i)).setVisibility(View.GONE);
         }
     }
 
