@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
-import com.jaynewstrom.concrete.Concrete;
 import com.jaynewstrom.screenswitchersample.R;
 import com.jaynewstrom.screenswitchersample.ScreenManager;
 import com.jaynewstrom.screenswitchersample.second.SecondScreen;
@@ -18,11 +17,11 @@ final class ThirdView extends LinearLayout {
 
     @Inject ScreenManager screenManager;
 
-    ThirdView(Context context) {
+    ThirdView(Context context, ThirdComponent component) {
         super(context);
         setOrientation(VERTICAL);
         setBackgroundResource(android.R.color.holo_green_light);
-        Concrete.inject(context, this);
+        component.inject(this);
         LayoutInflater.from(context).inflate(R.layout.third_view, this, true);
         ButterKnife.bind(this);
     }

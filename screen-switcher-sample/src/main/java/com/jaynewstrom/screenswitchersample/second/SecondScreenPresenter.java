@@ -7,9 +7,9 @@ import com.jaynewstrom.screenswitcher.ScreenPopListener;
 import com.jaynewstrom.screenswitchersample.ScreenManager;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
-@Singleton final class SecondScreenPresenter implements ScreenPopListener {
+@ForSecondScreen
+final class SecondScreenPresenter implements ScreenPopListener {
 
     private boolean hasConfirmedPop;
 

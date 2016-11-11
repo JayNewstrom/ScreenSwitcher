@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.MotionEvent;
 
-import com.jaynewstrom.concrete.Concrete;
-import com.jaynewstrom.concrete.ConcreteWall;
 import com.jaynewstrom.screenswitcher.ScreenSwitcher;
 import com.jaynewstrom.screenswitcher.ScreenSwitcherFactory;
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState;
@@ -15,16 +13,19 @@ import javax.inject.Inject;
 
 public final class MainActivity extends Activity {
 
+    private static MainActivityComponent mainActivityComponent;
+
     @Inject ScreenSwitcherState screenSwitcherState;
     @Inject ScreenManager screenManager;
 
-    private ConcreteWall activityConcreteWall;
     private ScreenSwitcher activityScreenSwitcher;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activityConcreteWall = Concrete.findWall(getApplicationContext()).stack(new MainActivityBlock());
-        Concrete.inject(this, this);
+        if (mainActivityComponent == null) {
+            mainActivityComponent = createMainActivityComponent();
+        }
+        mainActivityComponent.inject(this);
         activityScreenSwitcher = ScreenSwitcherFactory.activityScreenSwitcher(this, screenSwitcherState);
         screenManager.take(activityScreenSwitcher);
     }
@@ -33,7 +34,7 @@ public final class MainActivity extends Activity {
         super.onDestroy();
         screenManager.drop(activityScreenSwitcher);
         if (isFinishing()) {
-            activityConcreteWall.destroy();
+            mainActivityComponent = null;
         }
     }
 
@@ -48,9 +49,19 @@ public final class MainActivity extends Activity {
     }
 
     @Override public Object getSystemService(@NonNull String name) {
-        if (Concrete.isService(name)) {
-            return activityConcreteWall;
+        if (MainActivityComponent.SCOPE_NAME.equals(name)) {
+            return mainActivityComponent;
         }
         return super.getSystemService(name);
+    }
+
+    private MainActivityComponent createMainActivityComponent() {
+        //noinspection WrongConstant
+        ApplicationComponent applicationComponent = (ApplicationComponent) getApplicationContext().getSystemService
+                (ApplicationComponent.SCOPE_NAME);
+        return DaggerMainActivityComponent.builder()
+                .applicationComponent(applicationComponent)
+                .mainActivityModule(new MainActivityModule())
+                .build();
     }
 }

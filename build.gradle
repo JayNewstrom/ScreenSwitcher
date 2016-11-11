@@ -6,14 +6,14 @@ ext {
     sourceCompatibilityVersion = JavaVersion.VERSION_1_7
     targetCompatibilityVersion = JavaVersion.VERSION_1_7
     supportLibraryVersion = '25.0.0'
+    daggerVersion = '2.7'
 }
 
 ext.deps = [
         supportAnnotations: "com.android.support:support-annotations:$supportLibraryVersion",
         appCompatv7: "com.android.support:appcompat-v7:$supportLibraryVersion",
-        dagger: 'com.squareup.dagger:dagger:1.2.2',
-        daggerCompiler: 'com.squareup.dagger:dagger-compiler:1.2.2',
-        concrete: 'com.jaynewstrom:concrete:0.9.0',
+        dagger: "com.google.dagger:dagger:$daggerVersion",
+        daggerCompiler: "com.google.dagger:dagger-compiler:$daggerVersion",
 
         junit: 'junit:junit:4.12',
         fest: 'org.easytesting:fest-assert-core:2.0M10',

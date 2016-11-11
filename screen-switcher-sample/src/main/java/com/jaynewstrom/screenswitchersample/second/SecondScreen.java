@@ -6,24 +6,24 @@ import android.view.View;
 
 import com.jaynewstrom.screenswitcher.ScreenTransition;
 import com.jaynewstrom.screenswitchersample.DefaultScreenTransition;
-import com.jaynewstrom.screenswitchersample.concrete.ConcreteScreen;
+import com.jaynewstrom.screenswitchersample.MainActivityComponent;
+import com.jaynewstrom.screenswitchersample.dagger2.Dagger2Screen;
 
-public final class SecondScreen extends ConcreteScreen {
-
-    @Override public View createViewWithConcreteContext(@NonNull Context context) {
-        return new SecondView(context);
-    }
-
-    @Override public String name() {
-        return getClass().getName();
-    }
-
-    @Override public Object daggerModule() {
-        return new SecondScreenModule(this);
-    }
+public final class SecondScreen extends Dagger2Screen<SecondComponent> {
 
     @Override public ScreenTransition transition() {
         return DefaultScreenTransition.INSTANCE;
+    }
+
+    @Override protected SecondComponent createComponent(@NonNull MainActivityComponent theParentComponent) {
+        return DaggerSecondComponent.builder()
+                .mainActivityComponent(theParentComponent)
+                .secondScreenModule(new SecondScreenModule(this))
+                .build();
+    }
+
+    @Override protected View createView(@NonNull Context context, @NonNull SecondComponent component) {
+        return new SecondView(context, component);
     }
 
     @Override public boolean equals(Object o) {

@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.jaynewstrom.concrete.Concrete;
 import com.jaynewstrom.screenswitchersample.R;
 import com.jaynewstrom.screenswitchersample.ScreenManager;
 import com.jaynewstrom.screenswitchersample.third.ThirdScreen;
@@ -25,12 +24,12 @@ final class SecondView extends LinearLayout {
 
     @BindView(R.id.btn_confirm_pop) View confirmPopButton;
 
-    SecondView(Context context) {
+    SecondView(Context context, SecondComponent component) {
         super(context);
         setId(R.id.second_screen);
         setOrientation(VERTICAL);
         setBackgroundResource(android.R.color.holo_orange_light);
-        Concrete.inject(context, this);
+        component.inject(this);
         LayoutInflater.from(context).inflate(R.layout.second_view, this, true);
         ButterKnife.bind(this);
     }
