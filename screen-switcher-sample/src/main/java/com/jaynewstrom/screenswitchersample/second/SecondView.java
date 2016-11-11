@@ -14,7 +14,7 @@ import com.jaynewstrom.screenswitchersample.third.ThirdScreen;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -23,7 +23,7 @@ final class SecondView extends LinearLayout {
     @Inject ScreenManager screenManager;
     @Inject SecondScreenPresenter presenter;
 
-    @Bind(R.id.btn_confirm_pop) View confirmPopButton;
+    @BindView(R.id.btn_confirm_pop) View confirmPopButton;
 
     SecondView(Context context) {
         super(context);
