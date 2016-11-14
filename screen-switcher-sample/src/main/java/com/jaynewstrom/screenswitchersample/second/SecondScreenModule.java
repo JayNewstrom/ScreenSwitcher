@@ -1,16 +1,9 @@
 package com.jaynewstrom.screenswitchersample.second;
 
-import com.jaynewstrom.screenswitchersample.MainActivityModule;
-
 import dagger.Module;
 import dagger.Provides;
 
-@Module(
-        injects = {
-                SecondView.class,
-        },
-        addsTo = MainActivityModule.class
-)
+@Module
 final class SecondScreenModule {
 
     private final SecondScreen screen;

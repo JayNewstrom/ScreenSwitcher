@@ -4,25 +4,23 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.jaynewstrom.concrete.ConcreteBlock;
 import com.jaynewstrom.screenswitcher.ScreenTransition;
 import com.jaynewstrom.screenswitchersample.DefaultScreenTransition;
+import com.jaynewstrom.screenswitchersample.MainActivityComponent;
 import com.jaynewstrom.screenswitchersample.concrete.ConcreteScreen;
 
-public final class FirstScreen extends ConcreteScreen {
+public final class FirstScreen extends ConcreteScreen<FirstComponent> {
 
     @Override public ScreenTransition transition() {
         return DefaultScreenTransition.INSTANCE;
     }
 
-    @Override public View createViewWithConcreteContext(@NonNull Context context) {
-        return new FirstView(context);
+    @Override protected ConcreteBlock<FirstComponent> block(@NonNull MainActivityComponent theParentComponent) {
+        return new FirstScreenBlock(theParentComponent);
     }
 
-    @Override public String name() {
-        return getClass().getName();
-    }
-
-    @Override public Object daggerModule() {
-        return new FirstScreenModule();
+    @Override public View createView(@NonNull Context context, @NonNull FirstComponent component) {
+        return new FirstView(context, component);
     }
 }

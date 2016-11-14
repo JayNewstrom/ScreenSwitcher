@@ -6,24 +6,18 @@ import com.jaynewstrom.screenswitchersample.first.FirstScreen;
 
 import java.util.Collections;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 
-@Module(
-        injects = {
-                MainActivity.class,
-        },
-        addsTo = ApplicationModule.class
-)
+@ForMainActivity
+@Module
 public final class MainActivityModule {
 
-    @Provides @Singleton ScreenManager provideScreenManager(ScreenSwitcherState screenSwitcherState) {
+    @Provides @ForMainActivity ScreenManager provideScreenManager(ScreenSwitcherState screenSwitcherState) {
         return new ScreenManager(screenSwitcherState);
     }
 
-    @Provides @Singleton ScreenSwitcherState provideScreenSwitcherState() {
+    @Provides @ForMainActivity ScreenSwitcherState provideScreenSwitcherState() {
         return new ScreenSwitcherState(Collections.<Screen>singletonList(new FirstScreen()));
     }
 }

@@ -18,13 +18,14 @@ public final class MainActivity extends Activity {
     @Inject ScreenSwitcherState screenSwitcherState;
     @Inject ScreenManager screenManager;
 
-    private ConcreteWall activityConcreteWall;
     private ScreenSwitcher activityScreenSwitcher;
+    private ConcreteWall<MainActivityComponent> activityWall;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activityConcreteWall = Concrete.findWall(getApplicationContext()).stack(new MainActivityBlock());
-        Concrete.inject(this, this);
+        ConcreteWall<ApplicationComponent> foundation = Concrete.findWall(getApplicationContext());
+        activityWall = foundation.stack(new MainActivityBlock(foundation.getComponent()));
+        activityWall.getComponent().inject(this);
         activityScreenSwitcher = ScreenSwitcherFactory.activityScreenSwitcher(this, screenSwitcherState);
         screenManager.take(activityScreenSwitcher);
     }
@@ -33,7 +34,7 @@ public final class MainActivity extends Activity {
         super.onDestroy();
         screenManager.drop(activityScreenSwitcher);
         if (isFinishing()) {
-            activityConcreteWall.destroy();
+            activityWall.destroy();
         }
     }
 
@@ -49,7 +50,7 @@ public final class MainActivity extends Activity {
 
     @Override public Object getSystemService(@NonNull String name) {
         if (Concrete.isService(name)) {
-            return activityConcreteWall;
+            return activityWall;
         }
         return super.getSystemService(name);
     }

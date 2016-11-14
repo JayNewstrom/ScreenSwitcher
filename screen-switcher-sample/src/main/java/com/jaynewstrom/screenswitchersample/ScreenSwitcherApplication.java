@@ -10,13 +10,17 @@ import com.squareup.leakcanary.RefWatcher;
 
 public final class ScreenSwitcherApplication extends Application {
 
-    private ConcreteWall foundation;
+    private ConcreteWall<ApplicationComponent> foundation;
     private RefWatcher refWatcher;
 
     @Override public void onCreate() {
         super.onCreate();
         refWatcher = LeakCanary.install(this);
-        foundation = Concrete.pourFoundation(new ApplicationModule(), BuildConfig.DEBUG);
+        foundation = Concrete.pourFoundation(applicationComponent());
+    }
+
+    private ApplicationComponent applicationComponent() {
+        return DaggerApplicationComponent.builder().applicationModule(new ApplicationModule(this)).build();
     }
 
     @Override public Object getSystemService(String name) {

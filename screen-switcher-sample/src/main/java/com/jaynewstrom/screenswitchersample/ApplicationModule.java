@@ -2,11 +2,12 @@ package com.jaynewstrom.screenswitchersample;
 
 import dagger.Module;
 
-@Module(
-        library = true
-)
+@Module
 final class ApplicationModule {
 
-    ApplicationModule() {
+    private final ScreenSwitcherApplication application;
+
+    ApplicationModule(ScreenSwitcherApplication application) {
+        this.application = application;
     }
 }

@@ -6,21 +6,28 @@ import android.view.View;
 
 import com.jaynewstrom.concrete.Concrete;
 import com.jaynewstrom.concrete.ConcreteBlock;
+import com.jaynewstrom.concrete.ConcreteWall;
 import com.jaynewstrom.screenswitcher.Screen;
+import com.jaynewstrom.screenswitchersample.MainActivityComponent;
 import com.jaynewstrom.screenswitchersample.ScreenSwitcherApplication;
 
-public abstract class ConcreteScreen implements Screen, ConcreteBlock {
+public abstract class ConcreteScreen<C> implements Screen {
+
+    private ConcreteWall<C> screenWall;
 
     @Override public final View createView(@NonNull Context context) {
-        Context childContext = Concrete.findWall(context).stack(this).createContext(context);
-        return createViewWithConcreteContext(childContext);
+        ConcreteWall<MainActivityComponent> activityWall = Concrete.findWall(context);
+        screenWall = activityWall.stack(block(activityWall.getComponent()));
+        return createView(screenWall.createContext(context), screenWall.getComponent());
     }
 
-    public abstract View createViewWithConcreteContext(@NonNull Context context);
+    protected abstract ConcreteBlock<C> block(@NonNull MainActivityComponent theParentComponent);
+
+    protected abstract View createView(@NonNull Context context, @NonNull C component);
 
     @Override public final void destroyScreen(@NonNull View viewToDestroy) {
         ScreenSwitcherApplication.watchObject(viewToDestroy.getContext(), this);
         ScreenSwitcherApplication.watchObject(viewToDestroy.getContext(), viewToDestroy);
-        Concrete.findWall(viewToDestroy.getContext()).destroy();
+        screenWall.destroy();
     }
 }
