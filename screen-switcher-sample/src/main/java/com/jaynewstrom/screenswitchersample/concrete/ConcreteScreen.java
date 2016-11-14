@@ -1,34 +1,33 @@
-package com.jaynewstrom.screenswitchersample.dagger2;
+package com.jaynewstrom.screenswitchersample.concrete;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.jaynewstrom.concrete.Concrete;
+import com.jaynewstrom.concrete.ConcreteBlock;
+import com.jaynewstrom.concrete.ConcreteWall;
 import com.jaynewstrom.screenswitcher.Screen;
 import com.jaynewstrom.screenswitchersample.MainActivityComponent;
 import com.jaynewstrom.screenswitchersample.ScreenSwitcherApplication;
 
-public abstract class Dagger2Screen<C> implements Screen {
+public abstract class ConcreteScreen<C> implements Screen {
 
-    private C component;
+    private ConcreteWall<C> screenWall;
 
     @Override public final View createView(@NonNull Context context) {
-        if (component == null) {
-            //noinspection WrongConstant
-            MainActivityComponent activityComponent = (MainActivityComponent) context.getSystemService(MainActivityComponent
-                    .SCOPE_NAME);
-            component = createComponent(activityComponent);
-        }
-        return createView(context, component);
+        ConcreteWall<MainActivityComponent> activityWall = Concrete.findWall(context);
+        screenWall = activityWall.stack(block(activityWall.getComponent()));
+        return createView(screenWall.createContext(context), screenWall.getComponent());
     }
 
-    protected abstract C createComponent(@NonNull MainActivityComponent theParentComponent);
+    protected abstract ConcreteBlock<C> block(@NonNull MainActivityComponent theParentComponent);
 
     protected abstract View createView(@NonNull Context context, @NonNull C component);
 
     @Override public final void destroyScreen(@NonNull View viewToDestroy) {
         ScreenSwitcherApplication.watchObject(viewToDestroy.getContext(), this);
         ScreenSwitcherApplication.watchObject(viewToDestroy.getContext(), viewToDestroy);
-        // TODO: remove the component from the parent component.
+        screenWall.destroy();
     }
 }

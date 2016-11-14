@@ -11,6 +11,4 @@ import dagger.Component;
         }
 )
 public interface ApplicationComponent {
-
-    String SCOPE_NAME = "ApplicationComponent";
 }

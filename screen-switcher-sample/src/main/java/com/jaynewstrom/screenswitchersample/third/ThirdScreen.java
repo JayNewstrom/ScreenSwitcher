@@ -4,15 +4,16 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.jaynewstrom.concrete.ConcreteBlock;
 import com.jaynewstrom.screenswitcher.ScreenTransition;
 import com.jaynewstrom.screenswitchersample.DefaultScreenTransition;
 import com.jaynewstrom.screenswitchersample.MainActivityComponent;
-import com.jaynewstrom.screenswitchersample.dagger2.Dagger2Screen;
+import com.jaynewstrom.screenswitchersample.concrete.ConcreteScreen;
 
-public final class ThirdScreen extends Dagger2Screen<ThirdComponent> {
+public final class ThirdScreen extends ConcreteScreen<ThirdComponent> {
 
-    @Override protected ThirdComponent createComponent(@NonNull MainActivityComponent theParentComponent) {
-        return DaggerThirdComponent.builder().mainActivityComponent(theParentComponent).build();
+    @Override protected ConcreteBlock<ThirdComponent> block(@NonNull MainActivityComponent theParentComponent) {
+        return new ThirdScreenBlock(theParentComponent);
     }
 
     @Override public View createView(@NonNull Context context, @NonNull ThirdComponent component) {

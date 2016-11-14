@@ -12,8 +12,6 @@ import dagger.Component;
         }
 )
 public interface MainActivityComponent {
-    String SCOPE_NAME = "MainActivityComponent";
-
     ScreenManager getScreenManager();
 
     void inject(MainActivity mainActivity);
