@@ -1,11 +1,11 @@
 ext {
     minSdkVersion = 15
-    targetSdkVersion = 24
-    compileSdkVersion = 24
-    buildToolsVersion = '24.0.2'
+    targetSdkVersion = 25
+    compileSdkVersion = 25
+    buildToolsVersion = '25'
     sourceCompatibilityVersion = JavaVersion.VERSION_1_7
     targetCompatibilityVersion = JavaVersion.VERSION_1_7
-    supportLibraryVersion = '25.0.0'
+    supportLibraryVersion = '25.0.1'
     daggerVersion = '2.7'
 }
 
