@@ -22,11 +22,11 @@ final class ScreenTestUtils {
     private ScreenTestUtils() {
     }
 
-    static ActivityScreenSwitcher initialActivityScreenSwitcher() {
+    static RealScreenSwitcher initialActivityScreenSwitcher() {
         return initialActivityScreenSwitcher(null, -1);
     }
 
-    static ActivityScreenSwitcher initialActivityScreenSwitcher(@Nullable Screen extraScreen, int extraScreenIndex) {
+    static RealScreenSwitcher initialActivityScreenSwitcher(@Nullable Screen extraScreen, int extraScreenIndex) {
         Activity activity = mock(Activity.class);
         Screen screen1 = mock(Screen.class);
         mockCreateView(activity, screen1);
@@ -37,7 +37,7 @@ final class ScreenTestUtils {
             mockCreateView(activity, extraScreen);
             screens.add(extraScreenIndex, extraScreen);
         }
-        return new ActivityScreenSwitcher(activity, new ScreenSwitcherState(screens));
+        return (RealScreenSwitcher) ScreenSwitcherFactory.activityScreenSwitcher(activity, new ScreenSwitcherState(screens));
     }
 
     static View mockCreateView(Context context, Screen screen) {
