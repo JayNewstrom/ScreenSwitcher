@@ -2,10 +2,10 @@ package com.jaynewstrom.screenswitcher;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import java.util.ArrayList;
@@ -19,19 +19,23 @@ import static com.jaynewstrom.screenswitcher.Preconditions.checkNotNull;
 import static com.jaynewstrom.screenswitcher.Preconditions.checkState;
 import static com.jaynewstrom.screenswitcher.Utils.checkScreen;
 
-final class ActivityScreenSwitcher implements ScreenSwitcher {
+final class RealScreenSwitcher implements ScreenSwitcher {
 
     private static final String TOO_MANY_SCREENS_ERROR_FORMAT = "%d screens exists, can't pop %d screens.";
 
     private boolean transitioning;
 
-    private final Activity activity;
+    private final Context context;
     private final ScreenSwitcherState state;
+    private final ScreenSwitcherHost host;
+    private final Activity activity;
     private final Map<Screen, View> screenViewMap;
 
-    ActivityScreenSwitcher(Activity activity, ScreenSwitcherState state) {
-        this.activity = activity;
+    RealScreenSwitcher(Context context, ScreenSwitcherState state, ScreenSwitcherHost host) {
+        this.context = context;
         this.state = state;
+        this.host = host;
+        this.activity = getActivity(context);
         this.screenViewMap = new LinkedHashMap<>();
         initializeActivityState();
     }
@@ -45,9 +49,9 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
     }
 
     private View createView(Screen screen) {
-        View view = screen.createView(activity);
+        View view = screen.createView(context);
         screenViewMap.put(screen, view);
-        activity.addContentView(view, new WindowManager.LayoutParams());
+        host.addView(view);
         return view;
     }
 
@@ -126,6 +130,16 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
         }
     }
 
+    private static Activity getActivity(Context context) {
+        if (context instanceof Activity) {
+            return (Activity) context;
+        }
+        if (context instanceof ContextWrapper) {
+            return getActivity(((ContextWrapper) context).getBaseContext());
+        }
+        throw new IllegalArgumentException("context is not an instance of Activity");
+    }
+
     private void ensureTransitionIsNotOccurring(String transitionType) {
         checkState(!transitioning, String.format("Can't %s while a transition is occurring", transitionType));
     }
@@ -157,13 +171,13 @@ final class ActivityScreenSwitcher implements ScreenSwitcher {
             }
             performPopTransition(screens.get(screens.size() - 1), screens.get(screens.size() - 2));
         } else {
-            View matchingView = Utils.createViewWithDrawMatching(activity.findViewById(android.R.id.content));
-            activity.addContentView(matchingView, new WindowManager.LayoutParams());
+            View matchingView = Utils.createViewWithDrawMatching(host.hostView());
+            host.addView(matchingView);
             List<Screen> screensToRemove = new ArrayList<>(screenViewMap.keySet());
             for (int i = 0, size = screensToRemove.size(); i < size; i++) {
                 removeScreen(screensToRemove.get(i));
             }
-            activity.finish();
+            host.onLastScreenPopped();
         }
     }
 

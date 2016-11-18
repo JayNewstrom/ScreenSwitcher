@@ -13,12 +13,12 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public final class ActivityScreenSwitcherTest {
+public final class ScreenSwitcherTest {
 
     @Test public void transitionIsNotCalledWhenCreatingScreenSwitcher() {
         Screen screen = mock(Screen.class);
         Activity activity = mock(Activity.class);
-        new ActivityScreenSwitcher(activity, new ScreenSwitcherState(Collections.singletonList(screen)));
+        ScreenSwitcherFactory.activityScreenSwitcher(activity, new ScreenSwitcherState(Collections.singletonList(screen)));
         verify(screen).createView(activity);
         verify(screen, never()).transition();
     }
@@ -31,7 +31,7 @@ public final class ActivityScreenSwitcherTest {
         Screen topScreen = mock(Screen.class);
         View topView = mock(View.class);
         when(topScreen.createView(activity)).thenReturn(topView);
-        new ActivityScreenSwitcher(activity, new ScreenSwitcherState(Arrays.asList(bottomScreen, topScreen)));
+        ScreenSwitcherFactory.activityScreenSwitcher(activity, new ScreenSwitcherState(Arrays.asList(bottomScreen, topScreen)));
         verify(bottomScreen).createView(activity);
         verify(topScreen).createView(activity);
         verify(bottomView).setVisibility(View.GONE);

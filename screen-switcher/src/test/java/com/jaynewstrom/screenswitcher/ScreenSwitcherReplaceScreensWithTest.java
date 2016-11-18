@@ -15,10 +15,10 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 
-public final class ActivityScreenSwitcherReplaceScreensWithTest {
+public final class ScreenSwitcherReplaceScreensWithTest {
 
     @Test public void failsWhenTransitionIsOccurring() {
-        ActivityScreenSwitcher activityScreenSwitcher = initialActivityScreenSwitcher();
+        RealScreenSwitcher activityScreenSwitcher = initialActivityScreenSwitcher();
         activityScreenSwitcher.setTransitioning(true);
         try {
             activityScreenSwitcher.replaceScreensWith(1, Collections.singletonList(mock(Screen.class)));
@@ -29,7 +29,7 @@ public final class ActivityScreenSwitcherReplaceScreensWithTest {
     }
 
     @Test public void failsWhenNumberToPopIsLessThanOne() {
-        ActivityScreenSwitcher activityScreenSwitcher = initialActivityScreenSwitcher();
+        RealScreenSwitcher activityScreenSwitcher = initialActivityScreenSwitcher();
         try {
             //noinspection Range
             activityScreenSwitcher.replaceScreensWith(0, Collections.singletonList(mock(Screen.class)));
@@ -40,7 +40,7 @@ public final class ActivityScreenSwitcherReplaceScreensWithTest {
     }
 
     @Test public void failsWhenPoppingMoreThanTheNumberOfScreens() {
-        ActivityScreenSwitcher activityScreenSwitcher = initialActivityScreenSwitcher();
+        RealScreenSwitcher activityScreenSwitcher = initialActivityScreenSwitcher();
         try {
             activityScreenSwitcher.replaceScreensWith(3, Collections.singletonList(mock(Screen.class)));
             fail();
@@ -50,7 +50,7 @@ public final class ActivityScreenSwitcherReplaceScreensWithTest {
     }
 
     @Test public void failsWhenScreensIsNull() {
-        ActivityScreenSwitcher activityScreenSwitcher = initialActivityScreenSwitcher();
+        RealScreenSwitcher activityScreenSwitcher = initialActivityScreenSwitcher();
         try {
             //noinspection ConstantConditions
             activityScreenSwitcher.replaceScreensWith(1, null);
@@ -61,7 +61,7 @@ public final class ActivityScreenSwitcherReplaceScreensWithTest {
     }
 
     @Test public void failsWhenScreensIsEmpty() {
-        ActivityScreenSwitcher activityScreenSwitcher = initialActivityScreenSwitcher();
+        RealScreenSwitcher activityScreenSwitcher = initialActivityScreenSwitcher();
         try {
             activityScreenSwitcher.replaceScreensWith(1, Collections.<Screen>emptyList());
             fail();
@@ -71,7 +71,7 @@ public final class ActivityScreenSwitcherReplaceScreensWithTest {
     }
 
     @Test public void failsWhenAScreenPassedInIsNull() {
-        ActivityScreenSwitcher activityScreenSwitcher = initialActivityScreenSwitcher();
+        RealScreenSwitcher activityScreenSwitcher = initialActivityScreenSwitcher();
         try {
             activityScreenSwitcher.replaceScreensWith(1, Collections.<Screen>singletonList(null));
             fail();
@@ -87,7 +87,7 @@ public final class ActivityScreenSwitcherReplaceScreensWithTest {
         Screen screen2 = mock(Screen.class);
         mockCreateView(activity, screen2);
         ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2));
-        ActivityScreenSwitcher activityScreenSwitcher = new ActivityScreenSwitcher(activity, state);
+        ScreenSwitcher activityScreenSwitcher = ScreenSwitcherFactory.activityScreenSwitcher(activity, state);
         assertThat(activityScreenSwitcher.isTransitioning()).isFalse();
         Screen newScreen = mock(Screen.class);
         mockCreateView(activity, newScreen);
