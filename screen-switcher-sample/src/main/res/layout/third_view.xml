@@ -31,4 +31,11 @@
         android:layout_height="wrap_content"
         android:text="@string/pop_to_second_screen"
         />
+
+    <Button
+        android:id="@+id/btn_show_third_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/show_third_dialog"
+        />
 </merge>

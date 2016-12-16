@@ -10,8 +10,10 @@ import android.widget.LinearLayout;
 import com.jaynewstrom.screenswitchersample.R;
 import com.jaynewstrom.screenswitchersample.ScreenManager;
 import com.jaynewstrom.screenswitchersample.third.ThirdScreen;
+import com.jnewstrom.screenswitcher.dialoghub.DialogHub;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,6 +23,8 @@ final class SecondView extends LinearLayout {
 
     @Inject ScreenManager screenManager;
     @Inject SecondScreenPresenter presenter;
+    @Inject DialogHub dialogHub;
+    @Inject Provider<SecondScreenDialogFactory> dialogFactoryProvider;
 
     @BindView(R.id.btn_confirm_pop) View confirmPopButton;
 
@@ -55,6 +59,10 @@ final class SecondView extends LinearLayout {
     @OnClick(R.id.btn_confirm_pop) void onPopConfirmed() {
         presenter.popConfirmed();
         screenManager.pop();
+    }
+
+    @OnClick(R.id.btn_show_second_dialog) void onShowSecondDialogPressed() {
+        dialogHub.show(dialogFactoryProvider.get());
     }
 
     @Override public Parcelable onSaveInstanceState() {

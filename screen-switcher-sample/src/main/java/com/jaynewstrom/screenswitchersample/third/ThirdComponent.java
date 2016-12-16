@@ -15,4 +15,6 @@ import dagger.Component;
 )
 interface ThirdComponent {
     void inject(ThirdView view);
+
+    void inject(ThirdScreenDialog thirdScreenDialog);
 }

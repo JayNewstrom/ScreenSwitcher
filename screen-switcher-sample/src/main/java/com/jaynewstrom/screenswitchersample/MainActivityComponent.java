@@ -1,5 +1,7 @@
 package com.jaynewstrom.screenswitchersample;
 
+import com.jnewstrom.screenswitcher.dialoghub.DialogHub;
+
 import dagger.Component;
 
 @ForMainActivity
@@ -13,6 +15,8 @@ import dagger.Component;
 )
 public interface MainActivityComponent {
     ScreenManager getScreenManager();
+
+    DialogHub getDialogHub();
 
     void inject(MainActivity mainActivity);
 }
