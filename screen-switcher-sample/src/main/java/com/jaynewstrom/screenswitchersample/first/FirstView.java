@@ -7,8 +7,10 @@ import android.widget.LinearLayout;
 import com.jaynewstrom.screenswitchersample.R;
 import com.jaynewstrom.screenswitchersample.ScreenManager;
 import com.jaynewstrom.screenswitchersample.second.SecondScreen;
+import com.jnewstrom.screenswitcher.dialoghub.DialogHub;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -16,6 +18,8 @@ import butterknife.OnClick;
 final class FirstView extends LinearLayout {
 
     @Inject ScreenManager screenManager;
+    @Inject DialogHub dialogHub;
+    @Inject Provider<FirstDialogFactory> dialogFactoryProvider;
 
     FirstView(Context context, FirstComponent component) {
         super(context);
@@ -32,5 +36,9 @@ final class FirstView extends LinearLayout {
 
     @OnClick(R.id.btn_replace_with_second) void onReplaceWithSecondScreenButtonClicked() {
         screenManager.replaceScreenWith(new SecondScreen());
+    }
+
+    @OnClick(R.id.btn_show_first_dialog) void onShowFirstDialogClicked() {
+        dialogHub.show(dialogFactoryProvider.get());
     }
 }

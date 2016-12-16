@@ -2,6 +2,7 @@ package com.jnewstrom.screenswitcher.dialoghub;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.os.Bundle;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -26,8 +27,15 @@ public final class DialogHub {
     }
 
     public void show(DialogFactory dialogFactory) {
+        show(dialogFactory, null);
+    }
+
+    private void show(DialogFactory dialogFactory, Bundle savedState) {
         if (activity != null) {
             Dialog dialog = dialogFactory.createDialog(activity);
+            if (savedState != null) {
+                dialog.onRestoreInstanceState(savedState);
+            }
             dialog.show();
             dialogInformationList.add(new DialogInformation(dialog, dialogFactory));
         } else {
@@ -36,11 +44,11 @@ public final class DialogHub {
     }
 
     public Object saveState() {
-        List<DialogFactory> items = new ArrayList<>();
+        List<SavedDialogFactory> items = new ArrayList<>();
         for (DialogInformation information : dialogInformationList) {
             Dialog dialog = information.dialogWeakReference.get();
             if (dialog != null && dialog.isShowing()) {
-                items.add(information.dialogFactory);
+                items.add(new SavedDialogFactory(information.dialogFactory, dialog.onSaveInstanceState()));
                 dialog.dismiss();
             }
         }
@@ -53,8 +61,8 @@ public final class DialogHub {
         }
         dialogInformationList = new ArrayList<>();
         //noinspection unchecked
-        for (DialogFactory dialogFactory : (List<DialogFactory>) objectState) {
-            show(dialogFactory);
+        for (SavedDialogFactory savedDialogFactory : (List<SavedDialogFactory>) objectState) {
+            show(savedDialogFactory.dialogFactory, savedDialogFactory.savedState);
         }
     }
 
@@ -65,6 +73,16 @@ public final class DialogHub {
         DialogInformation(Dialog dialog, DialogFactory factory) {
             this.dialogWeakReference = new WeakReference<>(dialog);
             this.dialogFactory = factory;
+        }
+    }
+
+    private static final class SavedDialogFactory {
+        final DialogFactory dialogFactory;
+        final Bundle savedState;
+
+        SavedDialogFactory(DialogFactory dialogFactory, Bundle savedState) {
+            this.dialogFactory = dialogFactory;
+            this.savedState = savedState;
         }
     }
 }
