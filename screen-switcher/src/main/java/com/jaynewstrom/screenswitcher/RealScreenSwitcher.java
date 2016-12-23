@@ -74,8 +74,6 @@ final class RealScreenSwitcher implements ScreenSwitcher {
         ensureTransitionIsNotOccurring("pop");
         checkNumberToPop(numberToPop);
 
-        hideKeyboard();
-
         if (!popListenerConsumedPop(numberToPop)) {
             performPop(numberToPop);
         }
@@ -166,6 +164,7 @@ final class RealScreenSwitcher implements ScreenSwitcher {
     private void performPop(int numberToPop) {
         List<Screen> screens = state.getScreens();
         if (screens.size() > numberToPop) {
+            hideKeyboard();
             for (int i = 1; i < numberToPop; i++) {
                 removeScreen(screens.get(screens.size() - i - 1));
             }
