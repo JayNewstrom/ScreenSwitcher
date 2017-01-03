@@ -1,11 +1,15 @@
 package com.jaynewstrom.screenswitchersample;
 
+import android.animation.ValueAnimator;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.lang.reflect.Method;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
@@ -19,7 +23,16 @@ public final class MainActivityTest {
 
     @Rule public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class);
 
-    // Animations need to be turned of in order for these to pass.
+    // Animations need to be turned off in order for these to pass.
+    @Before public void setup() {
+        try {
+            Method method = ValueAnimator.class.getDeclaredMethod("setDurationScale", float.class);
+            method.invoke(null, (float) 0);
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to apply animation speed.", e);
+        }
+    }
+
     @Test public void testAllTheThings() {
         onView(withId(R.id.btn_second)).perform(click());
         pressBack();
