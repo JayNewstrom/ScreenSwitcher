@@ -10,6 +10,7 @@ import java.util.List;
 
 public final class DialogHub {
     private List<DialogInformation> dialogInformationList;
+    private List<SavedDialogFactory> savedDialogFactories;
     private Activity activity;
 
     public DialogHub() {
@@ -43,7 +44,7 @@ public final class DialogHub {
         }
     }
 
-    public Object saveState() {
+    public void saveState() {
         List<SavedDialogFactory> items = new ArrayList<>();
         for (DialogInformation information : dialogInformationList) {
             Dialog dialog = information.dialogWeakReference.get();
@@ -52,18 +53,19 @@ public final class DialogHub {
                 dialog.dismiss();
             }
         }
-        return items;
+        dialogInformationList = new ArrayList<>();
+        savedDialogFactories = items;
     }
 
-    public void restoreState(Object objectState) {
-        if (objectState == null) {
+    public void restoreState() {
+        if (savedDialogFactories == null) {
             return;
         }
         dialogInformationList = new ArrayList<>();
-        //noinspection unchecked
-        for (SavedDialogFactory savedDialogFactory : (List<SavedDialogFactory>) objectState) {
+        for (SavedDialogFactory savedDialogFactory : savedDialogFactories) {
             show(savedDialogFactory.dialogFactory, savedDialogFactory.savedState);
         }
+        savedDialogFactories = null;
     }
 
     private static final class DialogInformation {

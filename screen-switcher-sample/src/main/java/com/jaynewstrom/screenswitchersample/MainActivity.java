@@ -31,7 +31,7 @@ public final class MainActivity extends Activity {
         activityScreenSwitcher = ScreenSwitcherFactory.activityScreenSwitcher(this, screenSwitcherState);
         screenManager.take(activityScreenSwitcher);
         dialogHub.attachActivity(this);
-        dialogHub.restoreState(getLastNonConfigurationInstance());
+        dialogHub.restoreState();
     }
 
     @Override protected void onDestroy() {
@@ -40,6 +40,8 @@ public final class MainActivity extends Activity {
         dialogHub.dropActivity(this);
         if (isFinishing()) {
             activityWall.destroy();
+        } else {
+            dialogHub.saveState();
         }
     }
 
@@ -58,9 +60,5 @@ public final class MainActivity extends Activity {
             return activityWall;
         }
         return super.getSystemService(name);
-    }
-
-    @Override public Object onRetainNonConfigurationInstance() {
-        return dialogHub.saveState();
     }
 }
