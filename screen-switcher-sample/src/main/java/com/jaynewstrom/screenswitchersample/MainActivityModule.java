@@ -3,6 +3,7 @@ package com.jaynewstrom.screenswitchersample;
 import com.jaynewstrom.screenswitcher.Screen;
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState;
 import com.jaynewstrom.screenswitchersample.first.FirstScreen;
+import com.jnewstrom.screenswitcher.dialoghub.DialogHub;
 
 import java.util.Collections;
 
@@ -19,5 +20,9 @@ public final class MainActivityModule {
 
     @Provides @ForMainActivity ScreenSwitcherState provideScreenSwitcherState() {
         return new ScreenSwitcherState(Collections.<Screen>singletonList(new FirstScreen()));
+    }
+
+    @Provides @ForMainActivity DialogHub provideDialogHub() {
+        return new DialogHub();
     }
 }

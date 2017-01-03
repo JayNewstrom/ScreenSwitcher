@@ -35,6 +35,7 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
 
     compile project(':screen-switcher')
+    compile project(':dialog-hub')
 
     androidTestCompile deps.androidTestRunner
     androidTestCompile deps.androidTestRules
