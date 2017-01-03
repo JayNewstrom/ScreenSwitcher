@@ -34,7 +34,7 @@ public final class MainActivity extends Activity {
     @Override public void onBackPressed() {
         // Only one transition can be executed at a time, swallow the back button if a transition
         // is already in progress.
-        if (!screenSwitcher.isTransitioning()) {
+        if (!screenSwitcher.isTransitioning() && !isFinishing()) {
             screenManager.pop();
         }
     }

@@ -43,7 +43,7 @@ public final class MainActivity extends Activity {
     }
 
     @Override public void onBackPressed() {
-        if (!activityScreenSwitcher.isTransitioning()) {
+        if (!activityScreenSwitcher.isTransitioning() && !isFinishing()) {
             screenManager.pop();
         }
     }
