@@ -46,7 +46,7 @@ public final class ScreenSwitcherPushTest {
         Screen screen = mock(Screen.class);
         Activity activity = mock(Activity.class);
         ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(screen));
-        ScreenSwitcher activityScreenSwitcher = ScreenSwitcherFactory.activityScreenSwitcher(activity, state);
+        ScreenSwitcher activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state);
         state.getScreens().remove(0);
         try {
             activityScreenSwitcher.push(mock(Screen.class));
@@ -61,7 +61,7 @@ public final class ScreenSwitcherPushTest {
         Screen initialScreen = mock(Screen.class);
         View initialView = mockCreateView(activity, initialScreen);
         ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(initialScreen));
-        ScreenSwitcher activityScreenSwitcher = ScreenSwitcherFactory.activityScreenSwitcher(activity, state);
+        ScreenSwitcher activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state);
         Screen secondScreen = mock(Screen.class);
         AtomicReference<Runnable> transitionCompletedRunnable = addTransitionIn(secondScreen);
         activityScreenSwitcher.push(secondScreen);
@@ -76,7 +76,7 @@ public final class ScreenSwitcherPushTest {
         Screen screen = mock(Screen.class);
         mockCreateView(activity, screen);
         ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(screen));
-        ScreenSwitcher activityScreenSwitcher = ScreenSwitcherFactory.activityScreenSwitcher(activity, state);
+        ScreenSwitcher activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state);
         Screen pushedScreen = mock(Screen.class);
         AtomicReference<Runnable> transitionCompletedRunnable = addTransitionIn(pushedScreen);
         activityScreenSwitcher.push(pushedScreen);
@@ -92,7 +92,7 @@ public final class ScreenSwitcherPushTest {
         Screen screen2 = mock(Screen.class);
         mockCreateView(activity, screen2);
         ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2));
-        ScreenSwitcher activityScreenSwitcher = ScreenSwitcherFactory.activityScreenSwitcher(activity, state);
+        ScreenSwitcher activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state);
         assertThat(activityScreenSwitcher.isTransitioning()).isFalse();
         Screen newScreen = mock(Screen.class);
         mockCreateView(activity, newScreen);

@@ -38,6 +38,7 @@ final class RealScreenSwitcher implements ScreenSwitcher {
         this.activity = getActivity(context);
         this.screenViewMap = new LinkedHashMap<>();
         initializeActivityState();
+        setupHostViewForHidingKeyboard();
     }
 
     private void initializeActivityState() {
@@ -53,6 +54,11 @@ final class RealScreenSwitcher implements ScreenSwitcher {
         screenViewMap.put(screen, view);
         host.addView(view);
         return view;
+    }
+
+    private void setupHostViewForHidingKeyboard() {
+        host.hostView().setFocusable(true);
+        host.hostView().setFocusableInTouchMode(true);
     }
 
     @Override public void push(@NonNull Screen screen) {
@@ -126,7 +132,7 @@ final class RealScreenSwitcher implements ScreenSwitcher {
         if (currentFocus != null) {
             InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
-            currentFocus.clearFocus();
+            host.hostView().requestFocus();
         }
     }
 

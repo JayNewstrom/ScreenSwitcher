@@ -64,7 +64,7 @@ public final class ScreenSwitcherPopTest {
         ScreenPopListener popListener = mock(ScreenPopListener.class);
         when(popListener.onScreenPop(screen2)).thenReturn(true);
         state.registerPopListener(screen2, popListener);
-        ScreenSwitcher activityScreenSwitcher = ScreenSwitcherFactory.activityScreenSwitcher(activity, state);
+        ScreenSwitcher activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state);
         activityScreenSwitcher.pop(1);
         verify(popListener).onScreenPop(screen2);
         assertThat(state.getScreens().size()).isEqualTo(2);
@@ -81,7 +81,7 @@ public final class ScreenSwitcherPopTest {
         ScreenPopListener popListener = mock(ScreenPopListener.class);
         when(popListener.onScreenPop(screen1)).thenReturn(true);
         state.registerPopListener(screen1, popListener);
-        ScreenSwitcher activityScreenSwitcher = ScreenSwitcherFactory.activityScreenSwitcher(activity, state);
+        ScreenSwitcher activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state);
         activityScreenSwitcher.pop(2);
         transitionCompletedRunnable.get().run();
         verify(popListener).onScreenPop(screen1);
@@ -98,7 +98,7 @@ public final class ScreenSwitcherPopTest {
         mockCreateView(activity, screen3);
         AtomicReference<Runnable> transitionCompletedRunnable = addTransitionOut(screen3);
         ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2, screen3));
-        ScreenSwitcher activityScreenSwitcher = ScreenSwitcherFactory.activityScreenSwitcher(activity, state);
+        ScreenSwitcher activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state);
         activityScreenSwitcher.pop(2);
         assertThat(state.getScreens().size()).isEqualTo(1);
         transitionCompletedRunnable.get().run();
@@ -113,7 +113,7 @@ public final class ScreenSwitcherPopTest {
         mockCreateView(activity, screen2);
         AtomicReference<Runnable> transitionCompletedRunnable = addTransitionOut(screen2);
         ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2));
-        ScreenSwitcher activityScreenSwitcher = ScreenSwitcherFactory.activityScreenSwitcher(activity, state);
+        ScreenSwitcher activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state);
         activityScreenSwitcher.pop(1);
         transitionCompletedRunnable.get().run();
         verify(screen1, never()).destroyScreen(any(View.class));
@@ -128,7 +128,7 @@ public final class ScreenSwitcherPopTest {
         View view2 = mockCreateView(activity, screen2);
         AtomicReference<Runnable> transitionCompletedRunnable = addTransitionOut(screen2);
         ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2));
-        ScreenSwitcher activityScreenSwitcher = ScreenSwitcherFactory.activityScreenSwitcher(activity, state);
+        ScreenSwitcher activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state);
         activityScreenSwitcher.pop(1);
         verify((ViewGroup) view2.getParent(), never()).removeView(view2);
         transitionCompletedRunnable.get().run();
@@ -143,7 +143,7 @@ public final class ScreenSwitcherPopTest {
         mockCreateView(activity, screen2);
         AtomicReference<Runnable> transitionCompletedRunnable = addTransitionOut(screen2);
         ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2));
-        ScreenSwitcher activityScreenSwitcher = ScreenSwitcherFactory.activityScreenSwitcher(activity, state);
+        ScreenSwitcher activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state);
         verify(view1, never()).setVisibility(View.VISIBLE);
         activityScreenSwitcher.pop(1);
         verify(view1).setVisibility(View.VISIBLE);
@@ -158,7 +158,7 @@ public final class ScreenSwitcherPopTest {
         mockCreateView(activity, screen2);
         AtomicReference<Runnable> transitionCompletedRunnable = addTransitionOut(screen2);
         ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2));
-        ScreenSwitcher activityScreenSwitcher = ScreenSwitcherFactory.activityScreenSwitcher(activity, state);
+        ScreenSwitcher activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state);
         assertThat(activityScreenSwitcher.isTransitioning()).isFalse();
         activityScreenSwitcher.pop(1);
         assertThat(activityScreenSwitcher.isTransitioning()).isTrue();
