@@ -1,7 +1,6 @@
 package com.jaynewstrom.screenswitchersample.first;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.jaynewstrom.concrete.ConcreteBlock;
@@ -16,11 +15,11 @@ public final class FirstScreen extends ConcreteScreen<FirstComponent> {
         return DefaultScreenTransition.INSTANCE;
     }
 
-    @Override protected ConcreteBlock<FirstComponent> block(@NonNull MainActivityComponent theParentComponent) {
+    @Override protected ConcreteBlock<FirstComponent> block(MainActivityComponent theParentComponent) {
         return new FirstScreenBlock(theParentComponent);
     }
 
-    @Override public View createView(@NonNull Context context, @NonNull FirstComponent component) {
+    @Override public View createView(Context context, FirstComponent component) {
         return new FirstView(context, component);
     }
 }

@@ -3,7 +3,6 @@ package com.jaynewstrom.screenswitcher;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -61,7 +60,7 @@ final class RealScreenSwitcher implements ScreenSwitcher {
         host.hostView().setFocusableInTouchMode(true);
     }
 
-    @Override public void push(@NonNull Screen screen) {
+    @Override public void push(Screen screen) {
         ensureTransitionIsNotOccurring("push");
         List<Screen> screens = state.getScreens();
         checkState(!screens.isEmpty(), "no screens to transition from");
@@ -87,7 +86,7 @@ final class RealScreenSwitcher implements ScreenSwitcher {
         }
     }
 
-    @Override public void replaceScreensWith(int numberToPop, @NonNull List<Screen> screens) {
+    @Override public void replaceScreensWith(int numberToPop, List<Screen> screens) {
         ensureTransitionIsNotOccurring("replaceScreensWith");
         checkNumberToPop(numberToPop);
         checkNotNull(screens, "screens == null");

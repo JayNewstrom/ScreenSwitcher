@@ -1,7 +1,6 @@
 package com.jaynewstrom.screenswitcher;
 
 import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
 
 import java.util.List;
 
@@ -14,7 +13,7 @@ public interface ScreenSwitcher {
     /**
      * Add the given {@link Screen}.
      */
-    void push(@NonNull Screen screen);
+    void push(Screen screen);
 
     /**
      * Will try to pop the top {@code numberToPop} {@link Screen}s.
@@ -29,7 +28,7 @@ public interface ScreenSwitcher {
      * If there is a {@link ScreenPopListener} that overrides one of the {@link Screen}s being popped, it will pop up until that point
      * without pushing the {@code screens}.
      */
-    void replaceScreensWith(@IntRange(from = 1) int numberToPop, @NonNull List<Screen> screens);
+    void replaceScreensWith(@IntRange(from = 1) int numberToPop, List<Screen> screens);
 
     /**
      * @return true if there is a transition being executed.

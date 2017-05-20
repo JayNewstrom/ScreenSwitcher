@@ -1,7 +1,5 @@
 package com.jaynewstrom.screenswitchersample.second;
 
-import android.support.annotation.NonNull;
-
 import com.jaynewstrom.screenswitcher.Screen;
 import com.jaynewstrom.screenswitcher.ScreenPopListener;
 import com.jaynewstrom.screenswitchersample.ScreenManager;
@@ -33,7 +31,7 @@ final class SecondScreenPresenter implements ScreenPopListener {
         hasConfirmedPop = true;
     }
 
-    @Override public boolean onScreenPop(@NonNull Screen screen) {
+    @Override public boolean onScreenPop(Screen screen) {
         if (!hasConfirmedPop && view != null) {
             view.showConfirmPop();
             return true;

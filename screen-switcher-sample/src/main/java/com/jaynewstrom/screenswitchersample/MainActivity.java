@@ -2,7 +2,6 @@ package com.jaynewstrom.screenswitchersample;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.MotionEvent;
 
 import com.jaynewstrom.concrete.Concrete;
@@ -55,7 +54,7 @@ public final class MainActivity extends Activity {
         }
     }
 
-    @Override public Object getSystemService(@NonNull String name) {
+    @Override public Object getSystemService(String name) {
         if (Concrete.isService(name)) {
             return activityWall;
         }
