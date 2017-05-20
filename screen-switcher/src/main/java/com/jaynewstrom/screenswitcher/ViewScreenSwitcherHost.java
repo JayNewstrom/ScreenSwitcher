@@ -5,15 +5,15 @@ import android.view.ViewGroup;
 
 final class ViewScreenSwitcherHost implements ScreenSwitcherHost {
     private final ViewGroup viewGroup;
-    private final ViewScreenSwitcherHandler handler;
+    private final ScreenSwitcherPopHandler popHandler;
 
-    ViewScreenSwitcherHost(ViewGroup viewGroup, ViewScreenSwitcherHandler handler) {
+    ViewScreenSwitcherHost(ViewGroup viewGroup, ScreenSwitcherPopHandler popHandler) {
         this.viewGroup = viewGroup;
-        this.handler = handler;
+        this.popHandler = popHandler;
     }
 
-    @Override public void onLastScreenPopped() {
-        handler.onLastScreenPopped();
+    @Override public void onLastScreenPopped(ScreenSwitcherPopHandler.PopCompleteHandler popCompleteHandler) {
+        popHandler.onLastScreenPopped(popCompleteHandler);
     }
 
     @Override public void addView(View view) {

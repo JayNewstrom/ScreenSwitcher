@@ -26,7 +26,8 @@ public abstract class ConcreteScreen<C> implements Screen {
 
     @Override public final void destroyScreen(View viewToDestroy) {
         ScreenSwitcherApplication.watchObject(viewToDestroy.getContext(), this);
-        ScreenSwitcherApplication.watchObject(viewToDestroy.getContext(), viewToDestroy);
+        ScreenSwitcherApplication.watchObject(viewToDestroy.getContext(), viewToDestroy.getContext());
+        ScreenSwitcherApplication.watchObject(viewToDestroy.getContext(), screenWall.getComponent());
         screenWall.destroy();
     }
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.jaynewstrom.screenswitcher.ScreenTestUtils.addTransitionOut;
@@ -164,5 +165,35 @@ public final class ScreenSwitcherPopTest {
         assertThat(activityScreenSwitcher.isTransitioning()).isTrue();
         transitionCompletedRunnable.get().run();
         assertThat(activityScreenSwitcher.isTransitioning()).isFalse();
+    }
+
+    @Test public void poppingLastScreenCallsPopHandler() {
+        Activity activity = mock(Activity.class);
+        Screen screen1 = mock(Screen.class);
+        mockCreateView(activity, screen1);
+        ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(screen1));
+        ScreenSwitcherPopHandler popHandler = mock(ScreenSwitcherPopHandler.class);
+        ScreenSwitcher activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state, popHandler);
+        activityScreenSwitcher.pop(1);
+        verify(popHandler).onLastScreenPopped(any(ScreenSwitcherPopHandler.PopCompleteHandler.class));
+        assertThat(state.screenCount()).isEqualTo(1);
+        assertThat(activityScreenSwitcher.isTransitioning()).isTrue();
+    }
+
+    @Test public void poppingLastScreenAndCallingPopHandlerDestroysScreen() {
+        Activity activity = mock(Activity.class);
+        Screen screen1 = mock(Screen.class);
+        mockCreateView(activity, screen1);
+        ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(screen1));
+        ScreenSwitcherPopHandler popHandler = new ScreenSwitcherPopHandler() {
+            @Override public void onLastScreenPopped(PopCompleteHandler popCompleteHandler) {
+                popCompleteHandler.popComplete();
+            }
+        };
+        ScreenSwitcher activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state, popHandler);
+        activityScreenSwitcher.pop(1);
+        assertThat(state.screenCount()).isEqualTo(0);
+        assertThat(activityScreenSwitcher.isTransitioning()).isTrue();
+        verify(screen1).destroyScreen(any(View.class));
     }
 }
