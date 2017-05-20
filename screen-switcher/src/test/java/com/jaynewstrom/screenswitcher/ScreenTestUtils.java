@@ -2,7 +2,6 @@ package com.jaynewstrom.screenswitcher;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,15 +51,11 @@ final class ScreenTestUtils {
     static AtomicReference<Runnable> addTransitionOut(Screen screen) {
         final AtomicReference<Runnable> transitionCompletedRunnable = new AtomicReference<>();
         ScreenTransition secondScreenTransition = new ScreenTransition() {
-            @Override
-            public void transitionIn(@NonNull View foregroundView, @NonNull View backgroundView,
-                    @NonNull Runnable onTransitionCompleted) {
+            @Override public void transitionIn(View foregroundView, View backgroundView, Runnable onTransitionCompleted) {
                 fail();
             }
 
-            @Override
-            public void transitionOut(@NonNull View foregroundView, @NonNull View backgroundView,
-                    @NonNull Runnable onTransitionCompleted) {
+            @Override public void transitionOut(View foregroundView, View backgroundView, Runnable onTransitionCompleted) {
                 transitionCompletedRunnable.getAndSet(onTransitionCompleted);
             }
         };
@@ -71,15 +66,11 @@ final class ScreenTestUtils {
     static AtomicReference<Runnable> addTransitionIn(Screen screenToTransition) {
         final AtomicReference<Runnable> transitionCompletedRunnable = new AtomicReference<>();
         ScreenTransition secondScreenTransition = new ScreenTransition() {
-            @Override
-            public void transitionIn(@NonNull View foregroundView, @NonNull View backgroundView,
-                    @NonNull Runnable onTransitionCompleted) {
+            @Override public void transitionIn(View foregroundView, View backgroundView, Runnable onTransitionCompleted) {
                 transitionCompletedRunnable.getAndSet(onTransitionCompleted);
             }
 
-            @Override
-            public void transitionOut(@NonNull View foregroundView, @NonNull View backgroundView,
-                    @NonNull Runnable onTransitionCompleted) {
+            @Override public void transitionOut(View foregroundView, View backgroundView, Runnable onTransitionCompleted) {
                 fail();
             }
         };

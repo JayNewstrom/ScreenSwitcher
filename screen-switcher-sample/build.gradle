@@ -37,6 +37,8 @@ dependencies {
     compile project(':screen-switcher')
     compile project(':dialog-hub')
 
+    provided deps.jsr305
+
     androidTestCompile deps.androidTestRunner
     androidTestCompile deps.androidTestRules
     androidTestCompile deps.espressoCore

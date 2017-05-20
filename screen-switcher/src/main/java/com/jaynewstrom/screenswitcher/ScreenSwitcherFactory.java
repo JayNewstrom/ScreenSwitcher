@@ -1,7 +1,6 @@
 package com.jaynewstrom.screenswitcher;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -17,7 +16,7 @@ public final class ScreenSwitcherFactory {
     /**
      * Creates a {@link ScreenSwitcher} that uses {@link Activity#addContentView(View, LayoutParams)} to display a {@link Screen}.
      */
-    public static ScreenSwitcher activityScreenSwitcher(@NonNull Activity activity, @NonNull ScreenSwitcherState state) {
+    public static ScreenSwitcher activityScreenSwitcher(Activity activity, ScreenSwitcherState state) {
         checkNotNull(activity, "activity == null");
         validateState(state);
         return new RealScreenSwitcher(activity, state, new ActivityScreenSwitcherHost(activity));
@@ -26,8 +25,8 @@ public final class ScreenSwitcherFactory {
     /**
      * Creates a {@link ScreenSwitcher} that uses {@link ViewGroup#addView(View)} to display a {@link Screen}.
      */
-    public static ScreenSwitcher viewScreenSwitcher(@NonNull ViewGroup viewGroup, @NonNull ScreenSwitcherState state,
-            @NonNull ViewScreenSwitcherHandler handler) {
+    public static ScreenSwitcher viewScreenSwitcher(ViewGroup viewGroup, ScreenSwitcherState state,
+            ViewScreenSwitcherHandler handler) {
         checkNotNull(viewGroup, "viewGroup == null");
         checkNotNull(handler, "handler == null");
         validateState(state);

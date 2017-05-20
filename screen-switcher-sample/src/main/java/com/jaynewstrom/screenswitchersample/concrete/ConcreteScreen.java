@@ -1,7 +1,6 @@
 package com.jaynewstrom.screenswitchersample.concrete;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.jaynewstrom.concrete.Concrete;
@@ -15,17 +14,17 @@ public abstract class ConcreteScreen<C> implements Screen {
 
     private ConcreteWall<C> screenWall;
 
-    @Override public final View createView(@NonNull Context context) {
+    @Override public final View createView(Context context) {
         ConcreteWall<MainActivityComponent> activityWall = Concrete.findWall(context);
         screenWall = activityWall.stack(block(activityWall.getComponent()));
         return createView(screenWall.createContext(context), screenWall.getComponent());
     }
 
-    protected abstract ConcreteBlock<C> block(@NonNull MainActivityComponent theParentComponent);
+    protected abstract ConcreteBlock<C> block(MainActivityComponent theParentComponent);
 
-    protected abstract View createView(@NonNull Context context, @NonNull C component);
+    protected abstract View createView(Context context, C component);
 
-    @Override public final void destroyScreen(@NonNull View viewToDestroy) {
+    @Override public final void destroyScreen(View viewToDestroy) {
         ScreenSwitcherApplication.watchObject(viewToDestroy.getContext(), this);
         ScreenSwitcherApplication.watchObject(viewToDestroy.getContext(), viewToDestroy);
         screenWall.destroy();

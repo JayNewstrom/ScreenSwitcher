@@ -15,6 +15,7 @@ ext.deps = [
         dagger: "com.google.dagger:dagger:$daggerVersion",
         daggerCompiler: "com.google.dagger:dagger-compiler:$daggerVersion",
         concrete: 'com.jaynewstrom:concrete:0.10.0',
+        jsr305: 'com.google.code.findbugs:jsr305:3.0.2',
 
         junit: 'junit:junit:4.12',
         fest: 'org.easytesting:fest-assert-core:2.0M10',

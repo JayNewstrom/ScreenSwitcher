@@ -1,0 +1,4 @@
+@ParametersAreNonnullByDefault
+package com.jaynewstrom.screenswitchersample.first;
+
+import javax.annotation.ParametersAreNonnullByDefault;

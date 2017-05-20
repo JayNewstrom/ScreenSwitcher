@@ -1,7 +1,6 @@
 package com.jaynewstrom.screenswitcher;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.view.View;
 
 /**
@@ -15,13 +14,13 @@ public interface Screen {
      * Creates the view associated with the {@link Screen}.
      * Note, this can be called multiple times.
      */
-    View createView(@NonNull Context context);
+    View createView(Context context);
 
     /**
      * Will be called when the {@link Screen} is removed from the {@link ScreenSwitcher} for good.
      * Note, this will only be called once.
      */
-    void destroyScreen(@NonNull View viewToDestroy);
+    void destroyScreen(View viewToDestroy);
 
     /**
      * The {@link ScreenTransition} to perform when calling {@link ScreenSwitcher} methods.

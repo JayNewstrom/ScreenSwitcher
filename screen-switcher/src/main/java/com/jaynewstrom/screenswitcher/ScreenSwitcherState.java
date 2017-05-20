@@ -1,7 +1,5 @@
 package com.jaynewstrom.screenswitcher;
 
-import android.support.annotation.NonNull;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -24,7 +22,7 @@ public final class ScreenSwitcherState {
      * @throws IllegalArgumentException if screens is empty
      * @throws IllegalArgumentException if the same screen is passed
      */
-    public ScreenSwitcherState(@NonNull List<Screen> screens) {
+    public ScreenSwitcherState(List<Screen> screens) {
         checkNotNull(screens, "screens == null");
         checkArgument(!screens.isEmpty(), "screens must contain at least one screen");
         this.screens = new ArrayList<>(screens.size());
@@ -41,7 +39,7 @@ public final class ScreenSwitcherState {
      * @param screen The {@link Screen} to be notified of before it gets popped.
      * @param popListener The {@link ScreenPopListener} to call when the {@link Screen} is trying to be popped.
      */
-    public void registerPopListener(@NonNull Screen screen, @NonNull ScreenPopListener popListener) {
+    public void registerPopListener(Screen screen, ScreenPopListener popListener) {
         checkNotNull(screen, "screen == null");
         checkNotNull(popListener, "popListener == null");
         popListenerMap.put(screen, popListener);
@@ -50,7 +48,7 @@ public final class ScreenSwitcherState {
     /**
      * @return the index of the screen if it exists, or -1 if it doesn't.
      */
-    public int indexOf(@NonNull Screen screen) {
+    public int indexOf(Screen screen) {
         checkNotNull(screen, "screen == null");
         return screens.indexOf(screen);
     }

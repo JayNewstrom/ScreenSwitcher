@@ -1,6 +1,5 @@
 package com.jaynewstrom.screenswitcher;
 
-import android.support.annotation.NonNull;
 import android.view.View;
 
 /**
@@ -15,7 +14,7 @@ public interface ScreenTransition {
      * @param backgroundView The view that was the focus before the transition started.
      * @param onTransitionCompleted A block of code that must be called after the transition is complete.
      */
-    void transitionIn(@NonNull View foregroundView, @NonNull View backgroundView, @NonNull Runnable onTransitionCompleted);
+    void transitionIn(View foregroundView, View backgroundView, Runnable onTransitionCompleted);
 
     /**
      * The transition that occurs when removing a screen. See {@link ScreenSwitcher#pop(int)}.
@@ -24,5 +23,5 @@ public interface ScreenTransition {
      * @param backgroundView The view that will become the focus after the transition is complete.
      * @param onTransitionCompleted A block of code that must be called after the transition is complete.
      */
-    void transitionOut(@NonNull View foregroundView, @NonNull View backgroundView, @NonNull Runnable onTransitionCompleted);
+    void transitionOut(View foregroundView, View backgroundView, Runnable onTransitionCompleted);
 }

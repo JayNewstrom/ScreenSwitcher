@@ -2,7 +2,6 @@ package com.jaynewstrom.screenswitchersample;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.jaynewstrom.screenswitcher.ScreenTransition;
@@ -15,8 +14,7 @@ public final class DefaultScreenTransition implements ScreenTransition {
 
     }
 
-    @Override public void transitionIn(@NonNull View foregroundView, @NonNull View backgroundView,
-            @NonNull final Runnable onTransitionCompleted) {
+    @Override public void transitionIn(View foregroundView, View backgroundView, final Runnable onTransitionCompleted) {
         foregroundView.setX(((View) foregroundView.getParent()).getMeasuredWidth());
         foregroundView.animate()
                       .x(0)
@@ -28,8 +26,7 @@ public final class DefaultScreenTransition implements ScreenTransition {
                       });
     }
 
-    @Override public void transitionOut(@NonNull View foregroundView, @NonNull View backgroundView,
-            @NonNull final Runnable onTransitionCompleted) {
+    @Override public void transitionOut(View foregroundView, View backgroundView, final Runnable onTransitionCompleted) {
         foregroundView.animate()
                       .x(((View) foregroundView.getParent()).getMeasuredWidth())
                       .setDuration(300)
