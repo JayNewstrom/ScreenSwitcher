@@ -37,7 +37,9 @@ final class ScreenTestUtils {
             screens.add(extraScreenIndex, extraScreen);
         }
         when(activity.findViewById(android.R.id.content)).thenReturn(mock(View.class));
-        return (RealScreenSwitcher) ScreenSwitcherFactory.activityScreenSwitcher(activity, new ScreenSwitcherState(screens));
+        ScreenSwitcherState state = new ScreenSwitcherState(screens);
+        ScreenSwitcherPopHandler popHandler = mock(ScreenSwitcherPopHandler.class);
+        return (RealScreenSwitcher) ScreenSwitcherFactory.activityScreenSwitcher(activity, state, popHandler);
     }
 
     static View mockCreateView(Context context, Screen screen) {
@@ -79,7 +81,12 @@ final class ScreenTestUtils {
     }
 
     static ScreenSwitcher testScreenSwitcher(Activity activity, ScreenSwitcherState state) {
+        ScreenSwitcherPopHandler popHandler = mock(ScreenSwitcherPopHandler.class);
+        return testScreenSwitcher(activity, state, popHandler);
+    }
+
+    static ScreenSwitcher testScreenSwitcher(Activity activity, ScreenSwitcherState state, ScreenSwitcherPopHandler popHandler) {
         when(activity.findViewById(android.R.id.content)).thenReturn(mock(View.class));
-        return ScreenSwitcherFactory.activityScreenSwitcher(activity, state);
+        return ScreenSwitcherFactory.activityScreenSwitcher(activity, state, popHandler);
     }
 }

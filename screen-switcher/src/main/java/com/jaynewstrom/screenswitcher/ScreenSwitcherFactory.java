@@ -16,21 +16,23 @@ public final class ScreenSwitcherFactory {
     /**
      * Creates a {@link ScreenSwitcher} that uses {@link Activity#addContentView(View, LayoutParams)} to display a {@link Screen}.
      */
-    public static ScreenSwitcher activityScreenSwitcher(Activity activity, ScreenSwitcherState state) {
+    public static ScreenSwitcher activityScreenSwitcher(Activity activity, ScreenSwitcherState state,
+            ScreenSwitcherPopHandler popHandler) {
         checkNotNull(activity, "activity == null");
         validateState(state);
-        return new RealScreenSwitcher(activity, state, new ActivityScreenSwitcherHost(activity));
+        checkNotNull(popHandler, "popHandler == null");
+        return new RealScreenSwitcher(activity, state, new ActivityScreenSwitcherHost(activity, popHandler));
     }
 
     /**
      * Creates a {@link ScreenSwitcher} that uses {@link ViewGroup#addView(View)} to display a {@link Screen}.
      */
     public static ScreenSwitcher viewScreenSwitcher(ViewGroup viewGroup, ScreenSwitcherState state,
-            ViewScreenSwitcherHandler handler) {
+            ScreenSwitcherPopHandler popHandler) {
         checkNotNull(viewGroup, "viewGroup == null");
-        checkNotNull(handler, "handler == null");
+        checkNotNull(popHandler, "popHandler == null");
         validateState(state);
-        return new RealScreenSwitcher(viewGroup.getContext(), state, new ViewScreenSwitcherHost(viewGroup, handler));
+        return new RealScreenSwitcher(viewGroup.getContext(), state, new ViewScreenSwitcherHost(viewGroup, popHandler));
     }
 
     private static void validateState(ScreenSwitcherState state) {

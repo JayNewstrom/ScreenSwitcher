@@ -176,13 +176,15 @@ final class RealScreenSwitcher implements ScreenSwitcher {
             }
             performPopTransition(screens.get(screens.size() - 1), screens.get(screens.size() - 2));
         } else {
-            View matchingView = Utils.createViewWithDrawMatching(host.hostView());
-            host.addView(matchingView);
-            List<Screen> screensToRemove = new ArrayList<>(screenViewMap.keySet());
-            for (int i = 0, size = screensToRemove.size(); i < size; i++) {
-                removeScreen(screensToRemove.get(i));
-            }
-            host.onLastScreenPopped();
+            setTransitioning(true);
+            host.onLastScreenPopped(new ScreenSwitcherPopHandler.PopCompleteHandler() {
+                @Override public void popComplete() {
+                    List<Screen> screensToRemove = new ArrayList<>(screenViewMap.keySet());
+                    for (int i = 0, size = screensToRemove.size(); i < size; i++) {
+                        removeScreen(screensToRemove.get(i));
+                    }
+                }
+            });
         }
     }
 

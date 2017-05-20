@@ -3,7 +3,7 @@ Bootstrap
 
 Add screen switcher to your activity.
 ```java
-public final class MainActivity extends Activity {
+public final class MainActivity extends Activity implements ScreenSwitcherPopHandler {
 
     // Use dependency injection to keep the state of the ScreenSwitcher as a Singleton.
     @Inject ScreenSwitcherState screenSwitcherState;
@@ -11,19 +11,23 @@ public final class MainActivity extends Activity {
     @Inject ScreenManager screenManager;
 
     private ScreenSwitcher screenSwitcher;
+    private PopCompleteHandler popCompleteHandler;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
         // Initialize dependency injection here.
         
-        screenSwitcher = ScreenSwitcherFactory.activityScreenSwitcher(this, screenSwitcherState);
+        screenSwitcher = ScreenSwitcherFactory.activityScreenSwitcher(this, screenSwitcherState, this);
         screenManager.take(screenSwitcher);
     }
 
     @Override protected void onDestroy() {
         super.onDestroy();
         screenManager.drop(screenSwitcher);
+        if (popCompleteHandler != null) {
+            popCompleteHandler.popComplete();
+        }
     }
 
     @Override public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -37,6 +41,10 @@ public final class MainActivity extends Activity {
         if (!screenSwitcher.isTransitioning() && !isFinishing()) {
             screenManager.pop();
         }
+    }
+
+    @Override public void onLastScreenPopped(PopCompleteHandler popCompleteHandler) {
+        this.popCompleteHandler = popCompleteHandler;
     }
 }
 ```
