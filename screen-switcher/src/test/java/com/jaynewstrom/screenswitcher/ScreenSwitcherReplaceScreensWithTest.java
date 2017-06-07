@@ -83,14 +83,14 @@ public final class ScreenSwitcherReplaceScreensWithTest {
     @Test public void isTransitioningWhenReplacing() {
         Activity activity = mock(Activity.class);
         Screen screen1 = mock(Screen.class);
-        mockCreateView(activity, screen1);
+        mockCreateView(screen1);
         Screen screen2 = mock(Screen.class);
-        mockCreateView(activity, screen2);
+        mockCreateView(screen2);
         ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2));
         ScreenSwitcher activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state);
         assertThat(activityScreenSwitcher.isTransitioning()).isFalse();
         Screen newScreen = mock(Screen.class);
-        mockCreateView(activity, newScreen);
+        mockCreateView(newScreen);
         AtomicReference<Runnable> transitionCompletedRunnable = addTransitionIn(newScreen);
         activityScreenSwitcher.replaceScreensWith(1, Collections.singletonList(newScreen));
         assertThat(activityScreenSwitcher.isTransitioning()).isTrue();

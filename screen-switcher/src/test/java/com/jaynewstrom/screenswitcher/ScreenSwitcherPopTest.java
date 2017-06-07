@@ -58,9 +58,9 @@ public final class ScreenSwitcherPopTest {
     @Test public void doesNotPopWhenTheTopScreenHandlesPopIsTrue() {
         Activity activity = mock(Activity.class);
         Screen screen1 = mock(Screen.class);
-        mockCreateView(activity, screen1);
+        mockCreateView(screen1);
         Screen screen2 = mock(Screen.class);
-        mockCreateView(activity, screen2);
+        mockCreateView(screen2);
         ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2));
         ScreenPopListener popListener = mock(ScreenPopListener.class);
         when(popListener.onScreenPop(screen2)).thenReturn(true);
@@ -74,9 +74,9 @@ public final class ScreenSwitcherPopTest {
     @Test public void onlyPopsUntilHandlesPopIsTrue() {
         Activity activity = mock(Activity.class);
         Screen screen1 = mock(Screen.class);
-        mockCreateView(activity, screen1);
+        mockCreateView(screen1);
         Screen screen2 = mock(Screen.class);
-        mockCreateView(activity, screen2);
+        mockCreateView(screen2);
         AtomicReference<Runnable> transitionCompletedRunnable = addTransitionOut(screen2);
         ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2));
         ScreenPopListener popListener = mock(ScreenPopListener.class);
@@ -92,11 +92,11 @@ public final class ScreenSwitcherPopTest {
     @Test public void whenPoppingMultipleScreensEnsureScreensAreRemovedImmediately() {
         Activity activity = mock(Activity.class);
         Screen screen1 = mock(Screen.class);
-        mockCreateView(activity, screen1);
+        mockCreateView(screen1);
         Screen screen2 = mock(Screen.class);
-        mockCreateView(activity, screen2);
+        mockCreateView(screen2);
         Screen screen3 = mock(Screen.class);
-        mockCreateView(activity, screen3);
+        mockCreateView(screen3);
         AtomicReference<Runnable> transitionCompletedRunnable = addTransitionOut(screen3);
         ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2, screen3));
         ScreenSwitcher activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state);
@@ -109,9 +109,9 @@ public final class ScreenSwitcherPopTest {
     @Test public void whenTheScreenIsRemovedEnsureDestroyScreenIsCalled() {
         Activity activity = mock(Activity.class);
         Screen screen1 = mock(Screen.class);
-        mockCreateView(activity, screen1);
+        mockCreateView(screen1);
         Screen screen2 = mock(Screen.class);
-        mockCreateView(activity, screen2);
+        mockCreateView(screen2);
         AtomicReference<Runnable> transitionCompletedRunnable = addTransitionOut(screen2);
         ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2));
         ScreenSwitcher activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state);
@@ -124,9 +124,9 @@ public final class ScreenSwitcherPopTest {
     @Test public void whenTheScreenIsRemovedEnsureItIsRemovedFromItsParentView() {
         Activity activity = mock(Activity.class);
         Screen screen1 = mock(Screen.class);
-        mockCreateView(activity, screen1);
+        mockCreateView(screen1);
         Screen screen2 = mock(Screen.class);
-        View view2 = mockCreateView(activity, screen2);
+        View view2 = mockCreateView(screen2);
         AtomicReference<Runnable> transitionCompletedRunnable = addTransitionOut(screen2);
         ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2));
         ScreenSwitcher activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state);
@@ -139,9 +139,9 @@ public final class ScreenSwitcherPopTest {
     @Test public void popMakesBackgroundVisibleDuringTransition() {
         Activity activity = mock(Activity.class);
         Screen screen1 = mock(Screen.class);
-        View view1 = mockCreateView(activity, screen1);
+        View view1 = mockCreateView(screen1);
         Screen screen2 = mock(Screen.class);
-        mockCreateView(activity, screen2);
+        mockCreateView(screen2);
         AtomicReference<Runnable> transitionCompletedRunnable = addTransitionOut(screen2);
         ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2));
         ScreenSwitcher activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state);
@@ -154,9 +154,9 @@ public final class ScreenSwitcherPopTest {
     @Test public void isTransitioningWhenPopping() {
         Activity activity = mock(Activity.class);
         Screen screen1 = mock(Screen.class);
-        mockCreateView(activity, screen1);
+        mockCreateView(screen1);
         Screen screen2 = mock(Screen.class);
-        mockCreateView(activity, screen2);
+        mockCreateView(screen2);
         AtomicReference<Runnable> transitionCompletedRunnable = addTransitionOut(screen2);
         ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2));
         ScreenSwitcher activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state);
@@ -170,7 +170,7 @@ public final class ScreenSwitcherPopTest {
     @Test public void poppingLastScreenCallsPopHandler() {
         Activity activity = mock(Activity.class);
         Screen screen1 = mock(Screen.class);
-        mockCreateView(activity, screen1);
+        mockCreateView(screen1);
         ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(screen1));
         ScreenSwitcherPopHandler popHandler = mock(ScreenSwitcherPopHandler.class);
         ScreenSwitcher activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state, popHandler);
@@ -183,7 +183,7 @@ public final class ScreenSwitcherPopTest {
     @Test public void poppingLastScreenAndCallingPopHandlerDestroysScreen() {
         Activity activity = mock(Activity.class);
         Screen screen1 = mock(Screen.class);
-        mockCreateView(activity, screen1);
+        mockCreateView(screen1);
         ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(screen1));
         ScreenSwitcherPopHandler popHandler = new ScreenSwitcherPopHandler() {
             @Override public void onLastScreenPopped(PopCompleteHandler popCompleteHandler) {

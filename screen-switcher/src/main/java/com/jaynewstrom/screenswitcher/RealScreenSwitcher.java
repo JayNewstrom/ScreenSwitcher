@@ -49,7 +49,8 @@ final class RealScreenSwitcher implements ScreenSwitcher {
     }
 
     private View createView(Screen screen) {
-        View view = screen.createView(context);
+        View view = screen.createView(context, host.hostView());
+        Preconditions.checkArgument(view.getParent() == null, "createView should not return a view that has a parent.");
         screenViewMap.put(screen, view);
         host.addView(view);
         return view;

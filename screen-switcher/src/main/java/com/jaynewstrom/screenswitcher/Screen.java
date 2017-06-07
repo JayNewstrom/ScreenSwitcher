@@ -2,6 +2,7 @@ package com.jaynewstrom.screenswitcher;
 
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup;
 
 /**
  * An object that describes what the user would see on the display.
@@ -14,7 +15,7 @@ public interface Screen {
      * Creates the view associated with the {@link Screen}.
      * Note, this can be called multiple times.
      */
-    View createView(Context context);
+    View createView(Context context, ViewGroup hostView);
 
     /**
      * Will be called when the {@link Screen} is removed from the {@link ScreenSwitcher} for good.
