@@ -1,7 +1,6 @@
 package com.jaynewstrom.screenswitcher;
 
 import android.app.Activity;
-import android.view.View;
 import android.view.ViewGroup;
 
 import org.junit.Before;
@@ -23,10 +22,12 @@ public final class ScreenSwitcherFactoryTest {
 
     @Before public void setup() {
         activity = mock(Activity.class);
-        when(activity.findViewById(android.R.id.content)).thenReturn(mock(View.class));
+        when(activity.findViewById(android.R.id.content)).thenReturn(mock(ViewGroup.class));
         view = mock(ViewGroup.class);
         when(view.getContext()).thenReturn(activity);
-        state = new ScreenSwitcherState(Collections.singletonList(mock(Screen.class)));
+        Screen screen = mock(Screen.class);
+        ScreenTestUtils.mockCreateView(screen);
+        state = new ScreenSwitcherState(Collections.singletonList(screen));
         popHandler = mock(ScreenSwitcherPopHandler.class);
     }
 

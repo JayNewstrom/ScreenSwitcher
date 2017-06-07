@@ -44,6 +44,7 @@ public final class ScreenSwitcherPushTest {
 
     @Test public void pushFailsWhenNoScreensExist() {
         Screen screen = mock(Screen.class);
+        mockCreateView(screen);
         Activity activity = mock(Activity.class);
         ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(screen));
         ScreenSwitcher activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state);
@@ -59,10 +60,11 @@ public final class ScreenSwitcherPushTest {
     @Test public void backgroundIsVisibleDuringPush() {
         Activity activity = mock(Activity.class);
         Screen initialScreen = mock(Screen.class);
-        View initialView = mockCreateView(activity, initialScreen);
+        View initialView = mockCreateView(initialScreen);
         ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(initialScreen));
         ScreenSwitcher activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state);
         Screen secondScreen = mock(Screen.class);
+        mockCreateView(secondScreen);
         AtomicReference<Runnable> transitionCompletedRunnable = addTransitionIn(secondScreen);
         activityScreenSwitcher.push(secondScreen);
         verify(secondScreen).transition();
@@ -74,10 +76,11 @@ public final class ScreenSwitcherPushTest {
     @Test public void pushAddsNewScreenAfterCurrentScreen() {
         Activity activity = mock(Activity.class);
         Screen screen = mock(Screen.class);
-        mockCreateView(activity, screen);
+        mockCreateView(screen);
         ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(screen));
         ScreenSwitcher activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state);
         Screen pushedScreen = mock(Screen.class);
+        mockCreateView(pushedScreen);
         AtomicReference<Runnable> transitionCompletedRunnable = addTransitionIn(pushedScreen);
         activityScreenSwitcher.push(pushedScreen);
         transitionCompletedRunnable.get().run();
@@ -88,14 +91,14 @@ public final class ScreenSwitcherPushTest {
     @Test public void isTransitioningWhenPushing() {
         Activity activity = mock(Activity.class);
         Screen screen1 = mock(Screen.class);
-        mockCreateView(activity, screen1);
+        mockCreateView(screen1);
         Screen screen2 = mock(Screen.class);
-        mockCreateView(activity, screen2);
+        mockCreateView(screen2);
         ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2));
         ScreenSwitcher activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state);
         assertThat(activityScreenSwitcher.isTransitioning()).isFalse();
         Screen newScreen = mock(Screen.class);
-        mockCreateView(activity, newScreen);
+        mockCreateView(newScreen);
         AtomicReference<Runnable> transitionCompletedRunnable = addTransitionIn(newScreen);
         activityScreenSwitcher.push(newScreen);
         assertThat(activityScreenSwitcher.isTransitioning()).isTrue();

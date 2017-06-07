@@ -20,7 +20,7 @@ final class ViewScreenSwitcherHost implements ScreenSwitcherHost {
         viewGroup.addView(view);
     }
 
-    @Override public View hostView() {
+    @Override public ViewGroup hostView() {
         return viewGroup;
     }
 }
