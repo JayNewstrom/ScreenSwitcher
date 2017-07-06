@@ -173,7 +173,7 @@ final class RealScreenSwitcher implements ScreenSwitcher {
         List<Screen> screens = state.getScreens();
         if (screens.size() > numberToPop) {
             for (int i = 1; i < numberToPop; i++) {
-                removeScreen(screens.get(screens.size() - i - 1));
+                removeScreen(screens.get(screens.size() - 2));
             }
             performPopTransition(screens.get(screens.size() - 1), screens.get(screens.size() - 2));
         } else {

@@ -196,4 +196,22 @@ public final class ScreenSwitcherPopTest {
         assertThat(activityScreenSwitcher.isTransitioning()).isTrue();
         verify(screen1).destroyScreen(any(View.class));
     }
+
+    @Test public void poppingRemovesCorrectScreens() {
+        Activity activity = mock(Activity.class);
+        Screen screen1 = mock(Screen.class);
+        mockCreateView(screen1);
+        Screen screen2 = mock(Screen.class);
+        mockCreateView(screen2);
+        Screen screen3 = mock(Screen.class);
+        mockCreateView(screen3);
+        Screen screen4 = mock(Screen.class);
+        mockCreateView(screen4);
+        addTransitionOut(screen4);
+        ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2, screen3, screen4));
+        ScreenSwitcher activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state);
+        activityScreenSwitcher.pop(3);
+        assertThat(state.screenCount()).isEqualTo(1);
+        assertThat(state.getScreens()).contains(screen1);
+    }
 }
