@@ -216,12 +216,18 @@ final class RealScreenSwitcher implements ScreenSwitcher {
     }
 
     private final class EndTransitionRunnable implements Runnable {
+        private boolean executed;
 
         EndTransitionRunnable() {
             setTransitioning(true);
         }
 
         @Override public void run() {
+            if (executed) {
+                throw new IllegalStateException("Transition complete runnable already executed");
+            } else {
+                executed = true;
+            }
             setTransitioning(false);
             hideAllButTopScreen();
         }
