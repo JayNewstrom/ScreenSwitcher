@@ -86,7 +86,7 @@ public final class ScreenSwitcherReplaceScreensWithTest {
         mockCreateView(screen1);
         Screen screen2 = mock(Screen.class);
         mockCreateView(screen2);
-        ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen1, screen2));
+        ScreenSwitcherState state = ScreenTestUtils.defaultState(Arrays.asList(screen1, screen2));
         ScreenSwitcher activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state);
         assertThat(activityScreenSwitcher.isTransitioning()).isFalse();
         Screen newScreen = mock(Screen.class);

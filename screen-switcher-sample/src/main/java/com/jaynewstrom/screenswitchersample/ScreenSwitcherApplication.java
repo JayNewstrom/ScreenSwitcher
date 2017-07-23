@@ -8,6 +8,8 @@ import com.jaynewstrom.concrete.ConcreteWall;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
+import timber.log.Timber;
+
 public final class ScreenSwitcherApplication extends Application {
 
     private ConcreteWall<ApplicationComponent> foundation;
@@ -15,6 +17,7 @@ public final class ScreenSwitcherApplication extends Application {
 
     @Override public void onCreate() {
         super.onCreate();
+        Timber.plant(new Timber.DebugTree());
         refWatcher = LeakCanary.install(this);
         foundation = Concrete.pourFoundation(applicationComponent());
     }

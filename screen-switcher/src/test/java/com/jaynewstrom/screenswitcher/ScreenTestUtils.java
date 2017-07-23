@@ -11,6 +11,7 @@ import org.mockito.stubbing.Answer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -23,6 +24,14 @@ import static org.mockito.Mockito.when;
 final class ScreenTestUtils {
 
     private ScreenTestUtils() {
+    }
+
+    static ScreenSwitcherState defaultState(Screen screen) {
+        return defaultState(Collections.singletonList(screen));
+    }
+
+    static ScreenSwitcherState defaultState(List<Screen> screens) {
+        return new ScreenSwitcherState(new AssertingScreenLifecycleListener(), screens);
     }
 
     static RealScreenSwitcher initialActivityScreenSwitcher() {
@@ -41,7 +50,7 @@ final class ScreenTestUtils {
             screens.add(extraScreenIndex, extraScreen);
         }
         when(activity.findViewById(android.R.id.content)).thenReturn(mock(ViewGroup.class));
-        ScreenSwitcherState state = new ScreenSwitcherState(screens);
+        ScreenSwitcherState state = ScreenTestUtils.defaultState(screens);
         ScreenSwitcherPopHandler popHandler = mock(ScreenSwitcherPopHandler.class);
         return (RealScreenSwitcher) ScreenSwitcherFactory.activityScreenSwitcher(activity, state, popHandler);
     }

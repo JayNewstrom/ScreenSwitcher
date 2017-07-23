@@ -17,7 +17,7 @@ public final class ScreenSwitcherStateTest {
 
     @Test public void constructorMakesDefensiveCopyOfScreensPassedIn() {
         List<Screen> passedList = Collections.singletonList(mock(Screen.class));
-        ScreenSwitcherState state = new ScreenSwitcherState(passedList);
+        ScreenSwitcherState state = ScreenTestUtils.defaultState(passedList);
         state.getScreens().add(mock(Screen.class));
         assertThat(passedList).hasSize(1);
         assertThat(state.getScreens()).hasSize(2);
@@ -26,7 +26,7 @@ public final class ScreenSwitcherStateTest {
     @Test public void constructorDoesNotAllowNulScreens() {
         try {
             //noinspection ConstantConditions
-            new ScreenSwitcherState(null);
+            ScreenTestUtils.defaultState((List<Screen>) null);
             fail();
         } catch (NullPointerException expected) {
             assertThat(expected).hasMessage("screens == null");
@@ -35,7 +35,7 @@ public final class ScreenSwitcherStateTest {
 
     @Test public void constructorDoesNotAllowEmptyScreens() {
         try {
-            new ScreenSwitcherState(Collections.<Screen>emptyList());
+            ScreenTestUtils.defaultState(Collections.<Screen>emptyList());
             fail();
         } catch (IllegalArgumentException expected) {
             assertThat(expected).hasMessage("screens must contain at least one screen");
@@ -44,7 +44,7 @@ public final class ScreenSwitcherStateTest {
 
     @Test public void constructorRejectsNullInTheListOfScreens() {
         try {
-            new ScreenSwitcherState(Collections.<Screen>singletonList(null));
+            ScreenTestUtils.defaultState(Collections.<Screen>singletonList(null));
             fail();
         } catch (NullPointerException expected) {
             assertThat(expected).hasMessage("screen == null");
@@ -54,7 +54,7 @@ public final class ScreenSwitcherStateTest {
     @Test public void constructorRejectsDuplicateScreens() {
         Screen screen = mock(Screen.class);
         try {
-            new ScreenSwitcherState(Arrays.asList(screen, screen));
+            ScreenTestUtils.defaultState(Arrays.asList(screen, screen));
             fail();
         } catch (IllegalArgumentException expected) {
             assertThat(expected).hasMessage("screen already exists");
@@ -63,13 +63,13 @@ public final class ScreenSwitcherStateTest {
 
     @Test public void handlesPopIsFalseWhenNoPopListeners() {
         Screen screen = mock(Screen.class);
-        ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(screen));
+        ScreenSwitcherState state = ScreenTestUtils.defaultState(screen);
         assertThat(state.handlesPop(screen)).isFalse();
     }
 
     @Test public void handlesPopIsFalseWhenPopListenerReturnsFalse() {
         Screen screen = mock(Screen.class);
-        ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(screen));
+        ScreenSwitcherState state = ScreenTestUtils.defaultState(screen);
         ScreenPopListener popListener = mock(ScreenPopListener.class);
         state.registerPopListener(screen, popListener);
         when(popListener.onScreenPop(screen)).thenReturn(false);
@@ -78,7 +78,7 @@ public final class ScreenSwitcherStateTest {
 
     @Test public void handlesPopIsTrueWhenPopListenerReturnsTrue() {
         Screen screen = mock(Screen.class);
-        ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(screen));
+        ScreenSwitcherState state = ScreenTestUtils.defaultState(screen);
         ScreenPopListener popListener = mock(ScreenPopListener.class);
         state.registerPopListener(screen, popListener);
         when(popListener.onScreenPop(screen)).thenReturn(true);
@@ -87,7 +87,7 @@ public final class ScreenSwitcherStateTest {
 
     @Test public void handlesPopIsFalseForScreenNotMatchingPopListenerThatReturnsTrue() {
         Screen screen = mock(Screen.class);
-        ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(screen));
+        ScreenSwitcherState state = ScreenTestUtils.defaultState(screen);
         ScreenPopListener popListener = mock(ScreenPopListener.class);
         state.registerPopListener(screen, popListener);
         when(popListener.onScreenPop(screen)).thenReturn(true);
@@ -96,7 +96,7 @@ public final class ScreenSwitcherStateTest {
 
     @Test public void handlesPopRemovesPopListenerWhenReturnsFalse() {
         Screen screen = mock(Screen.class);
-        ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(screen));
+        ScreenSwitcherState state = ScreenTestUtils.defaultState(screen);
         ScreenPopListener popListener = mock(ScreenPopListener.class);
         state.registerPopListener(screen, popListener);
         when(popListener.onScreenPop(screen)).thenReturn(false);
@@ -107,7 +107,7 @@ public final class ScreenSwitcherStateTest {
 
     @Test public void handlesPopKeepsPopListenerWhenReturnsTrue() {
         Screen screen = mock(Screen.class);
-        ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(screen));
+        ScreenSwitcherState state = ScreenTestUtils.defaultState(screen);
         ScreenPopListener popListener = mock(ScreenPopListener.class);
         state.registerPopListener(screen, popListener);
         when(popListener.onScreenPop(screen)).thenReturn(true);
@@ -118,7 +118,7 @@ public final class ScreenSwitcherStateTest {
 
     @Test public void addScreenRejectsDuplicateScreen() {
         Screen screen = mock(Screen.class);
-        ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(screen));
+        ScreenSwitcherState state = ScreenTestUtils.defaultState(screen);
         try {
             state.addScreen(screen);
             fail();
@@ -128,7 +128,7 @@ public final class ScreenSwitcherStateTest {
     }
 
     @Test public void addScreenRejectsNullScreen() {
-        ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(mock(Screen.class)));
+        ScreenSwitcherState state = ScreenTestUtils.defaultState(mock(Screen.class));
         try {
             state.addScreen(null);
             fail();
@@ -138,7 +138,7 @@ public final class ScreenSwitcherStateTest {
     }
 
     @Test public void indexOfRejectsNullScreen() {
-        ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(mock(Screen.class)));
+        ScreenSwitcherState state = ScreenTestUtils.defaultState(mock(Screen.class));
         try {
             //noinspection ConstantConditions
             state.indexOf(null);
@@ -149,7 +149,7 @@ public final class ScreenSwitcherStateTest {
     }
 
     @Test public void indexOfReturnsNegativeOneIfTheScreenDoesNotExist() {
-        ScreenSwitcherState state = new ScreenSwitcherState(Collections.singletonList(mock(Screen.class)));
+        ScreenSwitcherState state = ScreenTestUtils.defaultState(mock(Screen.class));
         assertThat(state.indexOf(mock(Screen.class))).isEqualTo(-1);
     }
 
@@ -157,12 +157,12 @@ public final class ScreenSwitcherStateTest {
         Screen screen0 = mock(Screen.class);
         Screen screen1 = mock(Screen.class);
         Screen screen2 = mock(Screen.class);
-        ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(screen0, screen1, screen2));
+        ScreenSwitcherState state = ScreenTestUtils.defaultState(Arrays.asList(screen0, screen1, screen2));
         assertThat(state.indexOf(screen1)).isEqualTo(1);
     }
 
     @Test public void screenCountIsUpdatedWhenScreensAreAdded() {
-        ScreenSwitcherState state = new ScreenSwitcherState(Arrays.asList(mock(Screen.class), mock(Screen.class)));
+        ScreenSwitcherState state = ScreenTestUtils.defaultState(Arrays.asList(mock(Screen.class), mock(Screen.class)));
         assertThat(state.screenCount()).isEqualTo(2);
         state.addScreen(mock(Screen.class));
         assertThat(state.screenCount()).isEqualTo(3);

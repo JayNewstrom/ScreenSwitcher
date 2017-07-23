@@ -45,6 +45,7 @@ final class RealScreenSwitcher implements ScreenSwitcher {
         for (int i = 0, size = screens.size(); i < size; i++) {
             createView(screens.get(i));
         }
+        state.lifecycleListener().onScreenBecameActive(screens.get(screens.size() - 1));
         hideAllButTopScreen();
     }
 
@@ -68,12 +69,15 @@ final class RealScreenSwitcher implements ScreenSwitcher {
 
         hideKeyboard();
 
-        View backgroundView = screenViewMap.get(screens.get(screens.size() - 1));
+        Screen backgroundScreen = screens.get(screens.size() - 1);
+        View backgroundView = screenViewMap.get(backgroundScreen);
+        state.lifecycleListener().onScreenBecameInactive(backgroundScreen);
 
         state.addScreen(screen);
         View view = createView(screen);
 
         screen.transition().transitionIn(view, backgroundView, new EndTransitionRunnable());
+        state.lifecycleListener().onScreenBecameActive(screen);
     }
 
     @Override public void pop(int numberToPop) {
@@ -108,6 +112,8 @@ final class RealScreenSwitcher implements ScreenSwitcher {
             Screen backgroundScreen = state.getScreens().get(state.getScreens().size() - 1);
             View backgroundView = screenViewMap.get(backgroundScreen);
 
+            state.lifecycleListener().onScreenBecameInactive(backgroundScreen);
+
             for (int i = 0, size = screens.size(); i < size; i++) {
                 Screen screen = screens.get(i);
                 state.addScreen(screen);
@@ -118,6 +124,7 @@ final class RealScreenSwitcher implements ScreenSwitcher {
             Screen topScreen = screens.get(screens.size() - 1);
             View topView = screenViewMap.get(topScreen);
             topView.setVisibility(View.VISIBLE);
+            state.lifecycleListener().onScreenBecameActive(topScreen);
 
             topScreen.transition().transitionIn(topView, backgroundView, new RemoveScreenRunnable(screensToRemove, state));
         }
@@ -173,16 +180,17 @@ final class RealScreenSwitcher implements ScreenSwitcher {
         List<Screen> screens = state.getScreens();
         if (screens.size() > numberToPop) {
             for (int i = 1; i < numberToPop; i++) {
-                removeScreen(screens.get(screens.size() - 2));
+                removeScreen(screens.get(screens.size() - 2), true);
             }
             performPopTransition(screens.get(screens.size() - 1), screens.get(screens.size() - 2));
         } else {
+            state.lifecycleListener().onScreenBecameInactive(screens.get(screens.size() - 1));
             setTransitioning(true);
             host.onLastScreenPopped(new ScreenSwitcherPopHandler.PopCompleteHandler() {
                 @Override public void popComplete() {
                     List<Screen> screensToRemove = new ArrayList<>(screenViewMap.keySet());
                     for (int i = 0, size = screensToRemove.size(); i < size; i++) {
-                        removeScreen(screensToRemove.get(i));
+                        removeScreen(screensToRemove.get(i), true);
                     }
                 }
             });
@@ -190,11 +198,13 @@ final class RealScreenSwitcher implements ScreenSwitcher {
     }
 
     private void performPopTransition(Screen screenToRemove, Screen screenToBecomeVisible) {
+        state.lifecycleListener().onScreenBecameInactive(screenToRemove);
         View viewToBecomeVisible = screenViewMap.get(screenToBecomeVisible);
         viewToBecomeVisible.setVisibility(View.VISIBLE);
         View viewToRemove = screenViewMap.get(screenToRemove);
         Runnable completionRunnable = new RemoveScreenRunnable(screenToRemove, state);
         screenToRemove.transition().transitionOut(viewToRemove, viewToBecomeVisible, completionRunnable);
+        state.lifecycleListener().onScreenBecameActive(screenToBecomeVisible);
     }
 
     void setTransitioning(boolean transitioning) {
@@ -208,11 +218,13 @@ final class RealScreenSwitcher implements ScreenSwitcher {
         }
     }
 
-    void removeScreen(Screen screen) {
+    void removeScreen(Screen screen, boolean removeFromState) {
         View view = screenViewMap.remove(screen);
         screen.destroyScreen(view);
         ((ViewGroup) view.getParent()).removeView(view);
-        state.getScreens().remove(screen);
+        if (removeFromState) {
+            state.removeScreen(screen);
+        }
     }
 
     private final class EndTransitionRunnable implements Runnable {
@@ -244,14 +256,14 @@ final class RealScreenSwitcher implements ScreenSwitcher {
         RemoveScreenRunnable(List<Screen> screens, ScreenSwitcherState state) {
             this.screens = screens;
             for (int i = 0, size = screens.size(); i < size; i++) {
-                state.getScreens().remove(screens.get(i));
+                state.removeScreen(screens.get(i));
             }
             setTransitioning(true);
         }
 
         @Override public void run() {
             for (int i = 0, size = screens.size(); i < size; i++) {
-                removeScreen(screens.get(i));
+                removeScreen(screens.get(i), false);
             }
             screens = null;
             setTransitioning(false);
