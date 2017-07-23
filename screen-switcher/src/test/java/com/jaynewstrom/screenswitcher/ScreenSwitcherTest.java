@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -22,7 +21,7 @@ public final class ScreenSwitcherTest {
         Screen screen = mock(Screen.class);
         ScreenTestUtils.mockCreateView(screen);
         Activity activity = mock(Activity.class);
-        ScreenTestUtils.testScreenSwitcher(activity, new ScreenSwitcherState(Collections.singletonList(screen)));
+        ScreenTestUtils.testScreenSwitcher(activity, ScreenTestUtils.defaultState(screen));
         verify(screen).createView(any(Context.class), any(ViewGroup.class));
         verify(screen, never()).transition();
     }
@@ -35,7 +34,7 @@ public final class ScreenSwitcherTest {
         Screen topScreen = mock(Screen.class);
         View topView = mock(View.class);
         when(topScreen.createView(any(Context.class), any(ViewGroup.class))).thenReturn(topView);
-        ScreenTestUtils.testScreenSwitcher(activity, new ScreenSwitcherState(Arrays.asList(bottomScreen, topScreen)));
+        ScreenTestUtils.testScreenSwitcher(activity, ScreenTestUtils.defaultState(Arrays.asList(bottomScreen, topScreen)));
         verify(bottomScreen).createView(any(Context.class), any(ViewGroup.class));
         verify(topScreen).createView(any(Context.class), any(ViewGroup.class));
         verify(bottomView).setVisibility(View.GONE);

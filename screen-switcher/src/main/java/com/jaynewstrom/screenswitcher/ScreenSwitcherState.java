@@ -14,15 +14,18 @@ import static com.jaynewstrom.screenswitcher.Utils.checkScreen;
  */
 public final class ScreenSwitcherState {
 
+    private final ScreenLifecycleListener lifecycleListener;
     private final List<Screen> screens;
     private final Map<Screen, ScreenPopListener> popListenerMap;
 
     /**
-     * @param screens The initial screens that the {@link ScreenSwitcher} should show.
+     * @param lifecycleListener The {@link ScreenLifecycleListener} to be notified of what's happening on the internals.
+     * @param screens           The initial screens that the {@link ScreenSwitcher} should show.
      * @throws IllegalArgumentException if screens is empty
      * @throws IllegalArgumentException if the same screen is passed
      */
-    public ScreenSwitcherState(List<Screen> screens) {
+    public ScreenSwitcherState(ScreenLifecycleListener lifecycleListener, List<Screen> screens) {
+        this.lifecycleListener = checkNotNull(lifecycleListener, "lifecycleListener == null");
         checkNotNull(screens, "screens == null");
         checkArgument(!screens.isEmpty(), "screens must contain at least one screen");
         this.screens = new ArrayList<>(screens.size());
@@ -36,7 +39,7 @@ public final class ScreenSwitcherState {
      * The pop listener will be automatically unregistered when the {@link Screen} is popped.
      * See documentation for {@link ScreenPopListener} for what objects should be registered.
      *
-     * @param screen The {@link Screen} to be notified of before it gets popped.
+     * @param screen      The {@link Screen} to be notified of before it gets popped.
      * @param popListener The {@link ScreenPopListener} to call when the {@link Screen} is trying to be popped.
      */
     public void registerPopListener(Screen screen, ScreenPopListener popListener) {
@@ -67,6 +70,12 @@ public final class ScreenSwitcherState {
     void addScreen(Screen screen) {
         checkScreen(this, screen);
         screens.add(screen);
+        lifecycleListener.onScreenAdded(screen);
+    }
+
+    void removeScreen(Screen screen) {
+        screens.remove(screen);
+        lifecycleListener.onScreenRemoved(screen);
     }
 
     boolean handlesPop(Screen screen) {
@@ -76,5 +85,9 @@ public final class ScreenSwitcherState {
             popListenerMap.remove(screen);
         }
         return handlesPop;
+    }
+
+    ScreenLifecycleListener lifecycleListener() {
+        return lifecycleListener;
     }
 }

@@ -6,8 +6,6 @@ import android.view.ViewGroup;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Collections;
-
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
@@ -27,7 +25,7 @@ public final class ScreenSwitcherFactoryTest {
         when(view.getContext()).thenReturn(activity);
         Screen screen = mock(Screen.class);
         ScreenTestUtils.mockCreateView(screen);
-        state = new ScreenSwitcherState(Collections.singletonList(screen));
+        state = ScreenTestUtils.defaultState(screen);
         popHandler = mock(ScreenSwitcherPopHandler.class);
     }
 
@@ -53,7 +51,7 @@ public final class ScreenSwitcherFactoryTest {
 
     @Test public void activityScreenSwitcherRejectsStateWithNoScreens() {
         try {
-            state.getScreens().remove(0);
+            state.removeScreen(state.getScreens().get(0));
             ScreenSwitcherFactory.activityScreenSwitcher(activity, state, popHandler);
             fail();
         } catch (IllegalArgumentException expected) {
@@ -98,7 +96,7 @@ public final class ScreenSwitcherFactoryTest {
 
     @Test public void viewScreenSwitcherRejectsStateWithNoScreens() {
         try {
-            state.getScreens().remove(0);
+            state.removeScreen(state.getScreens().get(0));
             ScreenSwitcherFactory.viewScreenSwitcher(view, state, popHandler);
             fail();
         } catch (IllegalArgumentException expected) {
