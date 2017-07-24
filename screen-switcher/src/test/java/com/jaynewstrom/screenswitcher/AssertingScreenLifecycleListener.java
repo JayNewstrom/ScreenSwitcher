@@ -25,7 +25,7 @@ final class AssertingScreenLifecycleListener implements ScreenLifecycleListener 
             throw new AssertionError(activeScreen + " was already active.");
         }
         if (!screens.contains(screen)) {
-            throw new AssertionError(screen + " was did not exist in screens: " + screens);
+            throw new AssertionError(screen + " does not exist in screens: " + screens);
         }
         activeScreen = screen;
     }
@@ -35,7 +35,7 @@ final class AssertingScreenLifecycleListener implements ScreenLifecycleListener 
             throw new AssertionError("Active screen: " + activeScreen + " did not align with screen becoming inactive: " + screen);
         }
         if (!screens.contains(screen)) {
-            throw new AssertionError(screen + " was did not exist in screens: " + screens);
+            throw new AssertionError(screen + " does not exist in screens: " + screens);
         }
         activeScreen = null;
     }
