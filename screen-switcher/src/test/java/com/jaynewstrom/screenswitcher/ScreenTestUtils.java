@@ -102,7 +102,7 @@ final class ScreenTestUtils {
         when(activity.findViewById(android.R.id.content)).thenReturn(hostView);
         doAnswer(new Answer() {
             @Override public Object answer(InvocationOnMock invocation) throws Throwable {
-                View childView = invocation.getArgumentAt(0, View.class);
+                View childView = invocation.getArgument(0);
                 when(childView.getParent()).thenReturn((ViewGroup) invocation.getMock());
                 return null;
             }

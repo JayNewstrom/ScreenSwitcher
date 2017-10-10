@@ -1,12 +1,12 @@
 ext {
     minSdkVersion = 15
-    targetSdkVersion = 25
-    compileSdkVersion = 25
-    buildToolsVersion = '25.0.3'
+    targetSdkVersion = 26
+    compileSdkVersion = 26
+    buildToolsVersion = '26.0.2'
     sourceCompatibilityVersion = JavaVersion.VERSION_1_7
     targetCompatibilityVersion = JavaVersion.VERSION_1_7
-    supportLibraryVersion = '25.3.1'
-    daggerVersion = '2.10'
+    supportLibraryVersion = '26.1.0'
+    daggerVersion = '2.11'
 }
 
 ext.deps = [
@@ -19,23 +19,25 @@ ext.deps = [
 
         junit: 'junit:junit:4.12',
         fest: 'org.easytesting:fest-assert-core:2.0M10',
-        mockitoCore: 'org.mockito:mockito-core:1.10.19',
-        androidTestRunner: 'com.android.support.test:runner:0.5',
-        androidTestRules: 'com.android.support.test:rules:0.5',
-        espressoCore: 'com.android.support.test.espresso:espresso-core:2.2.2',
+        mockitoCore: 'org.mockito:mockito-core:2.10.0',
+        androidTestRunner: 'com.android.support.test:runner:1.0.1',
+        androidTestRules: 'com.android.support.test:rules:1.0.1',
+        espressoCore: 'com.android.support.test.espresso:espresso-core:3.0.1',
 ]
 
 buildscript {
     repositories {
+        google()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.2'
+        classpath 'com.android.tools.build:gradle:3.0.0-beta7'
     }
 }
 
 allprojects {
     repositories {
+        google()
         jcenter()
     }
 
@@ -51,16 +53,50 @@ task clean(type: Delete) {
 }
 
 subprojects {
-    apply plugin: 'checkstyle'
+    configureAndroidPlugin(it)
+    configureCheckstylePlugin(it)
+}
 
-    checkstyle {
-        toolVersion = '6.14.1'
+def configureAndroidPlugin(Project project) {
+    def closure = {
+        project.android {
+            compileSdkVersion rootProject.ext.compileSdkVersion
+            buildToolsVersion rootProject.ext.buildToolsVersion
+
+            defaultConfig {
+                minSdkVersion rootProject.ext.minSdkVersion
+            }
+
+            compileOptions {
+                sourceCompatibility sourceCompatibilityVersion
+                targetCompatibility targetCompatibilityVersion
+            }
+
+            lintOptions {
+                lintConfig rootProject.file('lint.xml')
+            }
+
+            dexOptions {
+                preDexLibraries true
+            }
+        }
+    }
+
+    project.plugins.withId('com.android.application', closure)
+    project.plugins.withId('com.android.library', closure)
+}
+
+def configureCheckstylePlugin(Project project) {
+    project.apply plugin: 'checkstyle'
+
+    project.checkstyle {
+        toolVersion = '7.7'
         configFile rootProject.file('checkstyle.xml')
         showViolations true
         configProperties = ['checkstyle.cache.file': rootProject.file('build/checkstyle.cache')]
     }
 
-    task checkstyle(type: Checkstyle) {
+    project.tasks.create("checkstyle", Checkstyle.class) {
         source 'src'
         include '**/*.java'
 

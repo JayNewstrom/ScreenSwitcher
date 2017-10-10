@@ -13,19 +13,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
-
-    compileOptions {
-        sourceCompatibility rootProject.ext.sourceCompatibilityVersion
-        targetCompatibility rootProject.ext.targetCompatibilityVersion
-    }
-
     defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName '1.0'
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
         testApplicationId 'com.jaynewstrom.screenswitcher.androidTest'
         consumerProguardFiles 'consumer-proguard-rules.pro'
@@ -33,12 +21,13 @@ android {
 }
 
 dependencies {
-    provided deps.supportAnnotations
-    provided deps.jsr305
+    compileOnly deps.supportAnnotations
+    compileOnly deps.jsr305
 
-    testCompile deps.junit
-    testCompile deps.mockitoCore
-    testCompile deps.fest
+    testImplementation deps.supportAnnotations
+    testImplementation deps.junit
+    testImplementation deps.mockitoCore
+    testImplementation deps.fest
 }
 
 task sourcesJar(type: Jar) {
