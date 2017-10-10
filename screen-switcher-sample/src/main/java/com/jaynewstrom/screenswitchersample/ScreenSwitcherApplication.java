@@ -1,7 +1,6 @@
 package com.jaynewstrom.screenswitchersample;
 
 import android.app.Application;
-import android.content.Context;
 
 import com.jaynewstrom.concrete.Concrete;
 import com.jaynewstrom.concrete.ConcreteWall;
@@ -23,7 +22,7 @@ public final class ScreenSwitcherApplication extends Application {
     }
 
     private ApplicationComponent applicationComponent() {
-        return DaggerApplicationComponent.builder().applicationModule(new ApplicationModule(this)).build();
+        return DaggerApplicationComponent.builder().applicationModule(new ApplicationModule(this, refWatcher)).build();
     }
 
     @Override public Object getSystemService(String name) {
@@ -31,10 +30,5 @@ public final class ScreenSwitcherApplication extends Application {
             return foundation;
         }
         return super.getSystemService(name);
-    }
-
-    public static void watchObject(Context context, Object watchedReference) {
-        ScreenSwitcherApplication application = (ScreenSwitcherApplication) context.getApplicationContext();
-        application.refWatcher.watch(watchedReference);
     }
 }

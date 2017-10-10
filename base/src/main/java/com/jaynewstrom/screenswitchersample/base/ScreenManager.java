@@ -1,4 +1,4 @@
-package com.jaynewstrom.screenswitchersample;
+package com.jaynewstrom.screenswitchersample.base;
 
 import android.support.annotation.IntRange;
 
@@ -15,19 +15,19 @@ public final class ScreenManager {
 
     private final ScreenSwitcherState screenSwitcherState;
 
-    ScreenManager(ScreenSwitcherState screenSwitcherState) {
+    public ScreenManager(ScreenSwitcherState screenSwitcherState) {
         this.screenSwitcherState = screenSwitcherState;
     }
 
-    boolean isSameImplementation(ScreenSwitcher screenSwitcher) {
+    private boolean isSameImplementation(ScreenSwitcher screenSwitcher) {
         return this.screenSwitcher == screenSwitcher;
     }
 
-    void take(ScreenSwitcher screenSwitcher) {
+    public void take(ScreenSwitcher screenSwitcher) {
         this.screenSwitcher = screenSwitcher;
     }
 
-    void drop(ScreenSwitcher screenSwitcher) {
+    public void drop(ScreenSwitcher screenSwitcher) {
         if (isSameImplementation(screenSwitcher)) {
             this.screenSwitcher = null;
         }

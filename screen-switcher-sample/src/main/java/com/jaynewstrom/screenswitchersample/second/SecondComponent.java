@@ -1,13 +1,13 @@
 package com.jaynewstrom.screenswitchersample.second;
 
-import com.jaynewstrom.screenswitchersample.MainActivityComponent;
+import com.jaynewstrom.screenswitchersample.base.ParentComponent;
 
 import dagger.Component;
 
 @ForSecondScreen
 @Component(
         dependencies = {
-                MainActivityComponent.class
+                ParentComponent.class
         },
         modules = {
                 SecondScreenModule.class

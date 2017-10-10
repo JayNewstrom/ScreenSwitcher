@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
 import com.jaynewstrom.screenswitchersample.R;
-import com.jaynewstrom.screenswitchersample.ScreenManager;
+import com.jaynewstrom.screenswitchersample.base.ScreenManager;
 import com.jaynewstrom.screenswitchersample.second.SecondScreen;
 import com.jnewstrom.screenswitcher.dialoghub.DialogHub;
 

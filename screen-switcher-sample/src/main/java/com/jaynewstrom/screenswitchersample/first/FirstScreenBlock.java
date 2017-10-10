@@ -1,13 +1,13 @@
 package com.jaynewstrom.screenswitchersample.first;
 
 import com.jaynewstrom.concrete.ConcreteBlock;
-import com.jaynewstrom.screenswitchersample.MainActivityComponent;
+import com.jaynewstrom.screenswitchersample.base.ParentComponent;
 
 final class FirstScreenBlock implements ConcreteBlock<FirstComponent> {
-    private final MainActivityComponent theParentComponent;
+    private final ParentComponent parentComponent;
 
-    FirstScreenBlock(MainActivityComponent theParentComponent) {
-        this.theParentComponent = theParentComponent;
+    FirstScreenBlock(ParentComponent parentComponent) {
+        this.parentComponent = parentComponent;
     }
 
     @Override public String name() {
@@ -15,6 +15,6 @@ final class FirstScreenBlock implements ConcreteBlock<FirstComponent> {
     }
 
     @Override public FirstComponent createComponent() {
-        return DaggerFirstComponent.builder().mainActivityComponent(theParentComponent).build();
+        return DaggerFirstComponent.builder().parentComponent(parentComponent).build();
     }
 }

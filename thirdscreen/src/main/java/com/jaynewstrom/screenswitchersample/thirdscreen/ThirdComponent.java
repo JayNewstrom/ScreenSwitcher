@@ -1,13 +1,13 @@
-package com.jaynewstrom.screenswitchersample.third;
+package com.jaynewstrom.screenswitchersample.thirdscreen;
 
-import com.jaynewstrom.screenswitchersample.MainActivityComponent;
+import com.jaynewstrom.screenswitchersample.base.ParentComponent;
 
 import dagger.Component;
 
 @ForThirdScreen
 @Component(
         dependencies = {
-                MainActivityComponent.class
+                ParentComponent.class
         },
         modules = {
                 ThirdScreenModule.class

@@ -10,6 +10,7 @@ import com.jaynewstrom.screenswitcher.ScreenSwitcher;
 import com.jaynewstrom.screenswitcher.ScreenSwitcherFactory;
 import com.jaynewstrom.screenswitcher.ScreenSwitcherPopHandler;
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState;
+import com.jaynewstrom.screenswitchersample.base.ScreenManager;
 import com.jnewstrom.screenswitcher.dialoghub.DialogHub;
 
 import javax.annotation.Nullable;

@@ -21,13 +21,17 @@ dependencies {
     implementation deps.dagger
     annotationProcessor deps.daggerCompiler
 
-    implementation 'com.jakewharton:butterknife:8.6.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
+    implementation deps.butterknife
+    annotationProcessor deps.butterknifeProcessor
 
     implementation 'com.jakewharton.timber:timber:4.5.1'
 
     implementation project(':screen-switcher')
     implementation project(':dialog-hub')
+
+    implementation project(':base')
+
+    implementation project(':thirdscreen')
 
     compileOnly deps.jsr305
 

@@ -1,4 +1,4 @@
-package com.jaynewstrom.screenswitchersample.third;
+package com.jaynewstrom.screenswitchersample.thirdscreen;
 
 import java.lang.annotation.Retention;
 

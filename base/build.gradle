@@ -1,0 +1,9 @@
+apply plugin: 'com.android.library'
+
+dependencies {
+    api project(':screen-switcher')
+    api deps.concrete
+    api deps.supportAnnotations
+    api project(':dialog-hub')
+    compileOnly deps.jsr305
+}

@@ -1,14 +1,14 @@
 package com.jaynewstrom.screenswitchersample.second;
 
 import com.jaynewstrom.concrete.ConcreteBlock;
-import com.jaynewstrom.screenswitchersample.MainActivityComponent;
+import com.jaynewstrom.screenswitchersample.base.ParentComponent;
 
 final class SecondScreenBlock implements ConcreteBlock<SecondComponent> {
-    private final MainActivityComponent theParentComponent;
+    private final ParentComponent parentComponent;
     private final SecondScreen secondScreen;
 
-    SecondScreenBlock(MainActivityComponent theParentComponent, SecondScreen secondScreen) {
-        this.theParentComponent = theParentComponent;
+    SecondScreenBlock(ParentComponent parentComponent, SecondScreen secondScreen) {
+        this.parentComponent = parentComponent;
         this.secondScreen = secondScreen;
     }
 
@@ -18,7 +18,7 @@ final class SecondScreenBlock implements ConcreteBlock<SecondComponent> {
 
     @Override public SecondComponent createComponent() {
         return DaggerSecondComponent.builder()
-                .mainActivityComponent(theParentComponent)
+                .parentComponent(parentComponent)
                 .secondScreenModule(new SecondScreenModule(secondScreen))
                 .build();
     }

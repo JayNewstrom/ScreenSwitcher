@@ -1,12 +1,10 @@
-package com.jaynewstrom.screenswitchersample.third;
+package com.jaynewstrom.screenswitchersample.thirdscreen;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
-import com.jaynewstrom.screenswitchersample.R;
-import com.jaynewstrom.screenswitchersample.ScreenManager;
-import com.jaynewstrom.screenswitchersample.second.SecondScreen;
+import com.jaynewstrom.screenswitchersample.base.ScreenManager;
 import com.jnewstrom.screenswitcher.dialoghub.DialogHub;
 
 import javax.inject.Inject;
@@ -18,6 +16,7 @@ final class ThirdView extends LinearLayout {
 
     @Inject ScreenManager screenManager;
     @Inject DialogHub dialogHub;
+    @Inject ThirdScreenNavigator navigator;
 
     ThirdView(Context context, ThirdComponent component) {
         super(context);
@@ -28,19 +27,19 @@ final class ThirdView extends LinearLayout {
         ButterKnife.bind(this);
     }
 
-    @OnClick(R.id.btn_pop) void onPopButtonClicked() {
+    @OnClick(R2.id.btn_pop) void onPopButtonClicked() {
         screenManager.pop();
     }
 
-    @OnClick(R.id.btn_pop_two) void onPopTwoButtonClicked() {
+    @OnClick(R2.id.btn_pop_two) void onPopTwoButtonClicked() {
         screenManager.pop(2);
     }
 
-    @OnClick(R.id.btn_pop_to_second_screen) void onPopToSecondScreenButtonClicked() {
-        screenManager.popTo(new SecondScreen());
+    @OnClick(R2.id.btn_pop_to_second_screen) void onPopToSecondScreenButtonClicked() {
+        navigator.popToSecondScreen();
     }
 
-    @OnClick(R.id.btn_show_third_dialog) void onShowThirdDialogClicked() {
+    @OnClick(R2.id.btn_show_third_dialog) void onShowThirdDialogClicked() {
         dialogHub.show(new ThirdScreenDialogFactory(getContext()));
     }
 }

@@ -1,4 +1,4 @@
-package com.jaynewstrom.screenswitchersample;
+package com.jaynewstrom.screenswitchersample.base;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

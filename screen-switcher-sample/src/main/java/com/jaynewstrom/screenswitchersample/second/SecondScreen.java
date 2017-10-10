@@ -5,9 +5,9 @@ import android.view.View;
 
 import com.jaynewstrom.concrete.ConcreteBlock;
 import com.jaynewstrom.screenswitcher.ScreenTransition;
-import com.jaynewstrom.screenswitchersample.DefaultScreenTransition;
-import com.jaynewstrom.screenswitchersample.MainActivityComponent;
-import com.jaynewstrom.screenswitchersample.concrete.ConcreteScreen;
+import com.jaynewstrom.screenswitchersample.base.DefaultScreenTransition;
+import com.jaynewstrom.screenswitchersample.base.ParentComponent;
+import com.jaynewstrom.screenswitchersample.base.concrete.ConcreteScreen;
 
 public final class SecondScreen extends ConcreteScreen<SecondComponent> {
 
@@ -15,8 +15,8 @@ public final class SecondScreen extends ConcreteScreen<SecondComponent> {
         return DefaultScreenTransition.INSTANCE;
     }
 
-    @Override protected ConcreteBlock<SecondComponent> block(MainActivityComponent theParentComponent) {
-        return new SecondScreenBlock(theParentComponent, this);
+    @Override protected ConcreteBlock<SecondComponent> block(ParentComponent parentComponent) {
+        return new SecondScreenBlock(parentComponent, this);
     }
 
     @Override protected View createView(Context context, SecondComponent component) {

@@ -7,6 +7,7 @@ ext {
     targetCompatibilityVersion = JavaVersion.VERSION_1_7
     supportLibraryVersion = '26.1.0'
     daggerVersion = '2.11'
+    butterknifeVersion = '9.0.0-SNAPSHOT'
 }
 
 ext.deps = [
@@ -16,6 +17,8 @@ ext.deps = [
         daggerCompiler: "com.google.dagger:dagger-compiler:$daggerVersion",
         concrete: 'com.jaynewstrom:concrete:0.10.0',
         jsr305: 'com.google.code.findbugs:jsr305:3.0.2',
+        butterknife: "com.jakewharton:butterknife:$butterknifeVersion",
+        butterknifeProcessor: "com.jakewharton:butterknife-compiler:$butterknifeVersion",
 
         junit: 'junit:junit:4.12',
         fest: 'org.easytesting:fest-assert-core:2.0M10',
@@ -39,11 +42,26 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
     }
 
     configurations.all {
         resolutionStrategy {
             force "com.android.support:support-annotations:$supportLibraryVersion"
+        }
+    }
+}
+
+subprojects {
+    buildscript {
+        repositories {
+            google()
+            jcenter()
+            maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        }
+        dependencies {
+            classpath 'com.android.tools.build:gradle:3.0.0-beta7'
+            classpath "com.jakewharton:butterknife-gradle-plugin:$butterknifeVersion"
         }
     }
 }

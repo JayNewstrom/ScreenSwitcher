@@ -1,5 +1,7 @@
 package com.jaynewstrom.screenswitchersample;
 
+import com.jaynewstrom.screenswitchersample.base.LeakWatcher;
+
 import javax.inject.Singleton;
 
 import dagger.Component;
@@ -11,4 +13,5 @@ import dagger.Component;
         }
 )
 public interface ApplicationComponent {
+    LeakWatcher getLeakWatcher();
 }

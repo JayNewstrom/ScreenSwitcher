@@ -1,4 +1,4 @@
 @ParametersAreNonnullByDefault
-package com.jaynewstrom.screenswitchersample.third;
+package com.jaynewstrom.screenswitchersample.thirdscreen;
 
 import javax.annotation.ParametersAreNonnullByDefault;

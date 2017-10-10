@@ -1,0 +1,17 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.jakewharton.butterknife'
+
+dependencies {
+    api project(':screen-switcher')
+    implementation project(':base')
+
+    implementation deps.dagger
+    annotationProcessor deps.daggerCompiler
+
+    implementation deps.butterknife
+    annotationProcessor deps.butterknifeProcessor
+
+    implementation project(':dialog-hub')
+
+    compileOnly deps.jsr305
+}

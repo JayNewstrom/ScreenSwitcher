@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
 
 dependencies {
-    implementation deps.concrete
+    api deps.concrete
 }

@@ -1,4 +1,4 @@
-package com.jaynewstrom.screenswitchersample.third;
+package com.jaynewstrom.screenswitchersample.thirdscreen;
 
 import android.app.Dialog;
 import android.content.Context;

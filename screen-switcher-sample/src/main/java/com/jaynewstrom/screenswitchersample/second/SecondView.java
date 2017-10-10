@@ -8,8 +8,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.jaynewstrom.screenswitchersample.R;
-import com.jaynewstrom.screenswitchersample.ScreenManager;
-import com.jaynewstrom.screenswitchersample.third.ThirdScreen;
+import com.jaynewstrom.screenswitchersample.base.ScreenManager;
+import com.jaynewstrom.screenswitchersample.thirdscreen.ThirdScreen;
+import com.jaynewstrom.screenswitchersample.thirdscreen.ThirdScreenNavigator;
 import com.jnewstrom.screenswitcher.dialoghub.DialogHub;
 
 import javax.inject.Inject;
@@ -49,7 +50,11 @@ final class SecondView extends LinearLayout {
     }
 
     @OnClick(R.id.btn_third) void onThirdScreenButtonPressed() {
-        screenManager.push(new ThirdScreen());
+        screenManager.push(new ThirdScreen(new ThirdScreenNavigator() {
+            @Override public void popToSecondScreen() {
+                screenManager.popTo(new SecondScreen());
+            }
+        }));
     }
 
     public void showConfirmPop() {

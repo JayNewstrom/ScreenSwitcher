@@ -2,7 +2,7 @@ package com.jaynewstrom.screenswitchersample.second;
 
 import com.jaynewstrom.screenswitcher.Screen;
 import com.jaynewstrom.screenswitcher.ScreenPopListener;
-import com.jaynewstrom.screenswitchersample.ScreenManager;
+import com.jaynewstrom.screenswitchersample.base.ScreenManager;
 
 import javax.inject.Inject;
 
