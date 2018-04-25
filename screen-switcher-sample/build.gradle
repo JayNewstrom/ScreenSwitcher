@@ -17,6 +17,17 @@ android {
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
         testApplicationId 'com.jaynewstrom.screenswitchersample.androidTest'
     }
+
+    lintOptions {
+        disable "BinaryOperationInTimber",
+                "LogNotTimber",
+                "StringFormatInTimber",
+                "ThrowableNotAtBeginning",
+                "TimberArgCount",
+                "TimberArgTypes",
+                "TimberExceptionLogging",
+                "TimberTagLength"
+    }
 }
 
 dependencies {
