@@ -1,12 +1,11 @@
 ext {
     minSdkVersion = 15
-    targetSdkVersion = 25
-    compileSdkVersion = 25
-    buildToolsVersion = '25.0.3'
+    targetSdkVersion = 27
+    compileSdkVersion = 27
     sourceCompatibilityVersion = JavaVersion.VERSION_1_7
     targetCompatibilityVersion = JavaVersion.VERSION_1_7
-    supportLibraryVersion = '25.3.1'
-    daggerVersion = '2.10'
+    supportLibraryVersion = '27.1.1'
+    daggerVersion = '2.15'
 }
 
 ext.deps = [
@@ -14,29 +13,33 @@ ext.deps = [
         appCompatv7: "com.android.support:appcompat-v7:$supportLibraryVersion",
         dagger: "com.google.dagger:dagger:$daggerVersion",
         daggerCompiler: "com.google.dagger:dagger-compiler:$daggerVersion",
-        concrete: 'com.jaynewstrom:concrete:0.10.0',
+        concrete: 'com.jaynewstrom:concrete:0.12.0',
         jsr305: 'com.google.code.findbugs:jsr305:3.0.2',
 
         junit: 'junit:junit:4.12',
         fest: 'org.easytesting:fest-assert-core:2.0M10',
         mockitoCore: 'org.mockito:mockito-core:1.10.19',
-        androidTestRunner: 'com.android.support.test:runner:0.5',
-        androidTestRules: 'com.android.support.test:rules:0.5',
-        espressoCore: 'com.android.support.test.espresso:espresso-core:2.2.2',
+        androidTestRunner: 'com.android.support.test:runner:1.0.1',
+        androidTestRules: 'com.android.support.test:rules:1.0.1',
+        espressoCore: 'com.android.support.test.espresso:espresso-core:3.0.1',
 ]
 
 buildscript {
     repositories {
+        google()
         jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.2'
+        classpath 'com.android.tools.build:gradle:3.1.2'
     }
 }
 
 allprojects {
     repositories {
+        google()
         jcenter()
+        mavenCentral()
     }
 
     configurations.all {
