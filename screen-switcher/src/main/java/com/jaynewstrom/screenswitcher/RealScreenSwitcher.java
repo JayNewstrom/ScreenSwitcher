@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -23,6 +24,7 @@ final class RealScreenSwitcher implements ScreenSwitcher {
     private static final String TOO_MANY_SCREENS_ERROR_FORMAT = "%d screens exists, can't pop %d screens.";
 
     private boolean transitioning;
+    private StackTraceElement[] transitioningStackTrace;
 
     private final Context context;
     private final ScreenSwitcherState state;
@@ -154,7 +156,14 @@ final class RealScreenSwitcher implements ScreenSwitcher {
     }
 
     private void ensureTransitionIsNotOccurring(String transitionType) {
-        checkState(!transitioning, String.format("Can't %s while a transition is occurring", transitionType));
+        if (!transitioning) {
+            return;
+        }
+        String exceptionMessage = String.format("Can't %s while a transition is occurring.\nPrevious transition from: %s",
+                transitionType,
+                Arrays.toString(transitioningStackTrace)
+        );
+        throw new IllegalStateException(exceptionMessage);
     }
 
     private void checkNumberToPop(int numberToPop) {
@@ -209,6 +218,12 @@ final class RealScreenSwitcher implements ScreenSwitcher {
 
     void setTransitioning(boolean transitioning) {
         this.transitioning = transitioning;
+
+        if (transitioning) {
+            transitioningStackTrace = new Throwable().getStackTrace();
+        } else {
+            transitioningStackTrace = null;
+        }
     }
 
     void hideAllButTopScreen() {
@@ -236,7 +251,7 @@ final class RealScreenSwitcher implements ScreenSwitcher {
 
         @Override public void run() {
             if (executed) {
-                throw new IllegalStateException("Transition complete runnable already executed");
+                throw new IllegalStateException("Transition complete runnable already executed.");
             } else {
                 executed = true;
             }
@@ -246,7 +261,7 @@ final class RealScreenSwitcher implements ScreenSwitcher {
     }
 
     private final class RemoveScreenRunnable implements Runnable {
-
+        private boolean executed;
         private List<Screen> screens;
 
         RemoveScreenRunnable(Screen screen, ScreenSwitcherState state) {
@@ -262,6 +277,12 @@ final class RealScreenSwitcher implements ScreenSwitcher {
         }
 
         @Override public void run() {
+            if (executed) {
+                throw new IllegalStateException("RemoveScreenRunnable already executed.");
+            } else {
+                executed = true;
+            }
+
             for (int i = 0, size = screens.size(); i < size; i++) {
                 removeScreen(screens.get(i), false);
             }

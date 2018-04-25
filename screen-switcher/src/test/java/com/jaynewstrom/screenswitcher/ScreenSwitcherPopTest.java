@@ -30,7 +30,7 @@ public final class ScreenSwitcherPopTest {
             activityScreenSwitcher.pop(1);
             fail();
         } catch (IllegalStateException expected) {
-            assertThat(expected).hasMessage("Can't pop while a transition is occurring");
+            assertThat(expected).hasMessageContaining("Can't pop while a transition is occurring");
         }
     }
 

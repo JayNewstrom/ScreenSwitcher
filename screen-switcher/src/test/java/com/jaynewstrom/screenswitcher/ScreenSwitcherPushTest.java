@@ -26,7 +26,7 @@ public final class ScreenSwitcherPushTest {
             activityScreenSwitcher.push(mock(Screen.class));
             fail();
         } catch (IllegalStateException expected) {
-            assertThat(expected).hasMessage("Can't push while a transition is occurring");
+            assertThat(expected).hasMessageContaining("Can't push while a transition is occurring");
         }
     }
 
