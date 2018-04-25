@@ -14,6 +14,7 @@ import static com.jaynewstrom.screenswitcher.ScreenTestUtils.mockCreateView;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public final class ScreenSwitcherReplaceScreensWithTest {
 
@@ -24,7 +25,7 @@ public final class ScreenSwitcherReplaceScreensWithTest {
             activityScreenSwitcher.replaceScreensWith(1, Collections.singletonList(mock(Screen.class)));
             fail();
         } catch (IllegalStateException expected) {
-            assertThat(expected).hasMessage("Can't replaceScreensWith while a transition is occurring");
+            assertThat(expected).hasMessageContaining("Can't replaceScreensWith while a transition is occurring");
         }
     }
 
@@ -96,5 +97,27 @@ public final class ScreenSwitcherReplaceScreensWithTest {
         assertThat(activityScreenSwitcher.isTransitioning()).isTrue();
         transitionCompletedRunnable.get().run();
         assertThat(activityScreenSwitcher.isTransitioning()).isFalse();
+    }
+
+    @Test public void givesPreviousStacktraceWhenCallingTransitionWhenTransitioning() {
+        Activity activity = mock(Activity.class);
+        Screen screen1 = mock(Screen.class);
+        mockCreateView(screen1);
+        Screen screen2 = mock(Screen.class);
+        mockCreateView(screen2);
+        when(screen2.transition()).thenReturn(mock(ScreenTransition.class));
+        ScreenSwitcherState state = ScreenTestUtils.defaultState(Arrays.asList(screen1, screen2));
+        ScreenSwitcher activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state);
+        testCallingTransitionHelper(activityScreenSwitcher);
+        try {
+            activityScreenSwitcher.replaceScreensWith(1, Collections.singletonList(mock(Screen.class)));
+            fail();
+        } catch (IllegalStateException expected) {
+            assertThat(expected).hasMessageContaining("testCallingTransitionHelper");
+        }
+    }
+
+    private static void testCallingTransitionHelper(ScreenSwitcher screenSwitcher) {
+        screenSwitcher.pop(1);
     }
 }
