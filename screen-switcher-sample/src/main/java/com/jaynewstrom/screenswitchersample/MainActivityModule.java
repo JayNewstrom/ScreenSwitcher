@@ -12,7 +12,6 @@ import dagger.Module;
 import dagger.Provides;
 import timber.log.Timber;
 
-@ForMainActivity
 @Module
 public final class MainActivityModule {
 

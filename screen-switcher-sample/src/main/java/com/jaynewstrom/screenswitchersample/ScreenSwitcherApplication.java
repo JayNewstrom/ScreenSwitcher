@@ -23,7 +23,7 @@ public final class ScreenSwitcherApplication extends Application {
     }
 
     private ApplicationComponent applicationComponent() {
-        return DaggerApplicationComponent.builder().applicationModule(new ApplicationModule(this)).build();
+        return DaggerApplicationComponent.builder().build();
     }
 
     @Override public Object getSystemService(String name) {

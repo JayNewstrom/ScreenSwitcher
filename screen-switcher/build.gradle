@@ -14,7 +14,6 @@ apply plugin: 'com.jfrog.bintray'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
 
     compileOptions {
         sourceCompatibility rootProject.ext.sourceCompatibilityVersion
@@ -33,12 +32,14 @@ android {
 }
 
 dependencies {
-    provided deps.supportAnnotations
-    provided deps.jsr305
+    compileOnly deps.supportAnnotations
+    compileOnly deps.jsr305
 
-    testCompile deps.junit
-    testCompile deps.mockitoCore
-    testCompile deps.fest
+    testCompileOnly deps.supportAnnotations
+    testCompileOnly deps.jsr305
+    testImplementation deps.junit
+    testImplementation deps.mockitoCore
+    testImplementation deps.fest
 }
 
 task sourcesJar(type: Jar) {

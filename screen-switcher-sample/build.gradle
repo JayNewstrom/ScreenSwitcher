@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
 
     compileOptions {
         sourceCompatibility rootProject.ext.sourceCompatibilityVersion
@@ -21,27 +20,27 @@ android {
 }
 
 dependencies {
-    compile deps.appCompatv7
+    implementation deps.appCompatv7
 
-    compile deps.concrete
+    implementation deps.concrete
 
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 
-    compile deps.dagger
+    implementation deps.dagger
     annotationProcessor deps.daggerCompiler
 
-    compile 'com.jakewharton:butterknife:8.4.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
-    compile 'com.jakewharton.timber:timber:4.5.1'
+    implementation 'com.jakewharton.timber:timber:4.6.1'
 
-    compile project(':screen-switcher')
-    compile project(':dialog-hub')
+    implementation project(':screen-switcher')
+    implementation project(':dialog-hub')
 
-    provided deps.jsr305
+    compileOnly deps.jsr305
 
-    androidTestCompile deps.androidTestRunner
-    androidTestCompile deps.androidTestRules
-    androidTestCompile deps.espressoCore
+    androidTestImplementation deps.androidTestRunner
+    androidTestImplementation deps.androidTestRules
+    androidTestImplementation deps.espressoCore
 }
