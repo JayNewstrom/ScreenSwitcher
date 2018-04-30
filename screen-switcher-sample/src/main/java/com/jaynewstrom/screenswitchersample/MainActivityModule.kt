@@ -43,7 +43,7 @@ object MainActivityModule {
     }
 
     @JvmStatic @Provides @ForMainActivity
-    fun provideDialogHub(): DialogHub {
-        return DialogHub()
+    internal fun provideDialogHub(screenManager: ScreenManager): DialogHub {
+        return DialogHub { screenManager.transitioning() }
     }
 }

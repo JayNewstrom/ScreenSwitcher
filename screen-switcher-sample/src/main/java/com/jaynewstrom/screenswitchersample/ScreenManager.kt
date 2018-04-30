@@ -42,4 +42,6 @@ internal class ScreenManager constructor(private val screenSwitcherState: Screen
     fun replaceScreenWith(screen: Screen) {
         screenSwitcher?.replaceScreensWith(1, listOf(screen))
     }
+
+    fun transitioning() = screenSwitcher?.isTransitioning ?: false
 }
