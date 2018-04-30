@@ -1,4 +1,0 @@
-@ParametersAreNonnullByDefault
-package com.jaynewstrom.screenswitchersample.concrete;
-
-import javax.annotation.ParametersAreNonnullByDefault;
