@@ -5,7 +5,9 @@ import android.app.Dialog
 import android.os.Bundle
 import java.lang.ref.WeakReference
 
-class DialogHub {
+class DialogHub(isTransitioning: () -> Boolean) {
+    private val dialogCallbackHelper = DialogCallbackHelper(isTransitioning)
+
     private var dialogInformationList: MutableList<DialogInformation> = mutableListOf()
     private var savedDialogFactories: List<SavedDialogFactory>? = null
     private var activity: Activity? = null
@@ -32,6 +34,7 @@ class DialogHub {
         } else {
             dialog.show()
         }
+        dialogCallbackHelper.bootstrap(dialog)
         dialogInformationList.add(DialogInformation(dialog, dialogFactory))
     }
 
