@@ -168,7 +168,7 @@ class ScreenSwitcherPopTest {
         val activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state, popHandler)
         activityScreenSwitcher.pop(1)
         verify(popHandler).onLastScreenPopped(kotlinAny())
-        assertThat(state.screenCount()).isEqualTo(1)
+        assertThat(state.screenCount()).isEqualTo(0)
         assertThat(activityScreenSwitcher.isTransitioning).isTrue
     }
 
