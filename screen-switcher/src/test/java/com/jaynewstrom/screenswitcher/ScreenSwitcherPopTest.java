@@ -176,7 +176,7 @@ public final class ScreenSwitcherPopTest {
         ScreenSwitcher activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state, popHandler);
         activityScreenSwitcher.pop(1);
         verify(popHandler).onLastScreenPopped(any(ScreenSwitcherPopHandler.PopCompleteHandler.class));
-        assertThat(state.screenCount()).isEqualTo(1);
+        assertThat(state.screenCount()).isEqualTo(0);
         assertThat(activityScreenSwitcher.isTransitioning()).isTrue();
     }
 
