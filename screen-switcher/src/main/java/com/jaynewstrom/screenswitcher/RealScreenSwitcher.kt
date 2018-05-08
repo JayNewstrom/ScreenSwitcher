@@ -168,10 +168,13 @@ internal class RealScreenSwitcher(
         } else {
             state.lifecycleListener.onScreenBecameInactive(screens[screens.size - 1])
             isTransitioning = true
+            for (screen in ArrayList(state.screens)) {
+                state.removeScreen(screen)
+            }
             host.onLastScreenPopped(object : ScreenSwitcherPopHandler.PopCompleteHandler {
                 override fun popComplete() {
                     for (screen in ArrayList(screenViewMap.keys)) {
-                        removeScreen(screen, true)
+                        removeScreen(screen, false)
                     }
                 }
             })
