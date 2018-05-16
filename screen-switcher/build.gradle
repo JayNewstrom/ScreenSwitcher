@@ -65,3 +65,11 @@ if (project.rootProject.file('local.properties').exists()) {
         }
     }
 }
+
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            artifactId 'screen-switcher'
+        }
+    }
+}
