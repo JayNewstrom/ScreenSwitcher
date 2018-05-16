@@ -45,6 +45,7 @@ internal class RealScreenSwitcher(
 
     private fun createView(screen: Screen): View {
         val view = screen.createView(context, host.hostView())
+        view.setTag(R.id.screen_switcher_screen, screen)
         checkArgument(view.parent == null) { "createView should not return a view that has a parent." }
         screenViewMap[screen] = view
         host.addView(view)
@@ -133,7 +134,7 @@ internal class RealScreenSwitcher(
         checkState(!isTransitioning) {
             String.format("Can't %s while a transition is occurring.\nPrevious transition from: %s",
                 transitionType,
-                transitioningStackTrace!!.contentToString()
+                transitioningStackTrace?.contentToString()
             )
         }
     }
