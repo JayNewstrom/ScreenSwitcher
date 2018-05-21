@@ -3,13 +3,14 @@ package com.jaynewstrom.screenswitchersample
 import android.app.Activity
 import android.os.Bundle
 import android.view.MotionEvent
-
+import android.view.View
 import com.jaynewstrom.concrete.Concrete
 import com.jaynewstrom.concrete.ConcreteWall
 import com.jaynewstrom.screenswitcher.ScreenSwitcher
 import com.jaynewstrom.screenswitcher.ScreenSwitcherFactory
 import com.jaynewstrom.screenswitcher.ScreenSwitcherPopHandler
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState
+import com.jaynewstrom.screenswitcher.screenmanager.ScreenManager
 import com.jnewstrom.screenswitcher.dialoghub.DialogHub
 import javax.inject.Inject
 
@@ -31,6 +32,10 @@ class MainActivity : Activity(), ScreenSwitcherPopHandler {
         screenManager.take(activityScreenSwitcher)
         dialogHub.attachActivity(this)
         dialogHub.restoreState()
+
+        val contentView = findViewById<View>(android.R.id.content)
+        contentView.setTag(R.id.screen_manager, screenManager)
+        contentView.setTag(R.id.dialog_hub, dialogHub)
     }
 
     override fun onDestroy() {

@@ -2,24 +2,19 @@ package com.jaynewstrom.screenswitchersample.second
 
 import com.jaynewstrom.screenswitcher.Screen
 import com.jaynewstrom.screenswitcher.ScreenPopListener
-import com.jaynewstrom.screenswitchersample.ScreenManager
-
+import com.jaynewstrom.screenswitcher.screenmanager.screenManager
 import javax.inject.Inject
 
 @ForSecondScreen
 internal class SecondScreenPresenter @Inject constructor(
-    screen: Screen,
-    screenManager: ScreenManager
+    private val screen: Screen
 ) : ScreenPopListener {
     private var hasConfirmedPop: Boolean = false
     private var view: SecondView? = null
 
-    init {
-        screenManager.registerPopListener(screen, this)
-    }
-
     fun takeView(view: SecondView) {
         this.view = view
+        view.screenManager()?.registerPopListener(screen, this)
     }
 
     fun dropView(view: SecondView) {

@@ -2,7 +2,12 @@ package com.jnewstrom.screenswitcher.dialoghub
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
+import com.jaynewstrom.screenswitcher.Screen
+import com.jaynewstrom.screenswitcher.screenmanager.ScreenManager
 import java.lang.ref.WeakReference
 
 class DialogHub(isTransitioning: () -> Boolean) {
@@ -65,4 +70,44 @@ class DialogHub(isTransitioning: () -> Boolean) {
     }
 
     private class SavedDialogFactory constructor(val dialogFactory: DialogFactory, val savedState: Bundle)
+}
+
+/**
+ * Returns the dialogDisplayer if this view is associated with the current screen. Null otherwise.
+ */
+tailrec fun View.dialogDisplayer(): DialogDisplayer? {
+    val parent = parent as? ViewGroup ?: return null
+    val screen = getTag(R.id.screen_switcher_screen) as? Screen?
+    if (screen != null) {
+        val screenManager = parent.getTag(R.id.screen_manager) as ScreenManager
+        return if (screenManager.isActiveScreen(screen)) {
+            val dialogHub = parent.getTag(R.id.dialog_hub) as DialogHub
+            DialogDisplayer(screen, screenManager, dialogHub)
+        } else {
+            null
+        }
+    }
+    return parent.dialogDisplayer()
+}
+
+class DialogDisplayer internal constructor(
+    private val screen: Screen,
+    private val screenHub: ScreenManager,
+    private val dialogHub: DialogHub
+) {
+    fun show(dialogFactory: DialogFactory) {
+        dialogHub.show(WrapperDialogFactory(dialogFactory))
+    }
+
+    private inner class WrapperDialogFactory(private val dialogFactory: DialogFactory) : DialogFactory {
+        override fun createDialog(context: Context): Dialog {
+            val dialog = dialogFactory.createDialog(context)
+            val contentView = dialog.findViewById<View>(android.R.id.content)
+            contentView.setTag(R.id.screen_switcher_screen, screen)
+            val parent = contentView.parent as View
+            parent.setTag(R.id.screen_manager, screenHub)
+            parent.setTag(R.id.dialog_hub, dialogHub)
+            return dialog
+        }
+    }
 }

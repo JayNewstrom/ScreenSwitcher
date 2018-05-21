@@ -23,7 +23,7 @@ private class ThirdScreen : ConcreteScreen<ThirdComponent>() {
     }
 
     public override fun createView(context: Context, component: ThirdComponent): View {
-        return ThirdView(context, component)
+        return ThirdView(context)
     }
 
     override fun transition() = DefaultScreenTransition
@@ -36,7 +36,6 @@ internal annotation class ForThirdScreen
 @ForThirdScreen
 @Component(dependencies = [MainActivityComponent::class], modules = [ThirdScreenModule::class])
 internal interface ThirdComponent {
-    fun inject(view: ThirdView)
     fun inject(thirdScreenDialog: ThirdScreenDialog)
 }
 

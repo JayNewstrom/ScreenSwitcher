@@ -3,6 +3,7 @@ package com.jaynewstrom.screenswitchersample
 import com.jaynewstrom.screenswitcher.Screen
 import com.jaynewstrom.screenswitcher.ScreenLifecycleListener
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState
+import com.jaynewstrom.screenswitcher.screenmanager.ScreenManager
 import com.jaynewstrom.screenswitchersample.first.FirstScreenFactory
 import com.jnewstrom.screenswitcher.dialoghub.DialogHub
 import dagger.Module
