@@ -19,5 +19,6 @@ android {
 dependencies {
     api deps.concrete
     api deps.kotlinRuntime
-    api project(':screen-manager')
+    api project(':screen-switcher')
+    api deps.appCompatv7
 }

@@ -9,17 +9,15 @@ import android.widget.LinearLayout
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
+import com.jaynewstrom.screenswitcher.screenmanager.screenManager
 import com.jaynewstrom.screenswitchersample.R
-import com.jaynewstrom.screenswitchersample.ScreenManager
 import com.jaynewstrom.screenswitchersample.third.ThirdScreenFactory
-import com.jnewstrom.screenswitcher.dialoghub.DialogHub
+import com.jnewstrom.screenswitcher.dialoghub.dialogDisplayer
 import javax.inject.Inject
 import javax.inject.Provider
 
 internal class SecondView(context: Context, component: SecondComponent) : LinearLayout(context) {
-    @Inject lateinit var screenManager: ScreenManager
     @Inject lateinit var presenter: SecondScreenPresenter
-    @Inject lateinit var dialogHub: DialogHub
     @Inject lateinit var dialogFactoryProvider: Provider<SecondScreenDialogFactory>
 
     @BindView(R.id.btn_confirm_pop) lateinit var confirmPopButton: View
@@ -44,7 +42,7 @@ internal class SecondView(context: Context, component: SecondComponent) : Linear
     }
 
     @OnClick(R.id.btn_third) fun onThirdScreenButtonPressed() {
-        screenManager.push(ThirdScreenFactory.create())
+        screenManager()?.push(ThirdScreenFactory.create())
     }
 
     fun showConfirmPop() {
@@ -53,11 +51,11 @@ internal class SecondView(context: Context, component: SecondComponent) : Linear
 
     @OnClick(R.id.btn_confirm_pop) fun onPopConfirmed() {
         presenter.popConfirmed()
-        screenManager.pop()
+        screenManager()?.pop()
     }
 
     @OnClick(R.id.btn_show_second_dialog) fun onShowSecondDialogPressed() {
-        dialogHub.show(dialogFactoryProvider.get())
+        dialogDisplayer()?.show(dialogFactoryProvider.get())
     }
 
     public override fun onSaveInstanceState(): Parcelable {

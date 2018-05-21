@@ -50,6 +50,7 @@ dependencies {
 
     implementation project(':screen-switcher')
     implementation project(':dialog-hub')
+    implementation project(':screen-manager')
 
     androidTestImplementation deps.androidTestRunner
     androidTestImplementation deps.androidTestRules

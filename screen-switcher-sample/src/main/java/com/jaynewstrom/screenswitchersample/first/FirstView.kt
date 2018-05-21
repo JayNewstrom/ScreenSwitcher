@@ -5,16 +5,14 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import butterknife.ButterKnife
 import butterknife.OnClick
+import com.jaynewstrom.screenswitcher.screenmanager.screenManager
 import com.jaynewstrom.screenswitchersample.R
-import com.jaynewstrom.screenswitchersample.ScreenManager
 import com.jaynewstrom.screenswitchersample.second.SecondScreenFactory
-import com.jnewstrom.screenswitcher.dialoghub.DialogHub
+import com.jnewstrom.screenswitcher.dialoghub.dialogDisplayer
 import javax.inject.Inject
 import javax.inject.Provider
 
 internal class FirstView(context: Context, component: FirstComponent) : LinearLayout(context) {
-    @Inject lateinit var screenManager: ScreenManager
-    @Inject lateinit var dialogHub: DialogHub
     @Inject lateinit var dialogFactoryProvider: Provider<FirstDialogFactory>
 
     init {
@@ -27,16 +25,16 @@ internal class FirstView(context: Context, component: FirstComponent) : LinearLa
 
     @OnClick(R.id.btn_second)
     fun onSecondScreenButtonClicked() {
-        screenManager.push(SecondScreenFactory.create())
+        screenManager()?.push(SecondScreenFactory.create())
     }
 
     @OnClick(R.id.btn_replace_with_second)
     fun onReplaceWithSecondScreenButtonClicked() {
-        screenManager.replaceScreenWith(SecondScreenFactory.create())
+        screenManager()?.replaceScreenWith(SecondScreenFactory.create())
     }
 
     @OnClick(R.id.btn_show_first_dialog)
     fun onShowFirstDialogClicked() {
-        dialogHub.show(dialogFactoryProvider.get())
+        dialogDisplayer()?.show(dialogFactoryProvider.get())
     }
 }
