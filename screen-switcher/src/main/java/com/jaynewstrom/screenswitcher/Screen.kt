@@ -28,3 +28,15 @@ interface Screen {
      */
     fun transition(): ScreenTransition
 }
+
+/**
+ * Returns the current screen if the view has an associated screen. Throws IllegalStateException otherwise.
+ */
+tailrec fun View.currentScreen(): Screen {
+    val parent = parent as? ViewGroup ?: throw IllegalStateException("View is not associated with a screen.")
+    val screen = getTag(R.id.screen_switcher_screen) as? Screen?
+    if (screen != null) {
+        return screen
+    }
+    return parent.currentScreen()
+}
