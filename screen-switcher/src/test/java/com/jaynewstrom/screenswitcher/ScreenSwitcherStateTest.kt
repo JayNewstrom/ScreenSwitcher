@@ -123,4 +123,23 @@ class ScreenSwitcherStateTest {
         state.addScreen(mock(Screen::class.java))
         assertThat(state.screenCount()).isEqualTo(3)
     }
+
+    @Test fun removeActiveScreenTransitionReturnsTheCorrectTransitionForScreen() {
+        val screen0 = mock(Screen::class.java)
+        val transition0: (screenSwitcher: ScreenSwitcher) -> Unit = { throw AssertionError("0") }
+        val screen1 = mock(Screen::class.java)
+        val transition1: (screenSwitcher: ScreenSwitcher) -> Unit = { throw AssertionError("1") }
+        val screen2 = mock(Screen::class.java)
+        val state = ScreenTestUtils.defaultState(listOf(screen0, screen1, screen2))
+        state.enqueueTransition(screen0, transition0)
+        state.enqueueTransition(screen1, transition1)
+        assertThat(state.removeActiveScreenTransition()).isNull() // 2
+        state.removeScreen(screen2)
+        assertThat(state.removeActiveScreenTransition()).isSameAs(transition1) // 1
+        assertThat(state.removeActiveScreenTransition()).isNull() // 1 is gone now
+        state.removeScreen(screen1)
+        assertThat(state.removeActiveScreenTransition()).isSameAs(transition0) // 0
+        state.removeScreen(screen0)
+        assertThat(state.removeActiveScreenTransition()).isNull() // None left
+    }
 }

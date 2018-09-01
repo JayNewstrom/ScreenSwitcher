@@ -12,7 +12,8 @@ class ScreenSwitcherState
  */
 (internal val lifecycleListener: ScreenLifecycleListener, screens: List<Screen>) {
     internal val screens: MutableList<Screen>
-    private val popListenerMap: MutableMap<Screen, ScreenPopListener> = LinkedHashMap()
+    private val transitionMap: MutableMap<Screen, (ScreenSwitcher) -> Unit> = mutableMapOf()
+    private val popListenerMap: MutableMap<Screen, ScreenPopListener> = mutableMapOf()
 
     init {
         checkArgument(screens.isNotEmpty()) { "screens must contain at least one screen" }
@@ -47,6 +48,22 @@ class ScreenSwitcherState
         return screens.size
     }
 
+    /**
+     * Enqueues a transition to be executed when [Screen] is the active screen and a transition is not occurring.
+     * Enqueued transitions are only executed when another transition is complete.
+     * If there are no transitions occurring, this will not be executed immediately.
+     */
+    fun enqueueTransition(fromScreen: Screen, transitionFunction: (screenSwitcher: ScreenSwitcher) -> Unit) {
+        if (screens.contains(fromScreen)) {
+            transitionMap[fromScreen] = transitionFunction
+        }
+    }
+
+    internal fun removeActiveScreenTransition(): ((ScreenSwitcher) -> Unit)? {
+        if (screens.isEmpty()) return null
+        return transitionMap.remove(screens.last())
+    }
+
     internal fun addScreen(screen: Screen) {
         checkArgument(!screens.contains(screen)) { "screen already exists" }
         screens.add(screen)
@@ -55,6 +72,7 @@ class ScreenSwitcherState
 
     internal fun removeScreen(screen: Screen) {
         screens.remove(screen)
+        transitionMap.remove(screen)
         lifecycleListener.onScreenRemoved(screen)
     }
 
