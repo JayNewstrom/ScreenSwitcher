@@ -14,6 +14,7 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
 import java.util.Arrays
+import java.util.concurrent.atomic.AtomicInteger
 
 class ScreenSwitcherPopTest {
     @Test fun popFailsWhenTransitionIsOccurring() {
@@ -205,5 +206,24 @@ class ScreenSwitcherPopTest {
         activityScreenSwitcher.pop(3)
         assertThat(state.screenCount()).isEqualTo(1)
         assertThat(state.screens).contains(screen1)
+    }
+
+    @Test fun enqueuedTransitionIsExecutedAfterPopping() {
+        val activity = mock(Activity::class.java)
+        val screen1 = mock(Screen::class.java)
+        mockCreateView(screen1)
+        val screen2 = mock(Screen::class.java)
+        mockCreateView(screen2)
+        val transitionCompletedRunnable = addTransitionOut(screen2)
+        val state = ScreenTestUtils.defaultState(Arrays.asList(screen1, screen2))
+        val activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state)
+        activityScreenSwitcher.pop(1)
+        val transitionCalledCounter = AtomicInteger()
+        state.enqueueTransition(screen1) {
+            transitionCalledCounter.incrementAndGet()
+        }
+        assertThat(transitionCalledCounter.get()).isZero
+        transitionCompletedRunnable.get().run()
+        assertThat(transitionCalledCounter.get()).isEqualTo(1)
     }
 }

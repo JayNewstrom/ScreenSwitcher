@@ -10,6 +10,7 @@ import org.junit.Test
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import java.util.Arrays
+import java.util.concurrent.atomic.AtomicInteger
 
 class ScreenSwitcherReplaceScreensWithTest {
     @Test fun failsWhenTransitionIsOccurring() {
@@ -92,5 +93,26 @@ class ScreenSwitcherReplaceScreensWithTest {
 
     private fun testCallingTransitionHelper(screenSwitcher: ScreenSwitcher) {
         screenSwitcher.pop(1)
+    }
+
+    @Test fun enqueuedTransitionIsExecutedAfterReplace() {
+        val activity = mock(Activity::class.java)
+        val screen1 = mock(Screen::class.java)
+        mockCreateView(screen1)
+        val screen2 = mock(Screen::class.java)
+        mockCreateView(screen2)
+        val state = ScreenTestUtils.defaultState(Arrays.asList(screen1, screen2))
+        val activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state)
+        val newScreen = mock(Screen::class.java)
+        mockCreateView(newScreen)
+        val transitionCompletedRunnable = addTransitionIn(newScreen)
+        activityScreenSwitcher.replaceScreensWith(1, listOf(newScreen))
+        val transitionCalledCounter = AtomicInteger()
+        state.enqueueTransition(newScreen) {
+            transitionCalledCounter.incrementAndGet()
+        }
+        assertThat(transitionCalledCounter.get()).isZero
+        transitionCompletedRunnable.get().run()
+        assertThat(transitionCalledCounter.get()).isEqualTo(1)
     }
 }

@@ -9,7 +9,7 @@ import android.view.inputmethod.InputMethodManager
 
 internal class RealScreenSwitcher(
     private val context: Context,
-    private val state: ScreenSwitcherState,
+    val state: ScreenSwitcherState,
     private val host: ScreenSwitcherHost
 ) : ScreenSwitcher {
     private var transitioningStackTrace: Array<StackTraceElement>? = null
@@ -116,7 +116,7 @@ internal class RealScreenSwitcher(
             topView.visibility = View.VISIBLE
             state.lifecycleListener.onScreenBecameActive(topScreen)
 
-            val onTransitionCompleted = RemoveScreenRunnable(screensToRemove, state)
+            val onTransitionCompleted = RemoveScreenRunnable(screensToRemove)
             topScreen.transition().transitionIn(topView, backgroundView, onTransitionCompleted)
         }
     }
@@ -187,7 +187,7 @@ internal class RealScreenSwitcher(
         val viewToBecomeVisible = screenViewMap.getValue(screenToBecomeVisible)
         viewToBecomeVisible.visibility = View.VISIBLE
         val viewToRemove = screenViewMap.getValue(screenToRemove)
-        val completionRunnable = RemoveScreenRunnable(screenToRemove, state)
+        val completionRunnable = RemoveScreenRunnable(screenToRemove)
         screenToRemove.transition().transitionOut(viewToRemove, viewToBecomeVisible, completionRunnable)
         state.lifecycleListener.onScreenBecameActive(screenToBecomeVisible)
     }
@@ -223,19 +223,20 @@ internal class RealScreenSwitcher(
             executed = true
             isTransitioning = false
             hideAllButTopScreen()
+            val transitionFunction = state.removeActiveScreenTransition()
+            transitionFunction?.invoke(this@RealScreenSwitcher)
         }
     }
 
     private inner class RemoveScreenRunnable(
-        private val screens: List<Screen>,
-        state: ScreenSwitcherState
+        private val screensToRemove: List<Screen>
     ) : Runnable {
         private var executed: Boolean = false
 
-        constructor(screen: Screen, state: ScreenSwitcherState) : this(listOf<Screen>(screen), state)
+        constructor(screen: Screen) : this(listOf<Screen>(screen))
 
         init {
-            for (screen in screens) {
+            for (screen in screensToRemove) {
                 state.removeScreen(screen)
             }
 
@@ -246,12 +247,14 @@ internal class RealScreenSwitcher(
             checkState(!executed) { "RemoveScreenRunnable already executed." }
             executed = true
 
-            for (screen in screens) {
+            for (screen in screensToRemove) {
                 removeScreen(screen, false)
             }
 
             isTransitioning = false
             hideAllButTopScreen()
+            val transitionFunction = state.removeActiveScreenTransition()
+            transitionFunction?.invoke(this@RealScreenSwitcher)
         }
     }
 
