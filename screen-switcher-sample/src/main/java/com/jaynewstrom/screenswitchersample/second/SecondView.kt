@@ -9,10 +9,10 @@ import android.widget.LinearLayout
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
-import com.jaynewstrom.screenswitcher.screenmanager.screenManager
+import com.jaynewstrom.screenswitcher.dialogmanager.dialogDisplayer
+import com.jaynewstrom.screenswitcher.screenmanager.screenTransitioner
 import com.jaynewstrom.screenswitchersample.R
 import com.jaynewstrom.screenswitchersample.third.ThirdScreenFactory
-import com.jnewstrom.screenswitcher.dialoghub.dialogDisplayer
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -42,7 +42,7 @@ internal class SecondView(context: Context, component: SecondComponent) : Linear
     }
 
     @OnClick(R.id.btn_third) fun onThirdScreenButtonPressed() {
-        screenManager()?.push(ThirdScreenFactory.create())
+        screenTransitioner()?.push(ThirdScreenFactory.create())
     }
 
     fun showConfirmPop() {
@@ -51,7 +51,7 @@ internal class SecondView(context: Context, component: SecondComponent) : Linear
 
     @OnClick(R.id.btn_confirm_pop) fun onPopConfirmed() {
         presenter.popConfirmed()
-        screenManager()?.pop()
+        screenTransitioner()?.pop()
     }
 
     @OnClick(R.id.btn_show_second_dialog) fun onShowSecondDialogPressed() {

@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import butterknife.ButterKnife
 import butterknife.OnClick
-import com.jaynewstrom.screenswitcher.screenmanager.screenManager
+import com.jaynewstrom.screenswitcher.screenmanager.screenTransitioner
 import com.jaynewstrom.screenswitchersample.R
 import com.jaynewstrom.screenswitchersample.second.SecondScreenFactory
-import com.jnewstrom.screenswitcher.dialoghub.dialogDisplayer
+import com.jaynewstrom.screenswitcher.dialogmanager.dialogDisplayer
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -25,12 +25,12 @@ internal class FirstView(context: Context, component: FirstComponent) : LinearLa
 
     @OnClick(R.id.btn_second)
     fun onSecondScreenButtonClicked() {
-        screenManager()?.push(SecondScreenFactory.create())
+        screenTransitioner()?.push(SecondScreenFactory.create())
     }
 
     @OnClick(R.id.btn_replace_with_second)
     fun onReplaceWithSecondScreenButtonClicked() {
-        screenManager()?.replaceScreenWith(SecondScreenFactory.create())
+        screenTransitioner()?.replaceScreenWith(SecondScreenFactory.create())
     }
 
     @OnClick(R.id.btn_show_first_dialog)

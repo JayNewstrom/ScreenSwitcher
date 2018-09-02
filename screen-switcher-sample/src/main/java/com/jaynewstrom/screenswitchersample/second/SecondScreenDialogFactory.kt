@@ -4,7 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 
-import com.jnewstrom.screenswitcher.dialoghub.DialogFactory
+import com.jaynewstrom.screenswitcher.dialogmanager.DialogFactory
 
 import javax.inject.Inject
 
