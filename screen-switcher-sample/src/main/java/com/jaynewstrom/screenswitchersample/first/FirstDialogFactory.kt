@@ -2,10 +2,8 @@ package com.jaynewstrom.screenswitchersample.first
 
 import android.app.Dialog
 import android.content.Context
+import com.jaynewstrom.screenswitcher.dialogmanager.DialogFactory
 import com.jaynewstrom.screenswitchersample.R
-
-import com.jnewstrom.screenswitcher.dialoghub.DialogFactory
-
 import javax.inject.Inject
 
 internal class FirstDialogFactory @Inject constructor() : DialogFactory {

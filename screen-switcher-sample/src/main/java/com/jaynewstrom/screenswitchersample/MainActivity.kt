@@ -11,13 +11,13 @@ import com.jaynewstrom.screenswitcher.ScreenSwitcherFactory
 import com.jaynewstrom.screenswitcher.ScreenSwitcherPopHandler
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState
 import com.jaynewstrom.screenswitcher.screenmanager.ScreenManager
-import com.jnewstrom.screenswitcher.dialoghub.DialogHub
+import com.jaynewstrom.screenswitcher.dialogmanager.DialogManager
 import javax.inject.Inject
 
 class MainActivity : Activity(), ScreenSwitcherPopHandler {
     @Inject internal lateinit var screenSwitcherState: ScreenSwitcherState
     @Inject internal lateinit var screenManager: ScreenManager
-    @Inject internal lateinit var dialogHub: DialogHub
+    @Inject internal lateinit var dialogManager: DialogManager
 
     private lateinit var activityScreenSwitcher: ScreenSwitcher
     private lateinit var activityWall: ConcreteWall<MainActivityComponent>
@@ -30,23 +30,23 @@ class MainActivity : Activity(), ScreenSwitcherPopHandler {
         activityWall.component.inject(this)
         activityScreenSwitcher = ScreenSwitcherFactory.activityScreenSwitcher(this, screenSwitcherState, this)
         screenManager.take(activityScreenSwitcher)
-        dialogHub.attachActivity(this)
-        dialogHub.restoreState()
+        dialogManager.attachActivity(this)
+        dialogManager.restoreState()
 
         val contentView = findViewById<View>(android.R.id.content)
         contentView.setTag(R.id.screen_manager, screenManager)
-        contentView.setTag(R.id.dialog_hub, dialogHub)
+        contentView.setTag(R.id.dialog_manager, dialogManager)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         screenManager.drop(activityScreenSwitcher)
-        dialogHub.dropActivity(this)
+        dialogManager.dropActivity(this)
         popCompleteHandler?.popComplete()
         if (isFinishing) {
             activityWall.destroy()
         } else {
-            dialogHub.saveState()
+            dialogManager.saveState()
         }
     }
 
@@ -56,7 +56,7 @@ class MainActivity : Activity(), ScreenSwitcherPopHandler {
 
     override fun onBackPressed() {
         if (!activityScreenSwitcher.isTransitioning && !isFinishing) {
-            screenManager.pop()
+            activityScreenSwitcher.pop(1)
         }
     }
 

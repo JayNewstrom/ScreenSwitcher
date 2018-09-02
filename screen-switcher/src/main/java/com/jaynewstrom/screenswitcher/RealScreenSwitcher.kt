@@ -32,6 +32,7 @@ internal class RealScreenSwitcher(
         this.screenViewMap = LinkedHashMap()
         initializeActivityState()
         setupHostViewForHidingKeyboard()
+        host.hostView().setupForViewExtensions(this, state)
     }
 
     private fun initializeActivityState() {

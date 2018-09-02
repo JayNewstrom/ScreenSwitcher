@@ -5,7 +5,7 @@ import com.jaynewstrom.screenswitcher.ScreenLifecycleListener
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState
 import com.jaynewstrom.screenswitcher.screenmanager.ScreenManager
 import com.jaynewstrom.screenswitchersample.first.FirstScreenFactory
-import com.jnewstrom.screenswitcher.dialoghub.DialogHub
+import com.jaynewstrom.screenswitcher.dialogmanager.DialogManager
 import dagger.Module
 import dagger.Provides
 import timber.log.Timber
@@ -13,9 +13,7 @@ import timber.log.Timber
 @Module
 object MainActivityModule {
     @JvmStatic @Provides @ForMainActivity
-    internal fun provideScreenManager(screenSwitcherState: ScreenSwitcherState): ScreenManager {
-        return ScreenManager(screenSwitcherState)
-    }
+    internal fun provideScreenManager() = ScreenManager()
 
     @JvmStatic @Provides @ForMainActivity
     fun provideScreenSwitcherState(lifecycleListener: ScreenLifecycleListener): ScreenSwitcherState {
@@ -44,7 +42,7 @@ object MainActivityModule {
     }
 
     @JvmStatic @Provides @ForMainActivity
-    internal fun provideDialogHub(screenManager: ScreenManager): DialogHub {
-        return DialogHub { screenManager.transitioning() }
+    internal fun provideDialogManager(screenManager: ScreenManager): DialogManager {
+        return DialogManager { screenManager.screenSwitcher?.isTransitioning == true }
     }
 }

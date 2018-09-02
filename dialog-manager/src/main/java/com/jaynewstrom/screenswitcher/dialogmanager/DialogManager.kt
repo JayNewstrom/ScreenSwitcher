@@ -1,16 +1,18 @@
-package com.jnewstrom.screenswitcher.dialoghub
+package com.jaynewstrom.screenswitcher.dialogmanager
 
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import com.jaynewstrom.screenswitcher.Screen
+import com.jaynewstrom.screenswitcher.ScreenSwitcherState
+import com.jaynewstrom.screenswitcher.screenSwitcherDataIfActive
 import com.jaynewstrom.screenswitcher.screenmanager.ScreenManager
+import com.jaynewstrom.screenswitcher.setupForViewExtensions
 import java.lang.ref.WeakReference
 
-class DialogHub(isTransitioning: () -> Boolean) {
+class DialogManager(isTransitioning: () -> Boolean) {
     private val dialogCallbackHelper = DialogCallbackHelper(isTransitioning)
 
     private var dialogInformationList: MutableList<DialogInformation> = mutableListOf()
@@ -75,28 +77,26 @@ class DialogHub(isTransitioning: () -> Boolean) {
 /**
  * Returns the dialogDisplayer if this view is associated with the current screen. Null otherwise.
  */
-tailrec fun View.dialogDisplayer(): DialogDisplayer? {
-    val parent = parent as? ViewGroup ?: return null
-    val screen = getTag(R.id.screen_switcher_screen) as? Screen?
-    if (screen != null) {
-        val screenManager = parent.getTag(R.id.screen_manager) as ScreenManager
-        return if (screenManager.isActiveScreen(screen)) {
-            val dialogHub = parent.getTag(R.id.dialog_hub) as DialogHub
-            DialogDisplayer(screen, screenManager, dialogHub)
-        } else {
-            null
-        }
-    }
-    return parent.dialogDisplayer()
+fun View.dialogDisplayer(): DialogDisplayer? {
+    val screenSwitcherData = screenSwitcherDataIfActive() ?: return null
+    val screenManager = screenSwitcherData.hostView.getTag(R.id.screen_manager) as ScreenManager
+    val dialogManager = screenSwitcherData.hostView.getTag(R.id.dialog_manager) as DialogManager
+    return DialogDisplayer(
+        screenSwitcherData.screen,
+        screenManager,
+        dialogManager,
+        screenSwitcherData.screenSwitcherState
+    )
 }
 
 class DialogDisplayer internal constructor(
     private val screen: Screen,
-    private val screenHub: ScreenManager,
-    private val dialogHub: DialogHub
+    private val screenManager: ScreenManager,
+    private val dialogManager: DialogManager,
+    private val state: ScreenSwitcherState
 ) {
     fun show(dialogFactory: DialogFactory) {
-        dialogHub.show(WrapperDialogFactory(dialogFactory))
+        dialogManager.show(WrapperDialogFactory(dialogFactory))
     }
 
     private inner class WrapperDialogFactory(private val dialogFactory: DialogFactory) : DialogFactory {
@@ -105,8 +105,9 @@ class DialogDisplayer internal constructor(
             val contentView = dialog.findViewById<View>(android.R.id.content)
             contentView.setTag(R.id.screen_switcher_screen, screen)
             val parent = contentView.parent as View
-            parent.setTag(R.id.screen_manager, screenHub)
-            parent.setTag(R.id.dialog_hub, dialogHub)
+            parent.setTag(R.id.screen_manager, screenManager)
+            parent.setTag(R.id.dialog_manager, dialogManager)
+            parent.setupForViewExtensions(screenManager.screenSwitcher!!, state)
             return dialog
         }
     }

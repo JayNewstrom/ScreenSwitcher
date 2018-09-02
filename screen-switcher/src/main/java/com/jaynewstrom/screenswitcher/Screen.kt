@@ -28,15 +28,3 @@ interface Screen {
      */
     fun transition(): ScreenTransition
 }
-
-/**
- * Returns the screen associated with the view, or any of its ancestors. Throws IllegalStateException otherwise.
- */
-tailrec fun View.associatedScreen(): Screen {
-    val parent = parent as? ViewGroup ?: throw IllegalStateException("View is not associated with a screen.")
-    val screen = getTag(R.id.screen_switcher_screen) as? Screen?
-    if (screen != null) {
-        return screen
-    }
-    return parent.associatedScreen()
-}

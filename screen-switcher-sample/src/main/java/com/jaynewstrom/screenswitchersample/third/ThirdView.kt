@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import butterknife.ButterKnife
 import butterknife.OnClick
-import com.jaynewstrom.screenswitcher.screenmanager.screenManager
+import com.jaynewstrom.screenswitcher.dialogmanager.dialogDisplayer
+import com.jaynewstrom.screenswitcher.screenmanager.screenTransitioner
 import com.jaynewstrom.screenswitchersample.R
 import com.jaynewstrom.screenswitchersample.second.SecondScreenFactory
-import com.jnewstrom.screenswitcher.dialoghub.dialogDisplayer
 
 internal class ThirdView(context: Context) : LinearLayout(context) {
     init {
@@ -19,15 +19,15 @@ internal class ThirdView(context: Context) : LinearLayout(context) {
     }
 
     @OnClick(R.id.btn_pop) fun onPopButtonClicked() {
-        screenManager()?.pop()
+        screenTransitioner()?.pop()
     }
 
     @OnClick(R.id.btn_pop_two) fun onPopTwoButtonClicked() {
-        screenManager()?.pop(2)
+        screenTransitioner()?.pop(2)
     }
 
     @OnClick(R.id.btn_pop_to_second_screen) fun onPopToSecondScreenButtonClicked() {
-        screenManager()?.popTo(SecondScreenFactory.create())
+        screenTransitioner()?.popTo(SecondScreenFactory.create())
     }
 
     @OnClick(R.id.btn_show_third_dialog) fun onShowThirdDialogClicked() {

@@ -49,7 +49,7 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.6.1'
 
     implementation project(':screen-switcher')
-    implementation project(':dialog-hub')
+    implementation project(':dialog-manager')
     implementation project(':screen-manager')
 
     androidTestImplementation deps.androidTestRunner

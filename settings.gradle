@@ -1,1 +1,1 @@
-include ':screen-switcher-sample', ':screen-switcher', ':dialog-hub', ':screen-manager'
+include ':screen-switcher-sample', ':screen-switcher', ':dialog-manager', ':screen-manager'

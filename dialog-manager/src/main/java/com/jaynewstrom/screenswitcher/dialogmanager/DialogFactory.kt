@@ -1,4 +1,4 @@
-package com.jnewstrom.screenswitcher.dialoghub
+package com.jaynewstrom.screenswitcher.dialogmanager
 
 import android.app.Dialog
 import android.content.Context
