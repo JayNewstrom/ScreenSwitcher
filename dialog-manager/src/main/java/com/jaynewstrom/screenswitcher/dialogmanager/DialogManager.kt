@@ -6,18 +6,24 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import com.jaynewstrom.screenswitcher.Screen
+import com.jaynewstrom.screenswitcher.ScreenLifecycleListener
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState
 import com.jaynewstrom.screenswitcher.screenSwitcherDataIfActive
+import com.jaynewstrom.screenswitcher.screenmanager.CompositeScreenLifecycleListener
 import com.jaynewstrom.screenswitcher.screenmanager.ScreenManager
 import com.jaynewstrom.screenswitcher.setupForViewExtensions
 import java.lang.ref.WeakReference
 
-class DialogManager(isTransitioning: () -> Boolean) {
-    private val dialogCallbackHelper = DialogCallbackHelper(isTransitioning)
+class DialogManager(screenManager: ScreenManager, compositeScreenLifecycleListener: CompositeScreenLifecycleListener) {
+    private val dialogCallbackHelper = DialogCallbackHelper(screenManager)
 
     private var dialogInformationList: MutableList<DialogInformation> = mutableListOf()
     private var savedDialogFactories: List<SavedDialogFactory>? = null
     private var activity: Activity? = null
+
+    init {
+        compositeScreenLifecycleListener.register(RemoveDialogInformationListener())
+    }
 
     fun attachActivity(activity: Activity) {
         this.activity = activity
@@ -29,11 +35,7 @@ class DialogManager(isTransitioning: () -> Boolean) {
         }
     }
 
-    fun show(dialogFactory: DialogFactory) {
-        show(dialogFactory, null)
-    }
-
-    private fun show(dialogFactory: DialogFactory, savedState: Bundle?) {
+    internal fun show(dialogFactory: DialogFactory, screen: Screen? = null, savedState: Bundle? = null) {
         val activity = activity ?: throw IllegalStateException("DialogHub is not attached to the activity.")
         val dialog = dialogFactory.createDialog(activity)
         if (savedState != null) {
@@ -42,7 +44,7 @@ class DialogManager(isTransitioning: () -> Boolean) {
             dialog.show()
         }
         dialogCallbackHelper.bootstrap(dialog)
-        dialogInformationList.add(DialogInformation(dialog, dialogFactory))
+        dialogInformationList.add(DialogInformation(dialog, dialogFactory, screen))
     }
 
     fun saveState() {
@@ -50,7 +52,8 @@ class DialogManager(isTransitioning: () -> Boolean) {
         for (information in dialogInformationList) {
             val dialog: Dialog? = information.dialogWeakReference.get()
             if (dialog != null && dialog.isShowing) {
-                items.add(SavedDialogFactory(information.dialogFactory, dialog.onSaveInstanceState()))
+                items.add(
+                    SavedDialogFactory(information.dialogFactory, dialog.onSaveInstanceState(), information.screen))
                 dialog.dismiss()
             }
         }
@@ -62,16 +65,36 @@ class DialogManager(isTransitioning: () -> Boolean) {
         val savedDialogFactories = savedDialogFactories ?: return
         dialogInformationList = mutableListOf()
         for (savedDialogFactory in savedDialogFactories) {
-            show(savedDialogFactory.dialogFactory, savedDialogFactory.savedState)
+            show(savedDialogFactory.dialogFactory, savedDialogFactory.screen, savedDialogFactory.savedState)
         }
         this.savedDialogFactories = null
     }
 
-    private class DialogInformation constructor(dialog: Dialog, val dialogFactory: DialogFactory) {
+    private class DialogInformation(dialog: Dialog, val dialogFactory: DialogFactory, val screen: Screen?) {
         val dialogWeakReference: WeakReference<Dialog> = WeakReference(dialog)
     }
 
-    private class SavedDialogFactory constructor(val dialogFactory: DialogFactory, val savedState: Bundle)
+    private class SavedDialogFactory(val dialogFactory: DialogFactory, val savedState: Bundle, val screen: Screen?)
+
+    private inner class RemoveDialogInformationListener : ScreenLifecycleListener {
+        override fun onScreenAdded(screen: Screen) {}
+
+        override fun onScreenBecameActive(screen: Screen) {}
+
+        override fun onScreenBecameInactive(screen: Screen) {}
+
+        override fun onScreenRemoved(screen: Screen) {
+            for (dialogInformation in ArrayList(dialogInformationList)) {
+                if (dialogInformation.screen == screen) {
+                    val dialog = dialogInformation.dialogWeakReference.get()
+                    if (dialog != null && dialog.isShowing) {
+                        dialog.dismiss()
+                    }
+                    dialogInformationList.remove(dialogInformation)
+                }
+            }
+        }
+    }
 }
 
 /**
@@ -96,7 +119,7 @@ class DialogDisplayer internal constructor(
     private val state: ScreenSwitcherState
 ) {
     fun show(dialogFactory: DialogFactory) {
-        dialogManager.show(WrapperDialogFactory(dialogFactory))
+        dialogManager.show(WrapperDialogFactory(dialogFactory), screen)
     }
 
     private inner class WrapperDialogFactory(private val dialogFactory: DialogFactory) : DialogFactory {
