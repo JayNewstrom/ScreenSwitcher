@@ -16,6 +16,7 @@ ext.deps = [
         daggerCompiler: "com.google.dagger:dagger-compiler:$daggerVersion",
         concrete: 'com.jaynewstrom:concrete:0.13.0',
         kotlinRuntime: "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
+        timber: 'com.jakewharton.timber:timber:4.6.1',
 
         junit: 'junit:junit:4.12',
         fest: 'org.easytesting:fest-assert-core:2.0M10',
