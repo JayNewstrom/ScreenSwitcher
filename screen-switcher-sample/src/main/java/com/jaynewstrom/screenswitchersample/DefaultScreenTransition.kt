@@ -12,21 +12,21 @@ object DefaultScreenTransition : ScreenTransition {
         foregroundView.animate()
             .x(0f)
             .setDuration(300)
-            .setListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    onTransitionCompleted.run()
-                }
-            })
+            .setListener(RunOnAnimationEnd(onTransitionCompleted))
     }
 
     override fun transitionOut(foregroundView: View, backgroundView: View, onTransitionCompleted: Runnable) {
         foregroundView.animate()
             .x((foregroundView.parent as View).measuredWidth.toFloat())
             .setDuration(300)
-            .setListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    onTransitionCompleted.run()
-                }
-            })
+            .setListener(RunOnAnimationEnd(onTransitionCompleted))
+    }
+}
+
+internal class RunOnAnimationEnd(private var onTransitionCompleted: Runnable?) : AnimatorListenerAdapter() {
+    override fun onAnimationEnd(animation: Animator) {
+        onTransitionCompleted?.run()
+        onTransitionCompleted = null
+        animation.removeListener(this)
     }
 }
