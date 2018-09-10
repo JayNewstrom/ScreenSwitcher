@@ -73,15 +73,15 @@ class ScreenSwitcherState
     internal fun removeScreen(screen: Screen) {
         screens.remove(screen)
         transitionMap.remove(screen)
+        popListenerMap.remove(screen)
         lifecycleListener.onScreenRemoved(screen)
     }
 
-    internal fun handlesPop(screen: Screen): Boolean {
+    /**
+     * Checks to see if this [screen] consumes the pop.
+     */
+    fun handlesPop(screen: Screen): Boolean {
         val popListener = popListenerMap[screen]
-        val handlesPop = popListener != null && popListener.onScreenPop(screen)
-        if (!handlesPop) {
-            popListenerMap.remove(screen)
-        }
-        return handlesPop
+        return popListener != null && popListener.onScreenPop(screen)
     }
 }
