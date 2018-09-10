@@ -70,16 +70,15 @@ class ScreenSwitcherStateTest {
         assertThat(state.handlesPop(mock(Screen::class.java))).isFalse
     }
 
-    @Test fun handlesPopRemovesPopListenerWhenReturnsFalse() {
+    @Test fun removeScreenRemovesPopListener() {
         val screen = mock(Screen::class.java)
         val state = ScreenTestUtils.defaultState(screen)
         val popListener = mock(ScreenPopListener::class.java)
         state.registerPopListener(screen, popListener)
-        `when`(popListener.onScreenPop(screen)).thenReturn(false)
-        assertThat(state.handlesPop(screen)).isFalse // Will be removed here.
-        assertThat(state.handlesPop(screen)).isFalse // Will return false because it's gone.
-        // Will verify it was only used once, even though #handlesPop was called twice.
-        verify(popListener).onScreenPop(screen)
+        `when`(popListener.onScreenPop(screen)).thenReturn(true)
+        assertThat(state.handlesPop(screen)).isTrue
+        state.removeScreen(screen)
+        assertThat(state.handlesPop(screen)).isFalse
     }
 
     @Test fun handlesPopKeepsPopListenerWhenReturnsTrue() {
