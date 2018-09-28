@@ -106,6 +106,9 @@ internal class RealScreenSwitcher(
 
             state.lifecycleListener.onScreenBecameInactive(backgroundScreen)
 
+            // Remove the previous screens from state before adding the new ones.
+            val onTransitionCompleted = RemoveScreenRunnable(screensToRemove)
+
             for (screen in screens) {
                 state.addScreen(screen)
                 val view = createView(screen)
@@ -117,7 +120,6 @@ internal class RealScreenSwitcher(
             topView.visibility = View.VISIBLE
             state.lifecycleListener.onScreenBecameActive(topScreen)
 
-            val onTransitionCompleted = RemoveScreenRunnable(screensToRemove)
             topScreen.transition().transitionIn(topView, backgroundView, onTransitionCompleted)
         }
     }

@@ -40,11 +40,14 @@ internal object ScreenTestUtils {
         return ScreenSwitcherFactory.activityScreenSwitcher(activity, state, popHandler) as RealScreenSwitcher
     }
 
-    fun mockCreateView(screen: Screen): View {
+    fun mockCreateView(screen: Screen, createViewCallback: (() -> Unit)? = null): View {
         val view = mock(View::class.java)
         val context = mock(Context::class.java)
         `when`(view.context).thenReturn(context)
-        `when`(screen.createView(kotlinAny(), kotlinAny())).thenReturn(view)
+        `when`(screen.createView(kotlinAny(), kotlinAny())).thenAnswer {
+            createViewCallback?.invoke()
+            view
+        }
         return view
     }
 

@@ -10,6 +10,7 @@ import org.junit.Test
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import java.util.Arrays
+import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 
 class ScreenSwitcherReplaceScreensWithTest {
@@ -114,5 +115,26 @@ class ScreenSwitcherReplaceScreensWithTest {
         assertThat(transitionCalledCounter.get()).isZero
         transitionCompletedRunnable.get().run()
         assertThat(transitionCalledCounter.get()).isEqualTo(1)
+    }
+
+    @Test fun replaceWithShouldRemoveAllScreensFromStateBeforeAddingNewOnes() {
+        val activity = mock(Activity::class.java)
+        val screen1 = mock(Screen::class.java)
+        mockCreateView(screen1)
+        val screen2 = mock(Screen::class.java)
+        mockCreateView(screen2)
+        val state = ScreenTestUtils.defaultState(Arrays.asList(screen1, screen2))
+        val activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state)
+        val newScreen = mock(Screen::class.java)
+        val createViewCalled = AtomicBoolean(false)
+        mockCreateView(newScreen) {
+            assertThat(state.indexOf(newScreen)).isEqualTo(0)
+            assertThat(state.screenCount()).isEqualTo(1)
+            createViewCalled.set(true)
+        }
+        addTransitionIn(newScreen)
+        assertThat(createViewCalled.get()).isFalse
+        activityScreenSwitcher.replaceScreensWith(2, listOf(newScreen))
+        assertThat(createViewCalled.get()).isTrue
     }
 }
