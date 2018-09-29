@@ -152,7 +152,9 @@ internal class RealScreenSwitcher(
     private fun popListenerConsumedPop(numberToPop: Int): Boolean {
         val screens = state.screens
         for (i in 1..numberToPop) {
-            if (state.handlesPop(screens[screens.size - i])) {
+            val screen = screens[screens.size - i]
+            val view = screenViewMap.getValue(screen)
+            if (state.handlesPop(view, screen)) {
                 if (i > 1) {
                     performPop(i - 1)
                 }

@@ -1,5 +1,7 @@
 package com.jaynewstrom.screenswitcher
 
+import android.view.View
+
 /**
  * This object is designed to persist in memory when an [android.app.Activity] configuration change occurs.
  */
@@ -80,8 +82,8 @@ class ScreenSwitcherState
     /**
      * Checks to see if this [screen] consumes the pop.
      */
-    fun handlesPop(screen: Screen): Boolean {
+    fun handlesPop(view: View, screen: Screen): Boolean {
         val popListener = popListenerMap[screen]
-        return popListener != null && popListener.onScreenPop(screen)
+        return popListener != null && popListener.onScreenPop(view, screen)
     }
 }
