@@ -1,5 +1,6 @@
 package com.jaynewstrom.screenswitchersample.second
 
+import android.view.View
 import com.jaynewstrom.screenswitcher.Screen
 import com.jaynewstrom.screenswitcher.ScreenPopListener
 import com.jaynewstrom.screenswitcher.associatedScreen
@@ -26,10 +27,9 @@ internal class SecondScreenPresenter @Inject constructor() : ScreenPopListener {
         hasConfirmedPop = true
     }
 
-    override fun onScreenPop(screen: Screen): Boolean {
-        val view = view ?: return false
+    override fun onScreenPop(view: View, screen: Screen): Boolean {
         if (!hasConfirmedPop) {
-            view.showConfirmPop()
+            (view as SecondView).showConfirmPop()
             return true
         }
         return false
