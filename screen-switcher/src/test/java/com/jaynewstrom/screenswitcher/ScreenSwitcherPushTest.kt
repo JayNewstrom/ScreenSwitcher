@@ -11,7 +11,6 @@ import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
-import java.util.Arrays
 import java.util.concurrent.atomic.AtomicInteger
 
 class ScreenSwitcherPushTest {
@@ -78,7 +77,7 @@ class ScreenSwitcherPushTest {
         mockCreateView(screen1)
         val screen2 = mock(Screen::class.java)
         mockCreateView(screen2)
-        val state = ScreenTestUtils.defaultState(Arrays.asList(screen1, screen2))
+        val state = ScreenTestUtils.defaultState(listOf(screen1, screen2))
         val activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state)
         assertThat(activityScreenSwitcher.isTransitioning).isFalse
         val newScreen = mock(Screen::class.java)

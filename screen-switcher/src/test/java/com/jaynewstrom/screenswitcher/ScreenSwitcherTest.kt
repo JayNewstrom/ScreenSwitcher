@@ -7,7 +7,6 @@ import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
-import java.util.Arrays
 
 class ScreenSwitcherTest {
     @Test fun transitionIsNotCalledWhenCreatingScreenSwitcher() {
@@ -27,7 +26,7 @@ class ScreenSwitcherTest {
         val topScreen = mock(Screen::class.java)
         val topView = mock(View::class.java)
         `when`(topScreen.createView(kotlinAny(), kotlinAny())).thenReturn(topView)
-        val state = ScreenTestUtils.defaultState(Arrays.asList(bottomScreen, topScreen))
+        val state = ScreenTestUtils.defaultState(listOf(bottomScreen, topScreen))
         ScreenTestUtils.testScreenSwitcher(activity, state)
         verify(bottomScreen).createView(kotlinAny(), kotlinAny())
         verify(topScreen).createView(kotlinAny(), kotlinAny())
