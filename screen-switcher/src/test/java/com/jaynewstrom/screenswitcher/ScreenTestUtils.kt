@@ -10,8 +10,6 @@ import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.mock
-import java.util.ArrayList
-import java.util.Arrays
 import java.util.concurrent.atomic.AtomicReference
 
 internal object ScreenTestUtils {
@@ -29,7 +27,7 @@ internal object ScreenTestUtils {
         mockCreateView(screen1)
         val screen2 = mock(Screen::class.java)
         mockCreateView(screen2)
-        val screens = ArrayList(Arrays.asList(screen1, screen2))
+        val screens = ArrayList(listOf(screen1, screen2))
         if (extraScreen != null) {
             mockCreateView(extraScreen)
             screens.add(extraScreenIndex, extraScreen)

@@ -13,7 +13,6 @@ import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
-import java.util.Arrays
 import java.util.concurrent.atomic.AtomicInteger
 
 class ScreenSwitcherPopTest {
@@ -54,7 +53,7 @@ class ScreenSwitcherPopTest {
         mockCreateView(screen1)
         val screen2 = mock(Screen::class.java)
         val view2 = mockCreateView(screen2)
-        val state = ScreenTestUtils.defaultState(Arrays.asList(screen1, screen2))
+        val state = ScreenTestUtils.defaultState(listOf(screen1, screen2))
         val popListener = mock(ScreenPopListener::class.java)
         `when`(popListener.onScreenPop(view2, screen2)).thenReturn(true)
         state.registerPopListener(screen2, popListener)
@@ -71,7 +70,7 @@ class ScreenSwitcherPopTest {
         val screen2 = mock(Screen::class.java)
         mockCreateView(screen2)
         val transitionCompletedRunnable = addTransitionOut(screen2)
-        val state = ScreenTestUtils.defaultState(Arrays.asList(screen1, screen2))
+        val state = ScreenTestUtils.defaultState(listOf(screen1, screen2))
         val popListener = mock(ScreenPopListener::class.java)
         `when`(popListener.onScreenPop(view1, screen1)).thenReturn(true)
         state.registerPopListener(screen1, popListener)
@@ -91,7 +90,7 @@ class ScreenSwitcherPopTest {
         val screen3 = mock(Screen::class.java)
         mockCreateView(screen3)
         val transitionCompletedRunnable = addTransitionOut(screen3)
-        val state = ScreenTestUtils.defaultState(Arrays.asList(screen1, screen2, screen3))
+        val state = ScreenTestUtils.defaultState(listOf(screen1, screen2, screen3))
         val activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state)
         activityScreenSwitcher.pop(2)
         assertThat(state.screens.size).isEqualTo(1)
@@ -106,7 +105,7 @@ class ScreenSwitcherPopTest {
         val screen2 = mock(Screen::class.java)
         mockCreateView(screen2)
         val transitionCompletedRunnable = addTransitionOut(screen2)
-        val state = ScreenTestUtils.defaultState(Arrays.asList(screen1, screen2))
+        val state = ScreenTestUtils.defaultState(listOf(screen1, screen2))
         val activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state)
         activityScreenSwitcher.pop(1)
         transitionCompletedRunnable.get().run()
@@ -121,7 +120,7 @@ class ScreenSwitcherPopTest {
         val screen2 = mock(Screen::class.java)
         val view2 = mockCreateView(screen2)
         val transitionCompletedRunnable = addTransitionOut(screen2)
-        val state = ScreenTestUtils.defaultState(Arrays.asList(screen1, screen2))
+        val state = ScreenTestUtils.defaultState(listOf(screen1, screen2))
         val activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state)
         activityScreenSwitcher.pop(1)
         verify(view2.parent as ViewGroup, never()).removeView(view2)
@@ -136,7 +135,7 @@ class ScreenSwitcherPopTest {
         val screen2 = mock(Screen::class.java)
         mockCreateView(screen2)
         val transitionCompletedRunnable = addTransitionOut(screen2)
-        val state = ScreenTestUtils.defaultState(Arrays.asList(screen1, screen2))
+        val state = ScreenTestUtils.defaultState(listOf(screen1, screen2))
         val activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state)
         verify(view1, never()).visibility = View.VISIBLE
         activityScreenSwitcher.pop(1)
@@ -151,7 +150,7 @@ class ScreenSwitcherPopTest {
         val screen2 = mock(Screen::class.java)
         mockCreateView(screen2)
         val transitionCompletedRunnable = addTransitionOut(screen2)
-        val state = ScreenTestUtils.defaultState(Arrays.asList(screen1, screen2))
+        val state = ScreenTestUtils.defaultState(listOf(screen1, screen2))
         val activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state)
         assertThat(activityScreenSwitcher.isTransitioning).isFalse
         activityScreenSwitcher.pop(1)
@@ -201,7 +200,7 @@ class ScreenSwitcherPopTest {
         val screen4 = mock(Screen::class.java)
         mockCreateView(screen4)
         addTransitionOut(screen4)
-        val state = ScreenTestUtils.defaultState(Arrays.asList(screen1, screen2, screen3, screen4))
+        val state = ScreenTestUtils.defaultState(listOf(screen1, screen2, screen3, screen4))
         val activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state)
         activityScreenSwitcher.pop(3)
         assertThat(state.screenCount()).isEqualTo(1)
@@ -215,7 +214,7 @@ class ScreenSwitcherPopTest {
         val screen2 = mock(Screen::class.java)
         mockCreateView(screen2)
         val transitionCompletedRunnable = addTransitionOut(screen2)
-        val state = ScreenTestUtils.defaultState(Arrays.asList(screen1, screen2))
+        val state = ScreenTestUtils.defaultState(listOf(screen1, screen2))
         val activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state)
         activityScreenSwitcher.pop(1)
         val transitionCalledCounter = AtomicInteger()

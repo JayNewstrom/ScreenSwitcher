@@ -9,7 +9,6 @@ import org.junit.Assert.fail
 import org.junit.Test
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
-import java.util.Arrays
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -62,7 +61,7 @@ class ScreenSwitcherReplaceScreensWithTest {
         mockCreateView(screen1)
         val screen2 = mock(Screen::class.java)
         mockCreateView(screen2)
-        val state = ScreenTestUtils.defaultState(Arrays.asList(screen1, screen2))
+        val state = ScreenTestUtils.defaultState(listOf(screen1, screen2))
         val activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state)
         assertThat(activityScreenSwitcher.isTransitioning).isFalse
         val newScreen = mock(Screen::class.java)
@@ -81,7 +80,7 @@ class ScreenSwitcherReplaceScreensWithTest {
         val screen2 = mock(Screen::class.java)
         mockCreateView(screen2)
         `when`(screen2.transition()).thenReturn(mock(ScreenTransition::class.java))
-        val state = ScreenTestUtils.defaultState(Arrays.asList(screen1, screen2))
+        val state = ScreenTestUtils.defaultState(listOf(screen1, screen2))
         val activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state)
         testCallingTransitionHelper(activityScreenSwitcher)
         try {
@@ -102,7 +101,7 @@ class ScreenSwitcherReplaceScreensWithTest {
         mockCreateView(screen1)
         val screen2 = mock(Screen::class.java)
         mockCreateView(screen2)
-        val state = ScreenTestUtils.defaultState(Arrays.asList(screen1, screen2))
+        val state = ScreenTestUtils.defaultState(listOf(screen1, screen2))
         val activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state)
         val newScreen = mock(Screen::class.java)
         mockCreateView(newScreen)
@@ -123,7 +122,7 @@ class ScreenSwitcherReplaceScreensWithTest {
         mockCreateView(screen1)
         val screen2 = mock(Screen::class.java)
         mockCreateView(screen2)
-        val state = ScreenTestUtils.defaultState(Arrays.asList(screen1, screen2))
+        val state = ScreenTestUtils.defaultState(listOf(screen1, screen2))
         val activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state)
         val newScreen = mock(Screen::class.java)
         val createViewCalled = AtomicBoolean(false)

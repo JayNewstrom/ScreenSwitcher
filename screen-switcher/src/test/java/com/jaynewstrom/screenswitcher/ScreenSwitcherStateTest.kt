@@ -8,7 +8,6 @@ import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
-import java.util.Arrays
 
 class ScreenSwitcherStateTest {
     @Test fun constructorMakesDefensiveCopyOfScreensPassedIn() {
@@ -31,7 +30,7 @@ class ScreenSwitcherStateTest {
     @Test fun constructorRejectsDuplicateScreens() {
         val screen = mock(Screen::class.java)
         try {
-            ScreenTestUtils.defaultState(Arrays.asList(screen, screen))
+            ScreenTestUtils.defaultState(listOf(screen, screen))
             fail()
         } catch (expected: IllegalArgumentException) {
             assertThat(expected).hasMessage("screen already exists")
@@ -119,12 +118,12 @@ class ScreenSwitcherStateTest {
         val screen0 = mock(Screen::class.java)
         val screen1 = mock(Screen::class.java)
         val screen2 = mock(Screen::class.java)
-        val state = ScreenTestUtils.defaultState(Arrays.asList(screen0, screen1, screen2))
+        val state = ScreenTestUtils.defaultState(listOf(screen0, screen1, screen2))
         assertThat(state.indexOf(screen1)).isEqualTo(1)
     }
 
     @Test fun screenCountIsUpdatedWhenScreensAreAdded() {
-        val state = ScreenTestUtils.defaultState(Arrays.asList(mock(Screen::class.java), mock(Screen::class.java)))
+        val state = ScreenTestUtils.defaultState(listOf(mock(Screen::class.java), mock(Screen::class.java)))
         assertThat(state.screenCount()).isEqualTo(2)
         state.addScreen(mock(Screen::class.java))
         assertThat(state.screenCount()).isEqualTo(3)
