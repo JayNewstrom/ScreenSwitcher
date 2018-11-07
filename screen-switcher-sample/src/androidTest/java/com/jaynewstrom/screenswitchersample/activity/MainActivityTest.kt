@@ -1,4 +1,4 @@
-package com.jaynewstrom.screenswitchersample
+package com.jaynewstrom.screenswitchersample.activity
 
 import android.animation.ValueAnimator
 import android.support.test.espresso.Espresso.onView
@@ -9,6 +9,7 @@ import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
+import com.jaynewstrom.screenswitchersample.R
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

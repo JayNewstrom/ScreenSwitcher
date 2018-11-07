@@ -1,4 +1,4 @@
-package com.jaynewstrom.screenswitchersample
+package com.jaynewstrom.screenswitchersample.activity
 
 import android.app.Activity
 import android.os.Bundle
@@ -12,6 +12,8 @@ import com.jaynewstrom.screenswitcher.ScreenSwitcherPopHandler
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState
 import com.jaynewstrom.screenswitcher.screenmanager.ScreenManager
 import com.jaynewstrom.screenswitcher.dialogmanager.DialogManager
+import com.jaynewstrom.screenswitchersample.R
+import com.jaynewstrom.screenswitchersample.application.ApplicationComponent
 import javax.inject.Inject
 
 class MainActivity : Activity(), ScreenSwitcherPopHandler {

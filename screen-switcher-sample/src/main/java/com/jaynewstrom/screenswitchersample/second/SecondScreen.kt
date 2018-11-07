@@ -2,27 +2,33 @@ package com.jaynewstrom.screenswitchersample.second
 
 import android.content.Context
 import android.view.View
+import android.view.ViewGroup
 import com.jaynewstrom.concrete.ConcreteBlock
 import com.jaynewstrom.screenswitcher.Screen
-import com.jaynewstrom.screenswitchersample.DefaultScreenTransition
-import com.jaynewstrom.screenswitchersample.MainActivityComponent
-import com.jaynewstrom.screenswitchersample.concrete.ConcreteScreen
+import com.jaynewstrom.screenswitcher.ScreenSwitcherState
+import com.jaynewstrom.screenswitchersample.core.BaseScreen
+import com.jaynewstrom.screenswitchersample.core.DefaultScreenWallManager
+import com.jaynewstrom.screenswitchersample.core.ScreenParentComponent
+import com.jaynewstrom.screenswitchersample.core.ScreenScope
+import com.jaynewstrom.screenswitchersample.core.ScreenWallManager
 import dagger.Component
-import javax.inject.Scope
 
 object SecondScreenFactory {
     fun create(): Screen = SecondScreen()
 }
 
-private class SecondScreen : ConcreteScreen<SecondComponent>() {
-    override fun transition() = DefaultScreenTransition
-
-    override fun block(theParentComponent: MainActivityComponent): ConcreteBlock<SecondComponent> {
-        return SecondScreenBlock(theParentComponent)
+private class SecondScreen : BaseScreen<SecondComponent>() {
+    override fun createWallManager(): ScreenWallManager<SecondComponent> {
+        return DefaultScreenWallManager({ parentComponent ->
+            SecondScreenBlock(parentComponent)
+        }, { wall ->
+            val component = wall.component
+            component.screenSwitcherState.registerPopListener(this, component.secondPopListener)
+        })
     }
 
-    override fun createView(context: Context, component: SecondComponent): View {
-        return SecondView(context, component)
+    override fun createView(context: Context, hostView: ViewGroup, component: SecondComponent): View {
+        return SecondPresenter.createView(context, hostView, component)
     }
 
     override fun equals(other: Any?) = other is SecondScreen || super.equals(other)
@@ -30,24 +36,19 @@ private class SecondScreen : ConcreteScreen<SecondComponent>() {
     override fun hashCode() = javaClass.name.hashCode()
 }
 
-@Scope
-@Retention(AnnotationRetention.RUNTIME)
-internal annotation class ForSecondScreen
-
-@ForSecondScreen
-@Component(dependencies = [MainActivityComponent::class])
+@ScreenScope
+@Component(dependencies = [ScreenParentComponent::class])
 internal interface SecondComponent {
-    fun inject(view: SecondView)
+    fun inject(presenter: SecondPresenter)
+
+    val screenSwitcherState: ScreenSwitcherState
+    val secondPopListener: SecondPopListener
 }
 
-private class SecondScreenBlock(
-    private val theParentComponent: MainActivityComponent
-) : ConcreteBlock<SecondComponent> {
+private class SecondScreenBlock(private val parentComponent: ScreenParentComponent) : ConcreteBlock<SecondComponent> {
     override fun name(): String = javaClass.name
 
-    override fun createComponent(): SecondComponent {
-        return DaggerSecondComponent.builder()
-            .mainActivityComponent(theParentComponent)
-            .build()
-    }
+    override fun createComponent(): SecondComponent = DaggerSecondComponent.builder()
+        .screenParentComponent(parentComponent)
+        .build()
 }

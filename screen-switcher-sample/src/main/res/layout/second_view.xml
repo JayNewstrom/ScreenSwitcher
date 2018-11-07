@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/second_screen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_orange_light"
+    android:orientation="vertical"
     >
 
     <TextView
@@ -32,4 +37,4 @@
         android:layout_height="wrap_content"
         android:text="@string/show_second_dialog"
         />
-</merge>
+</LinearLayout>

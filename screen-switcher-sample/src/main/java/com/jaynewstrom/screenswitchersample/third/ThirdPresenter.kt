@@ -1,36 +1,42 @@
 package com.jaynewstrom.screenswitchersample.third
 
 import android.content.Context
-import android.view.LayoutInflater
-import android.widget.LinearLayout
+import android.view.View
+import android.view.ViewGroup
 import butterknife.ButterKnife
 import butterknife.OnClick
 import com.jaynewstrom.screenswitcher.dialogmanager.dialogDisplayer
 import com.jaynewstrom.screenswitcher.screenmanager.screenTransitioner
 import com.jaynewstrom.screenswitchersample.R
+import com.jaynewstrom.screenswitchersample.core.inflate
 import com.jaynewstrom.screenswitchersample.second.SecondScreenFactory
 
-internal class ThirdView(context: Context) : LinearLayout(context) {
+internal class ThirdPresenter private constructor(private val view: View) {
+    companion object {
+        fun createView(context: Context, container: ViewGroup): View {
+            val view = container.inflate(layoutResId = R.layout.third_view, context = context)
+            ThirdPresenter(view)
+            return view
+        }
+    }
+
     init {
-        orientation = LinearLayout.VERTICAL
-        setBackgroundResource(android.R.color.holo_green_light)
-        LayoutInflater.from(context).inflate(R.layout.third_view, this, true)
-        ButterKnife.bind(this)
+        ButterKnife.bind(this, view)
     }
 
     @OnClick(R.id.btn_pop) fun onPopButtonClicked() {
-        screenTransitioner()?.pop()
+        view.screenTransitioner()?.pop()
     }
 
     @OnClick(R.id.btn_pop_two) fun onPopTwoButtonClicked() {
-        screenTransitioner()?.pop(2)
+        view.screenTransitioner()?.pop(2)
     }
 
     @OnClick(R.id.btn_pop_to_second_screen) fun onPopToSecondScreenButtonClicked() {
-        screenTransitioner()?.popTo(SecondScreenFactory.create())
+        view.screenTransitioner()?.popTo(SecondScreenFactory.create())
     }
 
     @OnClick(R.id.btn_show_third_dialog) fun onShowThirdDialogClicked() {
-        dialogDisplayer()?.show(ThirdScreenDialogFactory(context))
+        view.dialogDisplayer()?.show(ThirdScreenDialogFactory())
     }
 }

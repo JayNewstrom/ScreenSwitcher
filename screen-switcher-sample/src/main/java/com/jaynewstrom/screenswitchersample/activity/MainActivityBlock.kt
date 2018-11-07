@@ -1,6 +1,7 @@
-package com.jaynewstrom.screenswitchersample
+package com.jaynewstrom.screenswitchersample.activity
 
 import com.jaynewstrom.concrete.ConcreteBlock
+import com.jaynewstrom.screenswitchersample.application.ApplicationComponent
 
 internal class MainActivityBlock(
     private val applicationComponent: ApplicationComponent
