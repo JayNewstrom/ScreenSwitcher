@@ -12,15 +12,17 @@ import com.jaynewstrom.screenswitchersample.core.ScreenParentComponent
 import com.jaynewstrom.screenswitchersample.core.ScreenScope
 import com.jaynewstrom.screenswitchersample.core.ScreenWallManager
 import dagger.Component
+import dagger.Module
+import dagger.Provides
 
 object SecondScreenFactory {
-    fun create(): Screen = SecondScreen()
+    fun create(navigator: SecondNavigator): Screen = SecondScreen(navigator)
 }
 
-private class SecondScreen : BaseScreen<SecondComponent>() {
+private class SecondScreen(private val navigator: SecondNavigator) : BaseScreen<SecondComponent>() {
     override fun createWallManager(): ScreenWallManager<SecondComponent> {
         return DefaultScreenWallManager({ parentComponent ->
-            SecondScreenBlock(parentComponent)
+            SecondScreenBlock(parentComponent, navigator)
         }, { wall ->
             val component = wall.component
             component.screenSwitcherState.registerPopListener(this, component.secondPopListener)
@@ -36,8 +38,13 @@ private class SecondScreen : BaseScreen<SecondComponent>() {
     override fun hashCode() = javaClass.name.hashCode()
 }
 
+@Module
+private class SecondModule(private val navigator: SecondNavigator) {
+    @Provides fun provideNavigator() = navigator
+}
+
 @ScreenScope
-@Component(dependencies = [ScreenParentComponent::class])
+@Component(dependencies = [ScreenParentComponent::class], modules = [SecondModule::class])
 internal interface SecondComponent {
     fun inject(presenter: SecondPresenter)
 
@@ -45,10 +52,14 @@ internal interface SecondComponent {
     val secondPopListener: SecondPopListener
 }
 
-private class SecondScreenBlock(private val parentComponent: ScreenParentComponent) : ConcreteBlock<SecondComponent> {
+private class SecondScreenBlock(
+    private val parentComponent: ScreenParentComponent,
+    private val navigator: SecondNavigator
+) : ConcreteBlock<SecondComponent> {
     override fun name(): String = javaClass.name
 
     override fun createComponent(): SecondComponent = DaggerSecondComponent.builder()
         .screenParentComponent(parentComponent)
+        .secondModule(SecondModule(navigator))
         .build()
 }

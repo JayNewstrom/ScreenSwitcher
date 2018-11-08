@@ -1,0 +1,7 @@
+<resources>
+    <string name="pop">Pop</string>
+    <string name="pop_two">Pop Two</string>
+    <string name="pop_to_second_screen">Pop to second screen</string>
+    <string name="show_third_dialog">Show Third Dialog</string>
+    <string name="third_screen_title">Third Screen</string>
+</resources>
