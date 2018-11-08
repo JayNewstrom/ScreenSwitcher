@@ -32,7 +32,7 @@ class ScreenSwitcherApplication : Application() {
     companion object {
         fun <T> watchObject(context: Context, watchedReference: T) {
             val application = context.applicationContext as ScreenSwitcherApplication
-            application.refWatcher.watch(watchedReference)
+            application.refWatcher.watch(watchedReference as Any)
         }
     }
 }
