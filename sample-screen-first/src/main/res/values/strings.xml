@@ -1,0 +1,6 @@
+<resources>
+    <string name="first_screen">First Screen</string>
+    <string name="second_screen">Second Screen</string>
+    <string name="replace_with_second_screen">Replace with second screen</string>
+    <string name="show_first_dialog">Show First Dialog</string>
+</resources>
