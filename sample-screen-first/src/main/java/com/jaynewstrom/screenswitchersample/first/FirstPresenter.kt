@@ -31,6 +31,10 @@ internal class FirstPresenter private constructor(private val view: View, compon
             navigator.replaceWithSecondScreen(view)
         }
 
+        view.findViewById<View>(R.id.btn_view_pdf).setOnClickListener {
+            navigator.viewPdf(view)
+        }
+
         view.findViewById<View>(R.id.btn_show_first_dialog).setOnClickListener {
             view.dialogDisplayer()?.show(dialogFactoryProvider.get())
         }

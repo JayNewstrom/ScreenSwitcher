@@ -30,6 +30,13 @@
         />
 
     <Button
+        android:id="@+id/btn_view_pdf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/view_pdf"
+        />
+
+    <Button
         android:id="@+id/btn_show_first_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

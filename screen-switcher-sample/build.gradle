@@ -55,6 +55,7 @@ dependencies {
     implementation project(':sample-screen-first')
     implementation project(':sample-screen-second')
     implementation project(':sample-screen-third')
+    implementation project(':sample-screen-view-pdf')
 
     androidTestImplementation deps.androidTestRunner
     androidTestImplementation deps.androidTestRules

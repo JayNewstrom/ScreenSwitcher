@@ -7,6 +7,7 @@ import com.jaynewstrom.screenswitchersample.second.SecondNavigator
 import com.jaynewstrom.screenswitchersample.second.SecondScreenFactory
 import com.jaynewstrom.screenswitchersample.third.ThirdNavigator
 import com.jaynewstrom.screenswitchersample.third.ThirdScreenFactory
+import com.jaynewstrom.screenswitchersample.viewpdf.ViewPdfScreenFactory
 import javax.inject.Inject
 
 internal class Navigator @Inject constructor() : FirstNavigator, SecondNavigator, ThirdNavigator {
@@ -24,5 +25,9 @@ internal class Navigator @Inject constructor() : FirstNavigator, SecondNavigator
 
     override fun popToSecondScreen(fromView: View) {
         fromView.screenTransitioner()?.popTo(SecondScreenFactory.create(this))
+    }
+
+    override fun viewPdf(fromView: View) {
+        fromView.screenTransitioner()?.push(ViewPdfScreenFactory.create())
     }
 }
