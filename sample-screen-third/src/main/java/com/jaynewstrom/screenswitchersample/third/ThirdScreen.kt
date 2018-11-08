@@ -15,36 +15,44 @@ import dagger.Provides
 import javax.inject.Named
 
 object ThirdScreenFactory {
-    fun create(): Screen = ThirdScreen()
+    fun create(navigator: ThirdNavigator): Screen = ThirdScreen(navigator)
 }
 
-private class ThirdScreen : BaseScreen<ThirdComponent>() {
+private class ThirdScreen(private val navigator: ThirdNavigator) : BaseScreen<ThirdComponent>() {
     override fun createWallManager(): ScreenWallManager<ThirdComponent> {
         return DefaultScreenWallManager({
-            ThirdScreenBlock()
+            ThirdScreenBlock(navigator)
         })
     }
 
     public override fun createView(context: Context, hostView: ViewGroup, component: ThirdComponent): View {
-        return ThirdPresenter.createView(context, hostView)
+        return ThirdPresenter.createView(context, hostView, component)
     }
 }
 
 @ScreenScope
-@Component(modules = [ThirdScreenModule::class])
+@Component(modules = [ThirdModule::class])
 internal interface ThirdComponent {
-    fun inject(thirdScreenDialog: ThirdScreenDialog)
+    fun inject(dialog: ThirdScreenDialog)
+    fun inject(presenter: ThirdPresenter)
 }
 
-private class ThirdScreenBlock : ConcreteBlock<ThirdComponent> {
+private class ThirdScreenBlock(private val navigator: ThirdNavigator) : ConcreteBlock<ThirdComponent> {
     override fun name(): String = javaClass.name
 
-    override fun createComponent(): ThirdComponent = DaggerThirdComponent.create()
+    override fun createComponent(): ThirdComponent = DaggerThirdComponent.builder()
+        .thirdModule(ThirdModule(navigator))
+        .build()
 }
 
 @Module
-private object ThirdScreenModule {
-    @JvmStatic @Provides @Named("dialogMessage") fun provideDialogMessage(): String {
-        return "Rotate the device to see if it works!"
+private class ThirdModule(private val navigator: ThirdNavigator) {
+    @Provides fun provideNavigator() = navigator
+
+    @Module
+    companion object {
+        @JvmStatic @Provides @Named("dialogMessage") fun provideDialogMessage(): String {
+            return "Rotate the device to see if it works!"
+        }
     }
 }

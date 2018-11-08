@@ -3,14 +3,9 @@ package com.jaynewstrom.screenswitchersample.second
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
 import com.jaynewstrom.screenswitcher.dialogmanager.dialogDisplayer
 import com.jaynewstrom.screenswitcher.screenmanager.screenTransitioner
-import com.jaynewstrom.screenswitchersample.R
 import com.jaynewstrom.screenswitchersample.core.inflate
-import com.jaynewstrom.screenswitchersample.third.ThirdScreenFactory
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -26,30 +21,31 @@ internal class SecondPresenter private constructor(private val view: View, compo
 
     @Inject lateinit var popListener: SecondPopListener
     @Inject lateinit var dialogFactoryProvider: Provider<SecondScreenDialogFactory>
+    @Inject lateinit var navigator: SecondNavigator
 
-    @BindView(R.id.btn_confirm_pop) lateinit var confirmPopButton: View
+    private val confirmPopButton: View
 
     init {
         component.inject(this)
-        ButterKnife.bind(this, view)
+        confirmPopButton = view.findViewById<View>(R.id.btn_confirm_pop)
         confirmPopButton.visibility = if (popListener.showingConfirm) View.VISIBLE else View.GONE
-    }
 
-    @OnClick(R.id.btn_third) fun onThirdScreenButtonPressed() {
-        view.screenTransitioner()?.push(ThirdScreenFactory.create())
+        view.findViewById<View>(R.id.btn_third).setOnClickListener {
+            navigator.goToThirdScreen(view)
+        }
+
+        view.findViewById<View>(R.id.btn_confirm_pop).setOnClickListener {
+            popListener.popConfirmed()
+            view.screenTransitioner()?.pop()
+        }
+
+        view.findViewById<View>(R.id.btn_show_second_dialog).setOnClickListener {
+            view.dialogDisplayer()?.show(dialogFactoryProvider.get())
+        }
     }
 
     fun showConfirmPop() {
         popListener.showingConfirm = true
         confirmPopButton.visibility = View.VISIBLE
-    }
-
-    @OnClick(R.id.btn_confirm_pop) fun onPopConfirmed() {
-        popListener.popConfirmed()
-        view.screenTransitioner()?.pop()
-    }
-
-    @OnClick(R.id.btn_show_second_dialog) fun onShowSecondDialogPressed() {
-        view.dialogDisplayer()?.show(dialogFactoryProvider.get())
     }
 }

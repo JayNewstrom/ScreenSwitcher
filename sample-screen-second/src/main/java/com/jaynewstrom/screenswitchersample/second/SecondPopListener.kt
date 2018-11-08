@@ -3,7 +3,6 @@ package com.jaynewstrom.screenswitchersample.second
 import android.view.View
 import com.jaynewstrom.screenswitcher.Screen
 import com.jaynewstrom.screenswitcher.ScreenPopListener
-import com.jaynewstrom.screenswitchersample.R
 import com.jaynewstrom.screenswitchersample.core.ScreenScope
 import javax.inject.Inject
 

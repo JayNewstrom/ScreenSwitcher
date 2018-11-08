@@ -1,0 +1,29 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    compileOptions {
+        sourceCompatibility rootProject.ext.sourceCompatibilityVersion
+        targetCompatibility rootProject.ext.targetCompatibilityVersion
+    }
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
+}
+
+dependencies {
+    api deps.concrete
+    api deps.kotlinRuntime
+    api project(':screen-switcher')
+    api project(':sample-core')
+    api project(':dialog-manager')
+    api deps.appCompatv7
+    api deps.dagger
+    kapt deps.daggerCompiler
+    implementation deps.timber
+}

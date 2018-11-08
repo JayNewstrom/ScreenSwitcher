@@ -1,10 +1,3 @@
 <resources>
     <string name="app_name">Screen Switcher</string>
-    <string name="third_screen">Third Screen</string>
-    <string name="pop">Pop</string>
-    <string name="pop_two">Pop Two</string>
-    <string name="confirm_pop">Are you sure you want to pop?</string>
-    <string name="pop_to_second_screen">Pop to second screen</string>
-    <string name="show_third_dialog">Show Third Dialog</string>
-    <string name="show_second_dialog">Show Second Dialog</string>
 </resources>
