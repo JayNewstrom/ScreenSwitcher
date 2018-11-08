@@ -2,6 +2,7 @@ package com.jaynewstrom.screenswitchersample.application
 
 import android.app.Application
 import android.content.Context
+import com.google.android.play.core.splitcompat.SplitCompat
 import com.jaynewstrom.concrete.Concrete
 import com.jaynewstrom.concrete.ConcreteWall
 import com.squareup.leakcanary.LeakCanary
@@ -11,6 +12,11 @@ import timber.log.Timber
 class ScreenSwitcherApplication : Application() {
     private lateinit var foundation: ConcreteWall<ApplicationComponent>
     private lateinit var refWatcher: RefWatcher
+
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(base)
+        SplitCompat.install(base)
+    }
 
     override fun onCreate() {
         super.onCreate()

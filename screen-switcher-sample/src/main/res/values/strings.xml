@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Screen Switcher</string>
+    <string name="view_pdf_dynamic_feature_module">View Pdf</string>
 </resources>

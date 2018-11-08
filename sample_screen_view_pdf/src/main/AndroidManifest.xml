@@ -1,0 +1,10 @@
+<manifest
+    xmlns:dist="http://schemas.android.com/apk/distribution"
+    package="com.jaynewstrom.screenswitchersample.viewpdf">
+
+    <dist:module
+        dist:onDemand="true"
+        dist:title="@string/view_pdf_dynamic_feature_module">
+        <dist:fusing dist:include="true"/>
+    </dist:module>
+</manifest>

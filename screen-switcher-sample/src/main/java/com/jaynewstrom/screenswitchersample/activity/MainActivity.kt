@@ -1,7 +1,7 @@
 package com.jaynewstrom.screenswitchersample.activity
 
-import android.app.Activity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.view.MotionEvent
 import android.view.View
 import com.jaynewstrom.concrete.Concrete
@@ -10,13 +10,13 @@ import com.jaynewstrom.screenswitcher.ScreenSwitcher
 import com.jaynewstrom.screenswitcher.ScreenSwitcherFactory
 import com.jaynewstrom.screenswitcher.ScreenSwitcherPopHandler
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState
-import com.jaynewstrom.screenswitcher.screenmanager.ScreenManager
 import com.jaynewstrom.screenswitcher.dialogmanager.DialogManager
+import com.jaynewstrom.screenswitcher.screenmanager.ScreenManager
 import com.jaynewstrom.screenswitchersample.R
 import com.jaynewstrom.screenswitchersample.application.ApplicationComponent
 import javax.inject.Inject
 
-class MainActivity : Activity(), ScreenSwitcherPopHandler {
+class MainActivity : AppCompatActivity(), ScreenSwitcherPopHandler {
     @Inject internal lateinit var screenSwitcherState: ScreenSwitcherState
     @Inject internal lateinit var screenManager: ScreenManager
     @Inject internal lateinit var dialogManager: DialogManager

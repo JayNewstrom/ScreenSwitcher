@@ -1,4 +1,4 @@
-apply plugin: 'com.android.library'
+apply plugin: 'com.android.dynamic-feature'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
@@ -27,4 +27,5 @@ dependencies {
     kapt deps.daggerCompiler
     implementation deps.timber
     implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+    implementation project(':screen-switcher-sample')
 }

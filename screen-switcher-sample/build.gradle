@@ -30,6 +30,8 @@ android {
                 "TimberExceptionLogging",
                 "TimberTagLength"
     }
+
+    dynamicFeatures = [':sample_screen_view_pdf']
 }
 
 dependencies {
@@ -43,9 +45,6 @@ dependencies {
     implementation deps.dagger
     kapt deps.daggerCompiler
 
-    implementation 'com.jakewharton:butterknife:8.8.1'
-    kapt 'com.jakewharton:butterknife-compiler:8.8.1'
-
     implementation deps.timber
 
     implementation project(':screen-switcher')
@@ -55,7 +54,9 @@ dependencies {
     implementation project(':sample-screen-first')
     implementation project(':sample-screen-second')
     implementation project(':sample-screen-third')
-    implementation project(':sample-screen-view-pdf')
+
+    implementation 'com.google.android.play:core:1.3.5'
+    implementation 'com.google.android.instantapps:instantapps:1.1.0'
 
     androidTestImplementation deps.androidTestRunner
     androidTestImplementation deps.androidTestRules

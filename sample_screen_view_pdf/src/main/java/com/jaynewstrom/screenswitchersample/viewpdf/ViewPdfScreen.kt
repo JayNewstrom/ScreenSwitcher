@@ -12,7 +12,7 @@ import com.jaynewstrom.screenswitchersample.core.ScreenWallManager
 import dagger.Component
 
 object ViewPdfScreenFactory {
-    fun create(): Screen = ViewPdfScreen()
+    @JvmStatic fun create(): Screen = ViewPdfScreen()
 }
 
 private class ViewPdfScreen : BaseScreen<ViewPdfComponent>() {
