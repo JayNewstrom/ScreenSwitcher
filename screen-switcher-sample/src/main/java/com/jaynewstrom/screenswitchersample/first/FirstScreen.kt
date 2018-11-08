@@ -2,44 +2,39 @@ package com.jaynewstrom.screenswitchersample.first
 
 import android.content.Context
 import android.view.View
+import android.view.ViewGroup
 import com.jaynewstrom.concrete.ConcreteBlock
 import com.jaynewstrom.screenswitcher.Screen
-import com.jaynewstrom.screenswitchersample.DefaultScreenTransition
-import com.jaynewstrom.screenswitchersample.MainActivityComponent
-import com.jaynewstrom.screenswitchersample.concrete.ConcreteScreen
+import com.jaynewstrom.screenswitchersample.core.BaseScreen
+import com.jaynewstrom.screenswitchersample.core.DefaultScreenWallManager
+import com.jaynewstrom.screenswitchersample.core.ScreenScope
+import com.jaynewstrom.screenswitchersample.core.ScreenWallManager
 import dagger.Component
-import javax.inject.Scope
 
 object FirstScreenFactory {
     fun create(): Screen = FirstScreen()
 }
 
-private class FirstScreen : ConcreteScreen<FirstComponent>() {
-    override fun transition() = DefaultScreenTransition
-
-    override fun block(theParentComponent: MainActivityComponent): ConcreteBlock<FirstComponent> {
-        return FirstScreenBlock(theParentComponent)
+private class FirstScreen : BaseScreen<FirstComponent>() {
+    override fun createWallManager(): ScreenWallManager<FirstComponent> {
+        return DefaultScreenWallManager({
+            FirstScreenBlock()
+        })
     }
 
-    public override fun createView(context: Context, component: FirstComponent): View {
-        return FirstView(context, component)
+    public override fun createView(context: Context, hostView: ViewGroup, component: FirstComponent): View {
+        return FirstPresenter.createView(context, hostView, component)
     }
 }
 
-@Scope
-@Retention(AnnotationRetention.RUNTIME)
-internal annotation class ForFirstScreen
-
-@ForFirstScreen
-@Component(dependencies = [MainActivityComponent::class])
+@ScreenScope
+@Component
 internal interface FirstComponent {
-    fun inject(view: FirstView)
+    fun inject(presenter: FirstPresenter)
 }
 
-private class FirstScreenBlock(private val theParentComponent: MainActivityComponent) : ConcreteBlock<FirstComponent> {
+private class FirstScreenBlock : ConcreteBlock<FirstComponent> {
     override fun name(): String = javaClass.name
 
-    override fun createComponent(): FirstComponent {
-        return DaggerFirstComponent.builder().mainActivityComponent(theParentComponent).build()
-    }
+    override fun createComponent(): FirstComponent = DaggerFirstComponent.create()
 }

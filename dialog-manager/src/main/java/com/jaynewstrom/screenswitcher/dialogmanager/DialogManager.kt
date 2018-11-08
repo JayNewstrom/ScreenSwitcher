@@ -5,6 +5,8 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import com.jaynewstrom.concrete.Concrete
+import com.jaynewstrom.concrete.ConcreteWall
 import com.jaynewstrom.screenswitcher.Screen
 import com.jaynewstrom.screenswitcher.ScreenLifecycleListener
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState
@@ -104,8 +106,10 @@ fun View.dialogDisplayer(): DialogDisplayer? {
     val screenSwitcherData = screenSwitcherDataIfActive() ?: return null
     val screenManager = screenSwitcherData.hostView.getTag(R.id.screen_manager) as ScreenManager
     val dialogManager = screenSwitcherData.hostView.getTag(R.id.dialog_manager) as DialogManager
+    val wall = Concrete.findWall<ConcreteWall<*>>(context)
     return DialogDisplayer(
         screenSwitcherData.screen,
+        wall,
         screenManager,
         dialogManager,
         screenSwitcherData.screenSwitcherState
@@ -114,6 +118,7 @@ fun View.dialogDisplayer(): DialogDisplayer? {
 
 class DialogDisplayer internal constructor(
     private val screen: Screen,
+    private val wall: ConcreteWall<*>,
     private val screenManager: ScreenManager,
     private val dialogManager: DialogManager,
     private val state: ScreenSwitcherState
@@ -124,7 +129,7 @@ class DialogDisplayer internal constructor(
 
     private inner class WrapperDialogFactory(private val dialogFactory: DialogFactory) : DialogFactory {
         override fun createDialog(context: Context): Dialog {
-            val dialog = dialogFactory.createDialog(context)
+            val dialog = dialogFactory.createDialog(wall.createContext(context))
             val contentView = dialog.findViewById<View>(android.R.id.content)
             contentView.setTag(R.id.screen_switcher_screen, screen)
             val parent = contentView.parent as View

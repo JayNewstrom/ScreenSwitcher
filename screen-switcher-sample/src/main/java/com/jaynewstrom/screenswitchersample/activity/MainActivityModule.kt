@@ -1,4 +1,4 @@
-package com.jaynewstrom.screenswitchersample
+package com.jaynewstrom.screenswitchersample.activity
 
 import com.jaynewstrom.screenswitcher.ScreenLifecycleListener
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState

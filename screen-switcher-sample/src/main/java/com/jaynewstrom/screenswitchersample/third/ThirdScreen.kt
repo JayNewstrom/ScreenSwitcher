@@ -2,49 +2,44 @@ package com.jaynewstrom.screenswitchersample.third
 
 import android.content.Context
 import android.view.View
+import android.view.ViewGroup
 import com.jaynewstrom.concrete.ConcreteBlock
 import com.jaynewstrom.screenswitcher.Screen
-import com.jaynewstrom.screenswitchersample.DefaultScreenTransition
-import com.jaynewstrom.screenswitchersample.MainActivityComponent
-import com.jaynewstrom.screenswitchersample.concrete.ConcreteScreen
+import com.jaynewstrom.screenswitchersample.core.BaseScreen
+import com.jaynewstrom.screenswitchersample.core.DefaultScreenWallManager
+import com.jaynewstrom.screenswitchersample.core.ScreenScope
+import com.jaynewstrom.screenswitchersample.core.ScreenWallManager
 import dagger.Component
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named
-import javax.inject.Scope
 
 object ThirdScreenFactory {
     fun create(): Screen = ThirdScreen()
 }
 
-private class ThirdScreen : ConcreteScreen<ThirdComponent>() {
-    override fun block(theParentComponent: MainActivityComponent): ConcreteBlock<ThirdComponent> {
-        return ThirdScreenBlock(theParentComponent)
+private class ThirdScreen : BaseScreen<ThirdComponent>() {
+    override fun createWallManager(): ScreenWallManager<ThirdComponent> {
+        return DefaultScreenWallManager({
+            ThirdScreenBlock()
+        })
     }
 
-    public override fun createView(context: Context, component: ThirdComponent): View {
-        return ThirdView(context)
+    public override fun createView(context: Context, hostView: ViewGroup, component: ThirdComponent): View {
+        return ThirdPresenter.createView(context, hostView)
     }
-
-    override fun transition() = DefaultScreenTransition
 }
 
-@Scope
-@Retention(AnnotationRetention.RUNTIME)
-internal annotation class ForThirdScreen
-
-@ForThirdScreen
-@Component(dependencies = [MainActivityComponent::class], modules = [ThirdScreenModule::class])
+@ScreenScope
+@Component(modules = [ThirdScreenModule::class])
 internal interface ThirdComponent {
     fun inject(thirdScreenDialog: ThirdScreenDialog)
 }
 
-private class ThirdScreenBlock(private val theParentComponent: MainActivityComponent) : ConcreteBlock<ThirdComponent> {
+private class ThirdScreenBlock : ConcreteBlock<ThirdComponent> {
     override fun name(): String = javaClass.name
 
-    override fun createComponent(): ThirdComponent {
-        return DaggerThirdComponent.builder().mainActivityComponent(theParentComponent).build()
-    }
+    override fun createComponent(): ThirdComponent = DaggerThirdComponent.create()
 }
 
 @Module

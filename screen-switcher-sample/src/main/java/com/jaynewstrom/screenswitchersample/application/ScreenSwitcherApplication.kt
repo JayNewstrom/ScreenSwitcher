@@ -1,13 +1,11 @@
-package com.jaynewstrom.screenswitchersample
+package com.jaynewstrom.screenswitchersample.application
 
 import android.app.Application
 import android.content.Context
-
 import com.jaynewstrom.concrete.Concrete
 import com.jaynewstrom.concrete.ConcreteWall
 import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
-
 import timber.log.Timber
 
 class ScreenSwitcherApplication : Application() {
@@ -22,7 +20,7 @@ class ScreenSwitcherApplication : Application() {
     }
 
     private fun applicationComponent(): ApplicationComponent {
-        return DaggerApplicationComponent.builder().build()
+        return DaggerApplicationComponent.builder().applicationModule(ApplicationModule(this)).build()
     }
 
     override fun getSystemService(name: String): Any? {
@@ -32,9 +30,9 @@ class ScreenSwitcherApplication : Application() {
     }
 
     companion object {
-        fun watchObject(context: Context, watchedReference: Any) {
+        fun <T> watchObject(context: Context, watchedReference: T) {
             val application = context.applicationContext as ScreenSwitcherApplication
-            application.refWatcher.watch(watchedReference)
+            application.refWatcher.watch(watchedReference as Any)
         }
     }
 }
