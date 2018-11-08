@@ -10,13 +10,16 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-object MainActivityModule {
+internal object MainActivityModule {
     @JvmStatic @Provides @ForMainActivity
     internal fun provideScreenManager() = ScreenManager()
 
     @JvmStatic @Provides @ForMainActivity
-    fun provideScreenSwitcherState(lifecycleListener: ScreenLifecycleListener): ScreenSwitcherState {
-        return ScreenSwitcherState(lifecycleListener, listOf(FirstScreenFactory.create()))
+    fun provideScreenSwitcherState(
+        lifecycleListener: ScreenLifecycleListener,
+        navigator: Navigator
+    ): ScreenSwitcherState {
+        return ScreenSwitcherState(lifecycleListener, listOf(FirstScreenFactory.create(navigator)))
     }
 
     @JvmStatic @Provides @ForMainActivity

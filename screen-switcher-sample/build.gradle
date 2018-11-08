@@ -52,6 +52,7 @@ dependencies {
     implementation project(':dialog-manager')
     implementation project(':screen-manager')
     implementation project(':sample-core')
+    implementation project(':sample-screen-first')
 
     androidTestImplementation deps.androidTestRunner
     androidTestImplementation deps.androidTestRules
