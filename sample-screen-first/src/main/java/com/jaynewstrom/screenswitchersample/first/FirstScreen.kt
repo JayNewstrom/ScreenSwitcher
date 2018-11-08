@@ -10,15 +10,17 @@ import com.jaynewstrom.screenswitchersample.core.DefaultScreenWallManager
 import com.jaynewstrom.screenswitchersample.core.ScreenScope
 import com.jaynewstrom.screenswitchersample.core.ScreenWallManager
 import dagger.Component
+import dagger.Module
+import dagger.Provides
 
 object FirstScreenFactory {
-    fun create(): Screen = FirstScreen()
+    fun create(navigator: FirstNavigator): Screen = FirstScreen(navigator)
 }
 
-private class FirstScreen : BaseScreen<FirstComponent>() {
+private class FirstScreen(private val navigator: FirstNavigator) : BaseScreen<FirstComponent>() {
     override fun createWallManager(): ScreenWallManager<FirstComponent> {
         return DefaultScreenWallManager({
-            FirstScreenBlock()
+            FirstScreenBlock(navigator)
         })
     }
 
@@ -28,13 +30,20 @@ private class FirstScreen : BaseScreen<FirstComponent>() {
 }
 
 @ScreenScope
-@Component
+@Component(modules = [FirstModule::class])
 internal interface FirstComponent {
     fun inject(presenter: FirstPresenter)
 }
 
-private class FirstScreenBlock : ConcreteBlock<FirstComponent> {
+@Module
+internal class FirstModule(private val navigator: FirstNavigator) {
+    @Provides fun provideNavigator() = navigator
+}
+
+private class FirstScreenBlock(private val navigator: FirstNavigator) : ConcreteBlock<FirstComponent> {
     override fun name(): String = javaClass.name
 
-    override fun createComponent(): FirstComponent = DaggerFirstComponent.create()
+    override fun createComponent(): FirstComponent = DaggerFirstComponent.builder()
+        .firstModule(FirstModule(navigator))
+        .build()
 }
