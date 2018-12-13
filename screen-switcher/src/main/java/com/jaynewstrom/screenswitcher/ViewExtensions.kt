@@ -21,8 +21,13 @@ fun View.screenSwitcherState(): ScreenSwitcherState {
 /**
  * Returns the screen associated with the view.
  */
-fun View.associatedScreen(): Screen {
-    return screenSwitcherData().screen
+tailrec fun View.associatedScreen(): Screen {
+    val parent = parent as? ViewGroup ?: throw IllegalStateException("View is not associated with a Screen.")
+    val screen = getTag(R.id.screen_switcher_screen) as? Screen?
+    if (screen != null) {
+        return screen
+    }
+    return parent.associatedScreen()
 }
 
 /**
