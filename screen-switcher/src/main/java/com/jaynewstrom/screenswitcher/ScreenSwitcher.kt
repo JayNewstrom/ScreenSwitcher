@@ -1,6 +1,6 @@
 package com.jaynewstrom.screenswitcher
 
-import android.support.annotation.IntRange
+import androidx.annotation.IntRange
 
 /**
  * This object lives inside of the [android.app.Activity] lifecycle, and shouldn't be referenced outside of it to ensure leaks

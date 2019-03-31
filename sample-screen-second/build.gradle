@@ -22,7 +22,7 @@ dependencies {
     api project(':screen-switcher')
     api project(':sample-core')
     api project(':dialog-manager')
-    api deps.appCompatv7
+    api deps.appCompat
     api deps.dagger
     kapt deps.daggerCompiler
     implementation deps.timber

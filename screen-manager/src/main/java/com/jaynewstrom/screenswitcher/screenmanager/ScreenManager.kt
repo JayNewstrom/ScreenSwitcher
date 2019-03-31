@@ -1,7 +1,7 @@
 package com.jaynewstrom.screenswitcher.screenmanager
 
-import android.support.annotation.IntRange
 import android.view.View
+import androidx.annotation.IntRange
 import com.jaynewstrom.screenswitcher.Screen
 import com.jaynewstrom.screenswitcher.ScreenSwitcher
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState

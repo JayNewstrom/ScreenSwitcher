@@ -20,6 +20,6 @@ dependencies {
     api deps.concrete
     api deps.kotlinRuntime
     api project(':screen-switcher')
-    api deps.appCompatv7
+    api deps.appCompat
     implementation deps.timber
 }
