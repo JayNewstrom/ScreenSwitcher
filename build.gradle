@@ -1,12 +1,12 @@
 ext {
     minSdkVersion = 15
-    targetSdkVersion = 27
-    compileSdkVersion = 27
-    sourceCompatibilityVersion = JavaVersion.VERSION_1_7
-    targetCompatibilityVersion = JavaVersion.VERSION_1_7
-    supportLibraryVersion = '27.1.1'
-    daggerVersion = '2.19'
-    kotlinVersion = '1.2.71'
+    targetSdkVersion = 28
+    compileSdkVersion = 28
+    sourceCompatibilityVersion = JavaVersion.VERSION_1_8
+    targetCompatibilityVersion = JavaVersion.VERSION_1_8
+    supportLibraryVersion = '28.0.0'
+    daggerVersion = '2.21'
+    kotlinVersion = '1.3.21'
 }
 
 ext.deps = [
@@ -33,7 +33,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.android.tools.build:gradle:3.3.2'
     }
 }
 
@@ -77,7 +77,7 @@ static def configureKotlinLint(Project project) {
         }
 
         project.dependencies {
-            ktlint 'com.github.shyiko:ktlint:0.29.0'
+            ktlint 'com.github.shyiko:ktlint:0.31.0'
         }
 
         def ktlintCheck = project.tasks.create('ktlintCheck', JavaExec.class) {
