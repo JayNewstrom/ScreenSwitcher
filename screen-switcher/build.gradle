@@ -16,16 +16,16 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName '1.0'
-        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         testApplicationId 'com.jaynewstrom.screenswitcher.androidTest'
     }
 }
 
 dependencies {
-    compileOnly deps.supportAnnotations
+    compileOnly deps.androidXAnnotation
     api deps.kotlinRuntime
 
-    testCompileOnly deps.supportAnnotations
+    testCompileOnly deps.androidXAnnotation
     testImplementation deps.junit
     testImplementation deps.mockitoCore
     testImplementation deps.fest

@@ -16,7 +16,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName '1.0'
-        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         testApplicationId 'com.jaynewstrom.screenswitchersample.androidTest'
     }
 
@@ -33,7 +33,7 @@ android {
 }
 
 dependencies {
-    implementation deps.appCompatv7
+    implementation deps.appCompat
 
     implementation deps.concrete
 
@@ -43,8 +43,8 @@ dependencies {
     implementation deps.dagger
     kapt deps.daggerCompiler
 
-    implementation 'com.jakewharton:butterknife:9.0.0'
-    kapt 'com.jakewharton:butterknife-compiler:9.0.0'
+    implementation 'com.jakewharton:butterknife:10.1.0'
+    kapt 'com.jakewharton:butterknife-compiler:10.1.0'
 
     implementation deps.timber
 
@@ -57,6 +57,7 @@ dependencies {
     implementation project(':sample-screen-third')
 
     androidTestImplementation deps.androidTestRunner
+    androidTestImplementation deps.androidTestJunitRunner
     androidTestImplementation deps.androidTestRules
     androidTestImplementation deps.espressoCore
 }
