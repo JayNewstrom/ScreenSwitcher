@@ -89,7 +89,8 @@ tailrec fun View.screenSwitcherData(): ScreenSwitcherViewExtensionData {
     // When we detect we found the screen switcher, but no screen, return a dummy screen, rather than crashing on the
     // next recursion.
     if (ScreenSwitcherConfig.failSilentlyWhenPossible && getTag(R.id.screen_switcher) != null) {
-        ScreenSwitcherConfig.logger("Returning ScreenSwitcherViewExtensionData with NoScreenFoundScreen from #screenSwitcherData - $this")
+        ScreenSwitcherConfig.logger("Returning ScreenSwitcherViewExtensionData with NoScreenFoundScreen from " +
+            "#screenSwitcherData - $this")
         val screenSwitcher = getTag(R.id.screen_switcher) as ScreenSwitcher
         val screenSwitcherState = getTag(R.id.screen_switcher_state) as ScreenSwitcherState
         return ScreenSwitcherViewExtensionData(screenSwitcher, screenSwitcherState, NoScreenFoundScreen, parent)
