@@ -3,7 +3,6 @@ package com.jaynewstrom.screenswitchersample.core
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.view.View
-
 import com.jaynewstrom.screenswitcher.ScreenTransition
 
 object DefaultScreenTransition : ScreenTransition {

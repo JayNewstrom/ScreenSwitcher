@@ -3,9 +3,7 @@ package com.jaynewstrom.screenswitchersample.second
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
-
 import com.jaynewstrom.screenswitcher.dialogmanager.DialogFactory
-
 import javax.inject.Inject
 
 internal class SecondScreenDialogFactory @Inject constructor() : DialogFactory {

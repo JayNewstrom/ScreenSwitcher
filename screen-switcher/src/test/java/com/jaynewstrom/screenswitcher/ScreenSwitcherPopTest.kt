@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import com.jaynewstrom.screenswitcher.ScreenTestUtils.addTransitionOut
 import com.jaynewstrom.screenswitcher.ScreenTestUtils.initialActivityScreenSwitcher
 import com.jaynewstrom.screenswitcher.ScreenTestUtils.mockCreateView
+import java.util.concurrent.atomic.AtomicInteger
 import org.fest.assertions.api.Assertions.assertThat
 import org.junit.Assert.fail
 import org.junit.Test
@@ -13,7 +14,6 @@ import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
-import java.util.concurrent.atomic.AtomicInteger
 
 class ScreenSwitcherPopTest {
     @Test fun popFailsWhenTransitionIsOccurring() {

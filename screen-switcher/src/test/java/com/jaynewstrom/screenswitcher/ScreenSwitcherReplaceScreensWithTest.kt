@@ -4,13 +4,13 @@ import android.app.Activity
 import com.jaynewstrom.screenswitcher.ScreenTestUtils.addTransitionIn
 import com.jaynewstrom.screenswitcher.ScreenTestUtils.initialActivityScreenSwitcher
 import com.jaynewstrom.screenswitcher.ScreenTestUtils.mockCreateView
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicInteger
 import org.fest.assertions.api.Assertions.assertThat
 import org.junit.Assert.fail
 import org.junit.Test
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
-import java.util.concurrent.atomic.AtomicBoolean
-import java.util.concurrent.atomic.AtomicInteger
 
 class ScreenSwitcherReplaceScreensWithTest {
     @Test fun failsWhenTransitionIsOccurring() {

@@ -10,8 +10,8 @@ import com.jaynewstrom.screenswitcher.ScreenSwitcher
 import com.jaynewstrom.screenswitcher.ScreenSwitcherFactory
 import com.jaynewstrom.screenswitcher.ScreenSwitcherPopHandler
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState
-import com.jaynewstrom.screenswitcher.screenmanager.ScreenManager
 import com.jaynewstrom.screenswitcher.dialogmanager.DialogManager
+import com.jaynewstrom.screenswitcher.screenmanager.ScreenManager
 import com.jaynewstrom.screenswitchersample.R
 import com.jaynewstrom.screenswitchersample.application.ApplicationComponent
 import javax.inject.Inject
