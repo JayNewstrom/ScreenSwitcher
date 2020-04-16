@@ -5,7 +5,6 @@ import android.app.Dialog
 import android.content.Context
 import com.jaynewstrom.concrete.Concrete
 import com.jaynewstrom.screenswitcher.dialogmanager.DialogFactory
-
 import javax.inject.Inject
 import javax.inject.Named
 

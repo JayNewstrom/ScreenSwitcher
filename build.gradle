@@ -4,26 +4,26 @@ ext {
     compileSdkVersion = 28
     sourceCompatibilityVersion = JavaVersion.VERSION_1_8
     targetCompatibilityVersion = JavaVersion.VERSION_1_8
-    daggerVersion = '2.21'
-    kotlinVersion = '1.3.21'
+    daggerVersion = '2.27'
+    kotlinVersion = '1.3.72'
 }
 
 ext.deps = [
-        androidXAnnotation: 'androidx.annotation:annotation:1.0.2',
-        appCompat: 'androidx.appcompat:appcompat:1.0.2',
+        androidXAnnotation: 'androidx.annotation:annotation:1.1.0',
+        appCompat: 'androidx.appcompat:appcompat:1.1.0',
         dagger: "com.google.dagger:dagger:$daggerVersion",
         daggerCompiler: "com.google.dagger:dagger-compiler:$daggerVersion",
         concrete: 'com.jaynewstrom:concrete:0.13.2',
         kotlinRuntime: "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
         timber: 'com.jakewharton.timber:timber:4.7.1',
 
-        junit: 'junit:junit:4.12',
+        junit: 'junit:junit:4.13',
         fest: 'org.easytesting:fest-assert-core:2.0M10',
-        mockitoCore: 'org.mockito:mockito-core:2.21.0',
-        androidTestRunner: 'androidx.test:runner:1.1.1',
-        androidTestRules: 'androidx.test:rules:1.1.1',
-        androidTestJunitRunner: 'androidx.test.ext:junit:1.1.0',
-        espressoCore: 'androidx.test.espresso:espresso-core:3.1.1'
+        mockitoCore: 'org.mockito:mockito-core:2.28.2',
+        androidTestRunner: 'androidx.test:runner:1.2.0',
+        androidTestRules: 'androidx.test:rules:1.2.0',
+        androidTestJunitRunner: 'androidx.test.ext:junit:1.1.1',
+        espressoCore: 'androidx.test.espresso:espresso-core:3.2.0'
 ]
 
 buildscript {
@@ -33,7 +33,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.2'
+        classpath 'com.android.tools.build:gradle:3.6.2'
+        classpath 'com.diffplug.spotless:spotless-plugin-gradle:3.28.1'
     }
 }
 
@@ -67,31 +68,34 @@ subprojects {
         }
     }
 
-    configureKotlinLint(it)
+    apply plugin: 'com.diffplug.gradle.spotless'
+
+    configureSpotless(it)
 }
 
-static def configureKotlinLint(Project project) {
+static def configureSpotless(Project project) {
+    project.spotless {
+        format 'misc', {
+            target '**/*.gradle', '**/*.md', '**/.gitignore'
+
+            trimTrailingWhitespace()
+            indentWithSpaces()
+            endWithNewline()
+        }
+    }
+
     def closure = {
-        project.configurations {
-            ktlint
-        }
-
-        project.dependencies {
-            ktlint 'com.github.shyiko:ktlint:0.31.0'
-        }
-
-        def ktlintCheck = project.tasks.create('ktlintCheck', JavaExec.class) {
-            main = 'com.github.shyiko.ktlint.Main'
-            classpath = project.configurations.ktlint
-            args 'src/**/*.kt'
-        }
-
-        project.check.dependsOn ktlintCheck
-
-        project.tasks.create('ktlintFormat', JavaExec.class) {
-            main = 'com.github.shyiko.ktlint.Main'
-            classpath = project.configurations.ktlint
-            args '-r', 'src/**/*.kt'
+        project.spotless {
+            kotlin {
+                target '**/*.kt'
+                ktlint('0.36.0').userData([
+                        'max_line_length': '120',
+                        'indent_size': '4',
+                        'continuation_indent_size': '4',
+                        'insert_final_newline': 'true',
+                        'end_of_line': 'crlf',
+                ])
+            }
         }
     }
     project.plugins.withId('kotlin-android', closure)
