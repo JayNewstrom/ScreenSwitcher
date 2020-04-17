@@ -30,9 +30,9 @@ internal class RealScreenSwitcher(
     init {
         this.activity = getActivity(context)
         this.screenViewMap = LinkedHashMap()
-        initializeActivityState()
-        setupHostViewForHidingKeyboard()
         host.hostView().setupForViewExtensions(this, state)
+        setupHostViewForHidingKeyboard()
+        initializeActivityState()
     }
 
     private fun initializeActivityState() {
@@ -61,7 +61,7 @@ internal class RealScreenSwitcher(
     override fun push(screen: Screen) {
         ensureTransitionIsNotOccurring("push")
         val screens = state.screens
-        checkState(!screens.isEmpty()) { "no screens to transition from" }
+        checkState(screens.isNotEmpty()) { "no screens to transition from" }
 
         hideKeyboard()
 
@@ -90,7 +90,7 @@ internal class RealScreenSwitcher(
     override fun replaceScreensWith(numberToPop: Int, newScreens: List<Screen>) {
         ensureTransitionIsNotOccurring("replaceScreensWith")
         checkNumberToPop(numberToPop)
-        checkArgument(!newScreens.isEmpty()) { "screens must contain at least one screen" }
+        checkArgument(newScreens.isNotEmpty()) { "screens must contain at least one screen" }
         val screens = ArrayList(newScreens) // Make defensive copy.
 
         hideKeyboard()
