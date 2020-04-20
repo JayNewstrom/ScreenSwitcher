@@ -38,7 +38,7 @@ Setup
 ------------
 ```groovy
 dependencies {
-    compile 'com.jaynewstrom:screen-switcher:0.18.0'
+    implementation 'com.jaynewstrom:screen-switcher:0.20.0'
 }
 ```
 
