@@ -19,7 +19,9 @@ class ScreenSwitcherFactoryTest {
 
     @Before fun setup() {
         activity = mock(Activity::class.java)
-        `when`<View>(activity.findViewById<View>(android.R.id.content)).thenReturn(mock(ViewGroup::class.java))
+        val hostView = mock(ViewGroup::class.java)
+        `when`<View>(activity.findViewById<View>(android.R.id.content)).thenReturn(hostView)
+        `when`(hostView.context).thenReturn(activity)
         view = mock(ViewGroup::class.java)
         `when`<Context>(view.context).thenReturn(activity)
         val screen = mock(Screen::class.java)

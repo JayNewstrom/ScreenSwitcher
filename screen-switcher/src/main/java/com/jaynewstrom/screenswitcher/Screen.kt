@@ -14,7 +14,13 @@ interface Screen {
      * Creates the view associated with the [Screen].
      * Note, this can be called multiple times.
      */
-    fun createView(context: Context, hostView: ViewGroup): View
+    fun createView(hostView: ViewGroup): View
+
+    /**
+     * Bind the view created via [createView] with the data needed for the screen.
+     * Always called in symmetry with [createView].
+     */
+    fun bindView(view: View)
 
     /**
      * Will be called when the [Screen] is removed from the [ScreenSwitcher] for good.

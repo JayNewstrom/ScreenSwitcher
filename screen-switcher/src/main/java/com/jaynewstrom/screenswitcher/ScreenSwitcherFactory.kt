@@ -13,7 +13,7 @@ object ScreenSwitcherFactory {
         popHandler: ScreenSwitcherPopHandler
     ): ScreenSwitcher {
         state.validate()
-        return RealScreenSwitcher(activity, state, ActivityScreenSwitcherHost(activity, popHandler))
+        return RealScreenSwitcher(state, ActivityScreenSwitcherHost(activity, popHandler))
     }
 
     /**
@@ -25,7 +25,7 @@ object ScreenSwitcherFactory {
         popHandler: ScreenSwitcherPopHandler
     ): ScreenSwitcher {
         state.validate()
-        return RealScreenSwitcher(viewGroup.context, state, ViewScreenSwitcherHost(viewGroup, popHandler))
+        return RealScreenSwitcher(state, ViewScreenSwitcherHost(viewGroup, popHandler))
     }
 
     @Suppress("NOTHING_TO_INLINE") // Deduplicate code, no need for a method jump.

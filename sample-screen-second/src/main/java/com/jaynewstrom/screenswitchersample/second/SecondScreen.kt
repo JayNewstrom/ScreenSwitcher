@@ -1,8 +1,7 @@
 package com.jaynewstrom.screenswitchersample.second
 
-import android.content.Context
 import android.view.View
-import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import com.jaynewstrom.concrete.ConcreteBlock
 import com.jaynewstrom.screenswitcher.Screen
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState
@@ -29,8 +28,10 @@ private class SecondScreen(private val navigator: SecondNavigator) : BaseScreen<
         })
     }
 
-    override fun createView(context: Context, hostView: ViewGroup, component: SecondComponent): View {
-        return SecondPresenter.createView(context, hostView, component)
+    @LayoutRes override fun layoutId(): Int = SecondPresenter.layoutId()
+
+    override fun bindView(view: View, component: SecondComponent) {
+        SecondPresenter.bindView(view, component)
     }
 
     override fun equals(other: Any?) = other is SecondScreen || super.equals(other)

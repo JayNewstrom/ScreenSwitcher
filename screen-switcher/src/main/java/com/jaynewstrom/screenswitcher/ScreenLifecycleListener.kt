@@ -5,24 +5,24 @@ package com.jaynewstrom.screenswitcher
  */
 interface ScreenLifecycleListener {
     /**
-     * Called when a screen is added. Symmetric with [.onScreenRemoved].
+     * Called when a screen is added. Symmetric with [onScreenRemoved].
      */
     fun onScreenAdded(screen: Screen)
 
     /**
-     * Called when a screen is removed. Symmetric with [.onScreenAdded].
+     * Called when a screen is removed. Symmetric with [onScreenAdded].
      */
     fun onScreenRemoved(screen: Screen)
 
     /**
      * Called when a screen becomes active. Only a single screen is "active" at a time.
-     * Symmetric with [.onScreenBecameInactive].
+     * Symmetric with [onScreenBecameInactive].
      */
     fun onScreenBecameActive(screen: Screen)
 
     /**
      * Called when a screen becomes inactive. Only a single screen is "active" at a time.
-     * Symmetric with [.onScreenBecameActive].
+     * Symmetric with [onScreenBecameActive].
      */
     fun onScreenBecameInactive(screen: Screen)
 }
