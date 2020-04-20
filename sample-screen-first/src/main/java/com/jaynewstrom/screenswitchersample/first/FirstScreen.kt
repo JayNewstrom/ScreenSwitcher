@@ -1,8 +1,7 @@
 package com.jaynewstrom.screenswitchersample.first
 
-import android.content.Context
 import android.view.View
-import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import com.jaynewstrom.concrete.ConcreteBlock
 import com.jaynewstrom.screenswitcher.Screen
 import com.jaynewstrom.screenswitchersample.core.BaseScreen
@@ -24,8 +23,10 @@ private class FirstScreen(private val navigator: FirstNavigator) : BaseScreen<Fi
         })
     }
 
-    public override fun createView(context: Context, hostView: ViewGroup, component: FirstComponent): View {
-        return FirstPresenter.createView(context, hostView, component)
+    @LayoutRes override fun layoutId(): Int = FirstPresenter.layoutId()
+
+    override fun bindView(view: View, component: FirstComponent) {
+        FirstPresenter.bindView(view, component)
     }
 }
 

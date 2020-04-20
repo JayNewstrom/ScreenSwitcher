@@ -1,8 +1,8 @@
 package com.jaynewstrom.screenswitchersample.core
 
-import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import com.jaynewstrom.concrete.Concrete
 import com.jaynewstrom.concrete.ConcreteBlock
 import com.jaynewstrom.concrete.ConcreteWall
@@ -14,13 +14,15 @@ abstract class BaseScreen<C> : Screen {
 
     protected abstract fun createWallManager(): ScreenWallManager<C>
 
-    protected abstract fun createView(context: Context, hostView: ViewGroup, component: C): View
+    @LayoutRes protected abstract fun layoutId(): Int
 
-    final override fun createView(context: Context, hostView: ViewGroup): View {
+    protected abstract fun bindView(view: View, component: C)
+
+    final override fun createView(hostView: ViewGroup): View {
         val state = state
         val screenWall: ConcreteWall<C>
         if (state == null) {
-            val parentWall = Concrete.findWall<ConcreteWall<ScreenParentComponent>>(context)
+            val parentWall = Concrete.findWall<ConcreteWall<ScreenParentComponent>>(hostView.context)
             val wallManager = createWallManager()
             screenWall = wallManager.createScreenWall(parentWall)
             val leakWatcher = parentWall.component.leakWatcher
@@ -28,7 +30,11 @@ abstract class BaseScreen<C> : Screen {
         } else {
             screenWall = state.screenWall
         }
-        return createView(screenWall.createContext(context), hostView, screenWall.component)
+        return hostView.inflate(layoutId(), context = screenWall.createContext(hostView.context))
+    }
+
+    final override fun bindView(view: View) {
+        bindView(view, state!!.screenWall.component)
     }
 
     final override fun destroyScreen(viewToDestroy: View) {

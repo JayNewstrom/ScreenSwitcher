@@ -1,21 +1,19 @@
 package com.jaynewstrom.screenswitchersample.second
 
-import android.content.Context
 import android.view.View
-import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import com.jaynewstrom.screenswitcher.dialogmanager.dialogDisplayer
 import com.jaynewstrom.screenswitcher.screenmanager.screenTransitioner
-import com.jaynewstrom.screenswitchersample.core.inflate
 import javax.inject.Inject
 import javax.inject.Provider
 
 internal class SecondPresenter private constructor(private val view: View, component: SecondComponent) {
     companion object {
-        fun createView(context: Context, container: ViewGroup, component: SecondComponent): View {
-            val view = container.inflate(layoutResId = R.layout.second_view, context = context)
+        @LayoutRes fun layoutId() = R.layout.second_view
+
+        fun bindView(view: View, component: SecondComponent) {
             val presenter = SecondPresenter(view, component)
             view.setTag(R.id.presenter, presenter)
-            return view
         }
     }
 

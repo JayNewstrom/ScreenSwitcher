@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 
 internal class RealScreenSwitcher(
-    private val context: Context,
     val state: ScreenSwitcherState,
     private val host: ScreenSwitcherHost
 ) : ScreenSwitcher {
@@ -28,7 +27,7 @@ internal class RealScreenSwitcher(
         }
 
     init {
-        this.activity = getActivity(context)
+        this.activity = getActivity(host.hostView().context)
         this.screenViewMap = LinkedHashMap()
         host.hostView().setupForViewExtensions(this, state)
         setupHostViewForHidingKeyboard()
@@ -45,10 +44,11 @@ internal class RealScreenSwitcher(
     }
 
     private fun createView(screen: Screen): View {
-        val view = screen.createView(context, host.hostView())
+        val view = screen.createView(host.hostView())
         view.setTag(R.id.screen_switcher_screen, screen)
-        checkArgument(view.parent == null) { "createView should not return a view that has a parent." }
         screenViewMap[screen] = view
+        screen.bindView(view)
+        checkArgument(view.parent == null) { "createView/bindView should not return a view that has a parent." }
         host.addView(view)
         return view
     }

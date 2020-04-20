@@ -1,20 +1,15 @@
 package com.jaynewstrom.screenswitchersample.third
 
-import android.content.Context
 import android.view.View
-import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import com.jaynewstrom.screenswitcher.dialogmanager.dialogDisplayer
 import com.jaynewstrom.screenswitcher.screenmanager.screenTransitioner
-import com.jaynewstrom.screenswitchersample.core.inflate
 import javax.inject.Inject
 
 internal class ThirdPresenter private constructor(private val view: View, component: ThirdComponent) {
     companion object {
-        fun createView(context: Context, container: ViewGroup, component: ThirdComponent): View {
-            val view = container.inflate(layoutResId = R.layout.third_view, context = context)
-            ThirdPresenter(view, component)
-            return view
-        }
+        @LayoutRes fun layoutId() = R.layout.third_view
+        fun bindView(view: View, component: ThirdComponent) = ThirdPresenter(view, component)
     }
 
     @Inject lateinit var navigator: ThirdNavigator

@@ -1,8 +1,7 @@
 package com.jaynewstrom.screenswitchersample.third
 
-import android.content.Context
 import android.view.View
-import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import com.jaynewstrom.concrete.ConcreteBlock
 import com.jaynewstrom.screenswitcher.Screen
 import com.jaynewstrom.screenswitchersample.core.BaseScreen
@@ -25,8 +24,10 @@ private class ThirdScreen(private val navigator: ThirdNavigator) : BaseScreen<Th
         })
     }
 
-    public override fun createView(context: Context, hostView: ViewGroup, component: ThirdComponent): View {
-        return ThirdPresenter.createView(context, hostView, component)
+    @LayoutRes override fun layoutId(): Int = ThirdPresenter.layoutId()
+
+    override fun bindView(view: View, component: ThirdComponent) {
+        ThirdPresenter.bindView(view, component)
     }
 }
 

@@ -1,6 +1,5 @@
 package com.jaynewstrom.screenswitcher
 
-import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 
@@ -9,8 +8,12 @@ import android.view.ViewGroup
  * See [ScreenSwitcherConfig.failSilentlyWhenPossible].
  */
 object NoScreenFoundScreen : Screen {
-    override fun createView(context: Context, hostView: ViewGroup): View {
+    override fun createView(hostView: ViewGroup): View {
         throw UnsupportedOperationException("createView should not be called on NoScreenFoundScreen.")
+    }
+
+    override fun bindView(view: View) {
+        throw UnsupportedOperationException("bindView should not be called on NoScreenFoundScreen.")
     }
 
     override fun destroyScreen(viewToDestroy: View) {
