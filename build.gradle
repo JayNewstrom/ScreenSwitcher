@@ -1,7 +1,7 @@
 ext {
     minSdkVersion = 15
-    targetSdkVersion = 28
-    compileSdkVersion = 28
+    targetSdkVersion = 29
+    compileSdkVersion = 29
     sourceCompatibilityVersion = JavaVersion.VERSION_1_8
     targetCompatibilityVersion = JavaVersion.VERSION_1_8
     daggerVersion = '2.27'
@@ -33,7 +33,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.2'
+        classpath 'com.android.tools.build:gradle:4.0.0'
         classpath 'com.diffplug.spotless:spotless-plugin-gradle:3.28.1'
     }
 }
