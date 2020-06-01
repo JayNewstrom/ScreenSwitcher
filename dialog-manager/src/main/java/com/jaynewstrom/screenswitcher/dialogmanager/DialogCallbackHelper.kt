@@ -11,8 +11,8 @@ import com.jaynewstrom.screenswitcher.screenmanager.ScreenManager
  */
 internal class DialogCallbackHelper(private val screenManager: ScreenManager) {
     fun bootstrap(dialog: Dialog) {
-        val callback = dialog.window.callback
-        dialog.window.callback = DelegatingWindowCallback(callback, screenManager)
+        val callback = dialog.window!!.callback
+        dialog.window!!.callback = DelegatingWindowCallback(callback, screenManager)
     }
 }
 
