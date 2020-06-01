@@ -27,6 +27,11 @@ class ScreenManager {
 
 fun View.screenTransitioner(): ScreenTransitioner? {
     val associatedData = screenSwitcherDataIfActive() ?: return null
+
+    // Prevent a transition if another one is already occurring.
+    // This can occur if the user clicked the back button, and an animation is running.
+    if (associatedData.screenSwitcher.isTransitioning) return null
+
     return ScreenTransitioner(associatedData.screenSwitcher, associatedData.screenSwitcherState)
 }
 
