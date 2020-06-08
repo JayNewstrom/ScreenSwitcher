@@ -5,6 +5,7 @@ import androidx.annotation.LayoutRes
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jaynewstrom.concrete.ConcreteBlock
 import com.jaynewstrom.screenswitcher.Screen
+import com.jaynewstrom.screenswitcher.ScreenSwitcherState
 import com.jaynewstrom.screenswitchersample.core.BaseScreen
 import com.jaynewstrom.screenswitchersample.core.DefaultScreenWallManager
 import com.jaynewstrom.screenswitchersample.core.ScreenScope
@@ -19,7 +20,7 @@ object BadgeScreenFactory {
 }
 
 private class BadgeScreen(private val badgeCountRelay: BehaviorRelay<Int>) : BaseScreen<BadgeComponent>() {
-    override fun createWallManager(): ScreenWallManager<BadgeComponent> {
+    override fun createWallManager(screenSwitcherState: ScreenSwitcherState): ScreenWallManager<BadgeComponent> {
         return DefaultScreenWallManager({
             BadgeScreenBlock(badgeCountRelay)
         })

@@ -4,6 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.DrawableRes
 import com.jaynewstrom.screenswitcher.Screen
+import com.jaynewstrom.screenswitcher.screenSwitcherState
 import io.reactivex.Observable
 
 class TabBarItem(
@@ -17,7 +18,7 @@ class TabBarItem(
     }
 
     internal fun createContentView(hostView: ViewGroup): View {
-        val view = screen.createView(hostView)
+        val view = screen.createView(hostView, hostView.screenSwitcherState())
         screen.bindView(view)
         return view
     }
