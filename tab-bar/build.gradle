@@ -12,17 +12,16 @@ android {
 
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
     }
 }
 
 dependencies {
-    api deps.concrete
+    api project(':screen-manager')
+    api project(':sample-core')
     api deps.kotlinRuntime
-    api project(':screen-switcher')
-    api deps.appCompat
-    api deps.dagger
-    implementation deps.timber
     api deps.rxJava
-    implementation deps.rxRelay
+    implementation deps.constraintLayout
+
+    implementation deps.dagger
+    kapt deps.daggerCompiler
 }

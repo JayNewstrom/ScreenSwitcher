@@ -48,6 +48,8 @@ dependencies {
 
     implementation deps.timber
 
+    implementation deps.constraintLayout
+
     implementation project(':screen-switcher')
     implementation project(':dialog-manager')
     implementation project(':screen-manager')
@@ -55,6 +57,9 @@ dependencies {
     implementation project(':sample-screen-first')
     implementation project(':sample-screen-second')
     implementation project(':sample-screen-third')
+    implementation project(':tab-bar')
+    implementation project(':sample-screen-color')
+    implementation project(':sample-screen-badge')
 
     androidTestImplementation deps.androidTestRunner
     androidTestImplementation deps.androidTestJunitRunner
