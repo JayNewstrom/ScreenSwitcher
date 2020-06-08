@@ -20,9 +20,9 @@ dependencies {
     api deps.concrete
     api deps.kotlinRuntime
     api project(':screen-switcher')
-    api deps.appCompat
+    api project(':sample-core')
     api deps.dagger
-    implementation deps.timber
+    kapt deps.daggerCompiler
     api deps.rxJava
-    implementation deps.rxRelay
+    api deps.rxRelay
 }
