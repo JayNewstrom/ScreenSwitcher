@@ -7,7 +7,6 @@ import com.jaynewstrom.screenswitcher.Screen
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState
 import com.jaynewstrom.screenswitchersample.core.BaseScreen
 import com.jaynewstrom.screenswitchersample.core.DefaultScreenWallManager
-import com.jaynewstrom.screenswitchersample.core.ScreenParentComponent
 import com.jaynewstrom.screenswitchersample.core.ScreenScope
 import com.jaynewstrom.screenswitchersample.core.ScreenWallManager
 import dagger.Component
@@ -19,12 +18,12 @@ object SecondScreenFactory {
 }
 
 private class SecondScreen(private val navigator: SecondNavigator) : BaseScreen<SecondComponent>() {
-    override fun createWallManager(): ScreenWallManager<SecondComponent> {
-        return DefaultScreenWallManager({ parentComponent ->
-            SecondScreenBlock(parentComponent, navigator)
+    override fun createWallManager(screenSwitcherState: ScreenSwitcherState): ScreenWallManager<SecondComponent> {
+        return DefaultScreenWallManager({
+            SecondScreenBlock(navigator)
         }, { wall ->
             val component = wall.component
-            component.screenSwitcherState.registerPopListener(this, component.secondPopListener)
+            screenSwitcherState.registerPopListener(this, component.secondPopListener)
         })
     }
 
@@ -45,22 +44,19 @@ private class SecondModule(private val navigator: SecondNavigator) {
 }
 
 @ScreenScope
-@Component(dependencies = [ScreenParentComponent::class], modules = [SecondModule::class])
+@Component(modules = [SecondModule::class])
 internal interface SecondComponent {
     fun inject(presenter: SecondPresenter)
 
-    val screenSwitcherState: ScreenSwitcherState
     val secondPopListener: SecondPopListener
 }
 
 private class SecondScreenBlock(
-    private val parentComponent: ScreenParentComponent,
     private val navigator: SecondNavigator
 ) : ConcreteBlock<SecondComponent> {
     override fun name(): String = javaClass.name
 
     override fun createComponent(): SecondComponent = DaggerSecondComponent.builder()
-        .screenParentComponent(parentComponent)
         .secondModule(SecondModule(navigator))
         .build()
 }

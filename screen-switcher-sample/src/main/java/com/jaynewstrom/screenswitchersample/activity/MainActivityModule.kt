@@ -31,7 +31,12 @@ internal object MainActivityModule {
         tabBarItems += TabBarItem(FirstScreenFactory.create(navigator), "Demo", R.drawable.ic_nav_demo)
         tabBarItems += TabBarItem(ColorScreenFactory.create("#FF0000"), "Color", R.drawable.ic_nav_color)
         val badgeCountRelay = BehaviorRelay.createDefault(5)
-        tabBarItems += TabBarItem(BadgeScreenFactory.create(badgeCountRelay), "Badge", R.drawable.ic_nav_badge, badgeCountRelay)
+        tabBarItems += TabBarItem(
+            screen = BadgeScreenFactory.create(badgeCountRelay),
+            title = "Badge",
+            icon = R.drawable.ic_nav_badge,
+            badgeCountObservable = badgeCountRelay
+        )
         val tabBarScreen = TabBarScreenFactory.create(tabBarItems, {
             Timber.d("Dashboard Initialized")
         }, { popListenerView ->

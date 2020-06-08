@@ -4,6 +4,7 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import com.jaynewstrom.concrete.ConcreteBlock
 import com.jaynewstrom.screenswitcher.Screen
+import com.jaynewstrom.screenswitcher.ScreenSwitcherState
 import com.jaynewstrom.screenswitchersample.core.BaseScreen
 import com.jaynewstrom.screenswitchersample.core.DefaultScreenWallManager
 import com.jaynewstrom.screenswitchersample.core.ScreenScope
@@ -17,7 +18,7 @@ object FirstScreenFactory {
 }
 
 private class FirstScreen(private val navigator: FirstNavigator) : BaseScreen<FirstComponent>() {
-    override fun createWallManager(): ScreenWallManager<FirstComponent> {
+    override fun createWallManager(screenSwitcherState: ScreenSwitcherState): ScreenWallManager<FirstComponent> {
         return DefaultScreenWallManager({
             FirstScreenBlock(navigator)
         })

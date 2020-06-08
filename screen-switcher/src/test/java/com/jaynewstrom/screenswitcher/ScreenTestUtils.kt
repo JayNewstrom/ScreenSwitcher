@@ -44,7 +44,7 @@ internal object ScreenTestUtils {
         val view = mock(View::class.java)
         val context = mock(Context::class.java)
         `when`(view.context).thenReturn(context)
-        `when`(screen.createView(kotlinAny())).thenAnswer {
+        `when`(screen.createView(kotlinAny(), kotlinAny())).thenAnswer {
             createViewCallback?.invoke()
             view
         }

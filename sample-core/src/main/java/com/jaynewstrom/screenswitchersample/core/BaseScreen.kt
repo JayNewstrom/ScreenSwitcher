@@ -7,23 +7,24 @@ import com.jaynewstrom.concrete.Concrete
 import com.jaynewstrom.concrete.ConcreteBlock
 import com.jaynewstrom.concrete.ConcreteWall
 import com.jaynewstrom.screenswitcher.Screen
+import com.jaynewstrom.screenswitcher.ScreenSwitcherState
 import com.jaynewstrom.screenswitcher.ScreenTransition
 
 abstract class BaseScreen<C> : Screen {
     private var state: BaseScreenState<C>? = null
 
-    protected abstract fun createWallManager(): ScreenWallManager<C>
+    protected abstract fun createWallManager(screenSwitcherState: ScreenSwitcherState): ScreenWallManager<C>
 
     @LayoutRes protected abstract fun layoutId(): Int
 
     protected abstract fun bindView(view: View, component: C)
 
-    final override fun createView(hostView: ViewGroup): View {
+    final override fun createView(hostView: ViewGroup, screenSwitcherState: ScreenSwitcherState): View {
         val state = state
         val screenWall: ConcreteWall<C>
         if (state == null) {
             val parentWall = Concrete.findWall<ConcreteWall<ScreenParentComponent>>(hostView.context)
-            val wallManager = createWallManager()
+            val wallManager = createWallManager(screenSwitcherState)
             screenWall = wallManager.createScreenWall(parentWall)
             val leakWatcher = parentWall.component.leakWatcher
             this.state = BaseScreenState(screenWall, leakWatcher, wallManager)

@@ -44,7 +44,7 @@ internal class RealScreenSwitcher(
     }
 
     private fun createView(screen: Screen): View {
-        val view = screen.createView(host.hostView())
+        val view = screen.createView(host.hostView(), state)
         view.setTag(R.id.screen_switcher_screen, screen)
         screenViewMap[screen] = view
         screen.bindView(view)

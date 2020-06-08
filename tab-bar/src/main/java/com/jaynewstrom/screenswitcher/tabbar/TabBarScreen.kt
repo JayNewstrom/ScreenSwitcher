@@ -3,6 +3,7 @@ package com.jaynewstrom.screenswitcher.tabbar
 import android.view.View
 import com.jaynewstrom.concrete.ConcreteBlock
 import com.jaynewstrom.screenswitcher.Screen
+import com.jaynewstrom.screenswitcher.ScreenSwitcherState
 import com.jaynewstrom.screenswitchersample.core.BaseScreen
 import com.jaynewstrom.screenswitchersample.core.DefaultScreenWallManager
 import com.jaynewstrom.screenswitchersample.core.ScreenParentComponent
@@ -31,9 +32,9 @@ private class TabBarScreen(
 ) : BaseScreen<TabBarComponent>() {
     private lateinit var currentTabBarItemStateHolder: CurrentTabBarItemStateHolder
 
-    override fun createWallManager(): ScreenWallManager<TabBarComponent> {
+    override fun createWallManager(screenSwitcherState: ScreenSwitcherState): ScreenWallManager<TabBarComponent> {
         return DefaultScreenWallManager({ parentComponent ->
-            TabBarBlock(parentComponent, tabBarItems, popListener)
+            TabBarBlock(parentComponent, tabBarItems, popListener, screenSwitcherState)
         }, { wall ->
             externalInitializationAction()
 
@@ -46,7 +47,6 @@ private class TabBarScreen(
                 tabBarItem.badgeCountObservable?.let { wallComponent.compositeDisposable.add(it.subscribe()) }
             }
 
-            val screenSwitcherState = wallComponent.screenSwitcherState
             screenSwitcherState.registerPopListener(this, wallComponent.tabBarPopHandler)
 
             wall.addDestructionAction { component -> component.compositeDisposable.dispose() }
@@ -79,11 +79,13 @@ internal interface TabBarComponent : ScreenParentComponent {
 @Module
 private class TabBarModule(
     private val tabBarItems: List<TabBarItem>,
-    private val popListener: (view: View) -> Boolean
+    private val popListener: (view: View) -> Boolean,
+    private val screenSwitcherState: ScreenSwitcherState
 ) {
     @Provides fun provideTabBarItemFactories() = tabBarItems
     @Provides @PopListener fun providePopListener(): (view: View) -> Boolean = popListener
     @Provides @ScreenScope fun provideCurrentTabBarItemStateHolder() = CurrentTabBarItemStateHolder(tabBarItems.first())
+    @Provides fun provideScreenSwitcherState() = screenSwitcherState
 
     @Module
     companion object {
@@ -94,7 +96,8 @@ private class TabBarModule(
 private class TabBarBlock(
     private val parentComponent: ScreenParentComponent,
     private val tabBarItems: List<TabBarItem>,
-    private val popListener: (view: View) -> Boolean
+    private val popListener: (view: View) -> Boolean,
+    private val screenSwitcherState: ScreenSwitcherState
 ) : ConcreteBlock<TabBarComponent> {
     override fun name(): String = javaClass.name
 
@@ -102,7 +105,7 @@ private class TabBarBlock(
         return DaggerTabBarComponent
             .builder()
             .screenParentComponent(parentComponent)
-            .tabBarModule(TabBarModule(tabBarItems, popListener))
+            .tabBarModule(TabBarModule(tabBarItems, popListener, screenSwitcherState))
             .build()
     }
 }

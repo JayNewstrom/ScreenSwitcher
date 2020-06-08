@@ -4,6 +4,7 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import com.jaynewstrom.concrete.ConcreteBlock
 import com.jaynewstrom.screenswitcher.Screen
+import com.jaynewstrom.screenswitcher.ScreenSwitcherState
 import com.jaynewstrom.screenswitchersample.core.BaseScreen
 import com.jaynewstrom.screenswitchersample.core.DefaultScreenWallManager
 import com.jaynewstrom.screenswitchersample.core.ScreenScope
@@ -18,7 +19,7 @@ object ThirdScreenFactory {
 }
 
 private class ThirdScreen(private val navigator: ThirdNavigator) : BaseScreen<ThirdComponent>() {
-    override fun createWallManager(): ScreenWallManager<ThirdComponent> {
+    override fun createWallManager(screenSwitcherState: ScreenSwitcherState): ScreenWallManager<ThirdComponent> {
         return DefaultScreenWallManager({
             ThirdScreenBlock(navigator)
         })

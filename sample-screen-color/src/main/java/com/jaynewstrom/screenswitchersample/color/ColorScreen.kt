@@ -4,6 +4,7 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import com.jaynewstrom.concrete.ConcreteBlock
 import com.jaynewstrom.screenswitcher.Screen
+import com.jaynewstrom.screenswitcher.ScreenSwitcherState
 import com.jaynewstrom.screenswitchersample.core.BaseScreen
 import com.jaynewstrom.screenswitchersample.core.DefaultScreenWallManager
 import com.jaynewstrom.screenswitchersample.core.ScreenScope
@@ -18,7 +19,7 @@ object ColorScreenFactory {
 }
 
 private class ColorScreen(private val colorHex: String) : BaseScreen<ColorComponent>() {
-    override fun createWallManager(): ScreenWallManager<ColorComponent> {
+    override fun createWallManager(screenSwitcherState: ScreenSwitcherState): ScreenWallManager<ColorComponent> {
         return DefaultScreenWallManager({
             ColorScreenBlock(colorHex)
         })
