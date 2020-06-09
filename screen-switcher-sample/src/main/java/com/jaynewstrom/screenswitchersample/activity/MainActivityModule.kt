@@ -37,12 +37,16 @@ internal object MainActivityModule {
             icon = R.drawable.ic_nav_badge,
             badgeCountObservable = badgeCountRelay
         )
-        val tabBarScreen = TabBarScreenFactory.create(tabBarItems, {
-            Timber.d("Dashboard Initialized")
-        }, { popListenerView ->
-            popListenerView.dialogDisplayer()?.show(ConfirmExitDialogFactory())
-            true
-        })
+        val tabBarScreen = TabBarScreenFactory.create(
+            tabBarItems,
+            {
+                Timber.d("Dashboard Initialized")
+            },
+            { popListenerView ->
+                popListenerView.dialogDisplayer()?.show(ConfirmExitDialogFactory())
+                true
+            }
+        )
         return ScreenSwitcherState(lifecycleListener, listOf(tabBarScreen))
     }
 

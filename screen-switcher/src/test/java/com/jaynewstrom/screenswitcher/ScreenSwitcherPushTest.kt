@@ -5,13 +5,13 @@ import android.view.View
 import com.jaynewstrom.screenswitcher.ScreenTestUtils.addTransitionIn
 import com.jaynewstrom.screenswitcher.ScreenTestUtils.initialActivityScreenSwitcher
 import com.jaynewstrom.screenswitcher.ScreenTestUtils.mockCreateView
-import java.util.concurrent.atomic.AtomicInteger
 import org.fest.assertions.api.Assertions.assertThat
 import org.junit.Assert.fail
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
+import java.util.concurrent.atomic.AtomicInteger
 
 class ScreenSwitcherPushTest {
     @Test fun pushFailsWhenTransitionIsOccurring() {
