@@ -135,7 +135,8 @@ internal class RealScreenSwitcher(
 
     private fun ensureTransitionIsNotOccurring(transitionType: String) {
         checkState(!isTransitioning) {
-            String.format("Can't %s while a transition is occurring.\nPrevious transition from: %s",
+            String.format(
+                "Can't %s while a transition is occurring.\nPrevious transition from: %s",
                 transitionType,
                 transitioningStackTrace?.contentToString()
             )

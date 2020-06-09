@@ -38,7 +38,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.0'
-        classpath 'com.diffplug.spotless:spotless-plugin-gradle:3.28.1'
+        classpath 'com.diffplug.spotless:spotless-plugin-gradle:4.3.0'
     }
 }
 
@@ -92,7 +92,7 @@ static def configureSpotless(Project project) {
         project.spotless {
             kotlin {
                 target '**/*.kt'
-                ktlint('0.36.0').userData([
+                ktlint('0.37.0').userData([
                         'max_line_length': '120',
                         'indent_size': '4',
                         'continuation_indent_size': '4',
@@ -102,6 +102,6 @@ static def configureSpotless(Project project) {
             }
         }
     }
-    project.plugins.withId('kotlin-android', closure)
-    project.plugins.withId('kotlin', closure)
+    project.pluginManager.withPlugin('kotlin-android', closure)
+    project.pluginManager.withPlugin('kotlin', closure)
 }

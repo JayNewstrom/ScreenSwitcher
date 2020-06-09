@@ -33,24 +33,27 @@ private class TabBarScreen(
     private lateinit var currentTabBarItemStateHolder: CurrentTabBarItemStateHolder
 
     override fun createWallManager(screenSwitcherState: ScreenSwitcherState): ScreenWallManager<TabBarComponent> {
-        return DefaultScreenWallManager({ parentComponent ->
-            TabBarBlock(parentComponent, tabBarItems, popListener, screenSwitcherState)
-        }, { wall ->
-            externalInitializationAction()
+        return DefaultScreenWallManager(
+            { parentComponent ->
+                TabBarBlock(parentComponent, tabBarItems, popListener, screenSwitcherState)
+            },
+            { wall ->
+                externalInitializationAction()
 
-            val wallComponent = wall.component
-            currentTabBarItemStateHolder = wallComponent.currentTabBarItemStateHolder
+                val wallComponent = wall.component
+                currentTabBarItemStateHolder = wallComponent.currentTabBarItemStateHolder
 
-            tabBarItems.forEach { tabBarItem ->
-                // This is to keep the connected observables connected, even on rotation, so we don't make multiple
-                // network requests on rotation.
-                tabBarItem.badgeCountObservable?.let { wallComponent.compositeDisposable.add(it.subscribe()) }
+                tabBarItems.forEach { tabBarItem ->
+                    // This is to keep the connected observables connected, even on rotation, so we don't make multiple
+                    // network requests on rotation.
+                    tabBarItem.badgeCountObservable?.let { wallComponent.compositeDisposable.add(it.subscribe()) }
+                }
+
+                screenSwitcherState.registerPopListener(this, wallComponent.tabBarPopHandler)
+
+                wall.addDestructionAction { component -> component.compositeDisposable.dispose() }
             }
-
-            screenSwitcherState.registerPopListener(this, wallComponent.tabBarPopHandler)
-
-            wall.addDestructionAction { component -> component.compositeDisposable.dispose() }
-        })
+        )
     }
 
     override fun layoutId(): Int = TabBarPresenter.layoutId

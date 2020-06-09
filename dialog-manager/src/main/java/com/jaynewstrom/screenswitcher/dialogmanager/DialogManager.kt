@@ -55,7 +55,8 @@ class DialogManager(screenManager: ScreenManager, compositeScreenLifecycleListen
             val dialog: Dialog? = information.dialogWeakReference.get()
             if (dialog != null && dialog.isShowing) {
                 items.add(
-                    SavedDialogFactory(information.dialogFactory, dialog.onSaveInstanceState(), information.screen))
+                    SavedDialogFactory(information.dialogFactory, dialog.onSaveInstanceState(), information.screen)
+                )
                 dialog.dismiss()
             }
         }

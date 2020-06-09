@@ -15,9 +15,11 @@ fun ViewGroup.inflate(layoutResId: Int, attach: Boolean = false, context: Contex
 }
 
 inline fun View.setClickListener(crossinline clickListener: () -> Unit) {
-    setOnClickListener(DebouncingClickListener {
-        clickListener()
-    })
+    setOnClickListener(
+        DebouncingClickListener {
+            clickListener()
+        }
+    )
 }
 
 fun <V : View> View.bindView(@IdRes viewId: Int): V {

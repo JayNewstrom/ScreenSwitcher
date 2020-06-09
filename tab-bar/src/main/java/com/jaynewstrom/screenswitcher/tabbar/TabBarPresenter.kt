@@ -65,7 +65,9 @@ internal class TabBarPresenter(view: View, component: TabBarComponent) :
 
         // Clear accessibility focus so that it resets at the beginning of the page.
         currentTab.performAccessibilityAction(
-            AccessibilityNodeInfo.ACTION_CLEAR_ACCESSIBILITY_FOCUS, null)
+            AccessibilityNodeInfo.ACTION_CLEAR_ACCESSIBILITY_FOCUS,
+            null
+        )
     }
 
     private fun setContentView(item: TabBarItem) {

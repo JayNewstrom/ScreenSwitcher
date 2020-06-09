@@ -5,12 +5,12 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewParent
-import java.util.concurrent.atomic.AtomicReference
 import org.junit.Assert.fail
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.mock
+import java.util.concurrent.atomic.AtomicReference
 
 internal object ScreenTestUtils {
     fun defaultState(screen: Screen): ScreenSwitcherState {

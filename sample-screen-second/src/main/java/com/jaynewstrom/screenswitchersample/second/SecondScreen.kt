@@ -19,12 +19,15 @@ object SecondScreenFactory {
 
 private class SecondScreen(private val navigator: SecondNavigator) : BaseScreen<SecondComponent>() {
     override fun createWallManager(screenSwitcherState: ScreenSwitcherState): ScreenWallManager<SecondComponent> {
-        return DefaultScreenWallManager({
-            SecondScreenBlock(navigator)
-        }, { wall ->
-            val component = wall.component
-            screenSwitcherState.registerPopListener(this, component.secondPopListener)
-        })
+        return DefaultScreenWallManager(
+            {
+                SecondScreenBlock(navigator)
+            },
+            { wall ->
+                val component = wall.component
+                screenSwitcherState.registerPopListener(this, component.secondPopListener)
+            }
+        )
     }
 
     @LayoutRes override fun layoutId(): Int = SecondPresenter.layoutId()
