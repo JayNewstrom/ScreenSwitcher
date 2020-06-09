@@ -13,7 +13,7 @@ ext.deps = [
         appCompat: 'androidx.appcompat:appcompat:1.1.0',
         dagger: "com.google.dagger:dagger:$daggerVersion",
         daggerCompiler: "com.google.dagger:dagger-compiler:$daggerVersion",
-        concrete: 'com.jaynewstrom:concrete:0.13.2',
+        concrete: 'com.jaynewstrom:concrete:0.14.0',
         kotlinRuntime: "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
         timber: 'com.jakewharton.timber:timber:4.7.1',
         rxJava: 'io.reactivex.rxjava2:rxjava:2.2.19',
