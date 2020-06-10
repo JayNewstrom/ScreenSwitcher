@@ -31,10 +31,10 @@ internal class RealScreenSwitcher(
         this.screenViewMap = LinkedHashMap()
         host.hostView().setupForViewExtensions(this, state)
         setupHostViewForHidingKeyboard()
-        initializeActivityState()
+        initializeViewState()
     }
 
-    private fun initializeActivityState() {
+    private fun initializeViewState() {
         val screens = state.screens
         for (screen in screens) {
             createView(screen)
