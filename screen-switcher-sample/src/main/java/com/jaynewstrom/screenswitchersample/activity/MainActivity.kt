@@ -3,7 +3,7 @@ package com.jaynewstrom.screenswitchersample.activity
 import android.app.Activity
 import android.os.Bundle
 import android.view.MotionEvent
-import android.view.View
+import android.view.ViewGroup
 import com.jaynewstrom.concrete.Concrete
 import com.jaynewstrom.concrete.ConcreteWall
 import com.jaynewstrom.screenswitcher.ScreenSwitcher
@@ -30,14 +30,21 @@ class MainActivity : Activity(), ScreenSwitcherPopHandler {
         val foundation = Concrete.findWall<ConcreteWall<ApplicationComponent>>(applicationContext)
         activityWall = foundation.stack(MainActivityBlock(foundation.component))
         activityWall.component.inject(this)
-        activityScreenSwitcher = ScreenSwitcherFactory.activityScreenSwitcher(this, screenSwitcherState, this)
+        setContentView(R.layout.main_activity)
+        val screenHost = findViewById<ViewGroup>(R.id.screen_host)
+        activityScreenSwitcher = ScreenSwitcherFactory.viewScreenSwitcher(screenHost, screenSwitcherState, this)
         screenManager.take(activityScreenSwitcher)
         dialogManager.attachActivity(this)
         dialogManager.restoreState()
 
-        val contentView = findViewById<View>(android.R.id.content)
-        contentView.setTag(R.id.screen_manager, screenManager)
-        contentView.setTag(R.id.dialog_manager, dialogManager)
+        screenHost.isSaveFromParentEnabled = false
+        screenHost.setTag(R.id.screen_manager, screenManager)
+        screenHost.setTag(R.id.dialog_manager, dialogManager)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        activityScreenSwitcher.saveViewHierarchyStateToScreenSwitcherState()
     }
 
     override fun onDestroy() {

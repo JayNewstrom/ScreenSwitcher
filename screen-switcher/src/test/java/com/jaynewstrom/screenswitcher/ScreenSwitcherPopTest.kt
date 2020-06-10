@@ -1,6 +1,8 @@
 package com.jaynewstrom.screenswitcher
 
 import android.app.Activity
+import android.os.Parcelable
+import android.util.SparseArray
 import android.view.View
 import android.view.ViewGroup
 import com.jaynewstrom.screenswitcher.ScreenTestUtils.addTransitionOut
@@ -224,5 +226,22 @@ class ScreenSwitcherPopTest {
         assertThat(transitionCalledCounter.get()).isZero
         transitionCompletedRunnable.get().run()
         assertThat(transitionCalledCounter.get()).isEqualTo(1)
+    }
+
+    @Test fun ensureScreenViewHierarchyInfoIsRemovedFromState() {
+        val activity = mock(Activity::class.java)
+        val screen1 = mock(Screen::class.java)
+        mockCreateView(screen1)
+        val screen2 = mock(Screen::class.java)
+        mockCreateView(screen2)
+        addTransitionOut(screen2)
+        val state = ScreenTestUtils.defaultState(listOf(screen1, screen2))
+        val activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state)
+        val savedHierarchy = SparseArray<Parcelable>()
+        state.saveViewHierarchyState(screen2, savedHierarchy)
+        activityScreenSwitcher.pop(1)
+        assertThat(state.screenCount()).isEqualTo(1)
+        assertThat(state.screens).containsExactly(screen1)
+        assertThat(state.removeViewHierarchyState(screen2)).isNull() // Pop removed it, this didn't.
     }
 }
