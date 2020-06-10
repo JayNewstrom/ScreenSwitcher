@@ -19,7 +19,7 @@ class ScreenSwitcherState
 
     init {
         checkArgument(screens.isNotEmpty()) { "screens must contain at least one screen" }
-        this.screens = ArrayList(screens.size)
+        this.screens = ArrayList(15)
         for (screen in screens) {
             addScreen(screen)
         }
