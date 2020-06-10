@@ -3,12 +3,14 @@ package com.jaynewstrom.screenswitcher
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.os.Parcelable
+import android.util.SparseArray
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 
 internal class RealScreenSwitcher(
-    val state: ScreenSwitcherState,
+    private val state: ScreenSwitcherState,
     private val host: ScreenSwitcherHost
 ) : ScreenSwitcher {
     private var transitioningStackTrace: Array<StackTraceElement>? = null
@@ -50,6 +52,7 @@ internal class RealScreenSwitcher(
         screen.bindView(view)
         checkArgument(view.parent == null) { "createView/bindView should not return a view that has a parent." }
         host.addView(view)
+        state.removeViewHierarchyState(screen)?.let(view::restoreHierarchyState)
         return view
     }
 
@@ -121,6 +124,14 @@ internal class RealScreenSwitcher(
             state.lifecycleListener.onScreenBecameActive(topScreen)
 
             topScreen.transition().transitionIn(topView, backgroundView, onTransitionCompleted)
+        }
+    }
+
+    override fun saveViewHierarchyStateToScreenSwitcherState() {
+        screenViewMap.forEach { (screen, view) ->
+            val parcelableSparseArray = SparseArray<Parcelable>()
+            view.saveHierarchyState(parcelableSparseArray)
+            state.saveViewHierarchyState(screen, parcelableSparseArray)
         }
     }
 

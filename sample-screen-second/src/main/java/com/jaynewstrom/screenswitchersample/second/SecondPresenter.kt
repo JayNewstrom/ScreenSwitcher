@@ -25,7 +25,7 @@ internal class SecondPresenter private constructor(private val view: View, compo
 
     init {
         component.inject(this)
-        confirmPopButton = view.findViewById<View>(R.id.btn_confirm_pop)
+        confirmPopButton = view.findViewById(R.id.btn_confirm_pop)
         confirmPopButton.visibility = if (popListener.showingConfirm) View.VISIBLE else View.GONE
 
         view.findViewById<View>(R.id.btn_third).setOnClickListener {

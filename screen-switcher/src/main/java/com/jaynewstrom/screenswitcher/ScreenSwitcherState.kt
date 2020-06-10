@@ -1,5 +1,7 @@
 package com.jaynewstrom.screenswitcher
 
+import android.os.Parcelable
+import android.util.SparseArray
 import android.view.View
 
 /**
@@ -16,6 +18,7 @@ class ScreenSwitcherState
     internal val screens: MutableList<Screen>
     private val transitionMap: MutableMap<Screen, (ScreenSwitcher) -> Unit> = mutableMapOf()
     private val popListenerMap: MutableMap<Screen, ScreenPopListener> = mutableMapOf()
+    private val screenViewStateMap: MutableMap<Screen, SparseArray<Parcelable>> = mutableMapOf()
 
     init {
         checkArgument(screens.isNotEmpty()) { "screens must contain at least one screen" }
@@ -76,6 +79,7 @@ class ScreenSwitcherState
         screens.remove(screen)
         transitionMap.remove(screen)
         popListenerMap.remove(screen)
+        screenViewStateMap.remove(screen)
         lifecycleListener.onScreenRemoved(screen)
     }
 
@@ -85,5 +89,13 @@ class ScreenSwitcherState
     fun handlesPop(view: View, screen: Screen): Boolean {
         val popListener = popListenerMap[screen]
         return popListener != null && popListener.onScreenPop(view, screen)
+    }
+
+    internal fun saveViewHierarchyState(screen: Screen, viewState: SparseArray<Parcelable>) {
+        screenViewStateMap[screen] = viewState
+    }
+
+    internal fun removeViewHierarchyState(screen: Screen): SparseArray<Parcelable>? {
+        return screenViewStateMap.remove(screen)
     }
 }

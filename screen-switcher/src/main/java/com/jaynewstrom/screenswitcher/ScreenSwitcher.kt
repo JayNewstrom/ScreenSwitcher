@@ -31,4 +31,15 @@ interface ScreenSwitcher {
      * without pushing the `screens`.
      */
     fun replaceScreensWith(@IntRange(from = 1) numberToPop: Int, newScreens: List<Screen>)
+
+    /**
+     * Trigger behavior to save the view hierarchy state to the [ScreenSwitcherState], which will be restored the next time each
+     * [Screen] view is created.
+     *
+     * Typically this would be called from [Activity#onSaveInstanceState].
+     *
+     * When using this method, you'll want to also turn off view hierarchy saving for the hostView via
+     * [View#isSaveFromParentEnabled(false)]
+     */
+    fun saveViewHierarchyStateToScreenSwitcherState()
 }

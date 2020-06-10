@@ -1,5 +1,7 @@
 package com.jaynewstrom.screenswitcher
 
+import android.os.Parcelable
+import android.util.SparseArray
 import android.view.View
 import org.fest.assertions.api.Assertions.assertThat
 import org.junit.Assert.fail
@@ -146,5 +148,23 @@ class ScreenSwitcherStateTest {
         assertThat(state.removeActiveScreenTransition()).isSameAs(transition0) // 0
         state.removeScreen(screen0)
         assertThat(state.removeActiveScreenTransition()).isNull() // None left
+    }
+
+    @Test fun viewHierarchyStateCanBeAddedAndRemoved() {
+        val screen = mock(Screen::class.java)
+        val state = ScreenTestUtils.defaultState(screen)
+        val savedHierarchy = SparseArray<Parcelable>()
+        state.saveViewHierarchyState(screen, savedHierarchy)
+        assertThat(state.removeViewHierarchyState(screen)).isEqualTo(savedHierarchy)
+        assertThat(state.removeViewHierarchyState(screen)).isNull() // It's gone!
+    }
+
+    @Test fun removeScreenRemovesViewHierarchyState() {
+        val screen = mock(Screen::class.java)
+        val state = ScreenTestUtils.defaultState(screen)
+        val savedHierarchy = SparseArray<Parcelable>()
+        state.saveViewHierarchyState(screen, savedHierarchy)
+        state.removeScreen(screen)
+        assertThat(state.removeViewHierarchyState(screen)).isNull() // It's gone!
     }
 }
