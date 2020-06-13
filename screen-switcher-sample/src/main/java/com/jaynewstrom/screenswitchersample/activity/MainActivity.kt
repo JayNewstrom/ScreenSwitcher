@@ -11,14 +11,12 @@ import com.jaynewstrom.screenswitcher.ScreenSwitcherFactory
 import com.jaynewstrom.screenswitcher.ScreenSwitcherPopHandler
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState
 import com.jaynewstrom.screenswitcher.dialogmanager.DialogManager
-import com.jaynewstrom.screenswitcher.screenmanager.ScreenManager
 import com.jaynewstrom.screenswitchersample.R
 import com.jaynewstrom.screenswitchersample.application.ApplicationComponent
 import javax.inject.Inject
 
 class MainActivity : Activity(), ScreenSwitcherPopHandler {
     @Inject internal lateinit var screenSwitcherState: ScreenSwitcherState
-    @Inject internal lateinit var screenManager: ScreenManager
     @Inject internal lateinit var dialogManager: DialogManager
 
     private lateinit var activityScreenSwitcher: ScreenSwitcher
@@ -33,13 +31,10 @@ class MainActivity : Activity(), ScreenSwitcherPopHandler {
         setContentView(R.layout.main_activity)
         val screenHost = findViewById<ViewGroup>(R.id.screen_host)
         activityScreenSwitcher = ScreenSwitcherFactory.viewScreenSwitcher(screenHost, screenSwitcherState, this)
-        screenManager.take(activityScreenSwitcher)
         dialogManager.attachActivity(this)
         dialogManager.restoreState()
 
         screenHost.isSaveFromParentEnabled = false
-        screenHost.setTag(R.id.screen_manager, screenManager)
-        screenHost.setTag(R.id.dialog_manager, dialogManager)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -49,7 +44,6 @@ class MainActivity : Activity(), ScreenSwitcherPopHandler {
 
     override fun onDestroy() {
         super.onDestroy()
-        screenManager.drop(activityScreenSwitcher)
         dialogManager.dropActivity(this)
         popCompleteHandler?.popComplete()
         if (isFinishing) {

@@ -29,6 +29,8 @@ internal class RealScreenSwitcher(
         }
 
     init {
+        checkArgument(state.screens.isNotEmpty()) { "state needs screens in order to initialize a ScreenSwitcher" }
+
         this.activity = getActivity(host.hostView().context)
         this.screenViewMap = LinkedHashMap()
         host.hostView().setupForViewExtensions(this, state)

@@ -44,7 +44,11 @@ internal class TabBarPresenter(view: View, component: TabBarComponent) :
         tabBarItems.forEach { item ->
             val indicatorView = item.createIndicatorView(itemsContainer)
             indicatorView.setClickListener {
-                currentTabBarItemStateHolder.state = item
+                if (activeItem == item) {
+                    item.popContentToRoot(contentViewMap.getValue(item))
+                } else {
+                    currentTabBarItemStateHolder.state = item
+                }
             }
             val layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1f)
             itemsContainer.addView(indicatorView, layoutParams)
@@ -82,7 +86,7 @@ internal class TabBarPresenter(view: View, component: TabBarComponent) :
         }
 
         val contentView = contentViewMap.getOrElse(item) {
-            existingViewForItem(item) ?: createAndRestoreViewForItem(item)
+            contentViewMap[item] ?: createAndRestoreViewForItem(item)
         }
         contentView.visibility = View.VISIBLE
 
@@ -97,20 +101,8 @@ internal class TabBarPresenter(view: View, component: TabBarComponent) :
         }
     }
 
-    private fun existingViewForItem(item: TabBarItem): View? {
-        for (i in 0 until content.childCount) {
-            val contentViewAtIndex = content.getChildAt(i)
-            val itemAtIndex = contentViewAtIndex.getTag(R.id.tab_bar_item) as TabBarItem
-            if (itemAtIndex == item) {
-                return contentViewAtIndex
-            }
-        }
-        return null
-    }
-
     private fun createAndRestoreViewForItem(item: TabBarItem): View {
         val contentView = item.createContentView(content) // Create view.
-        contentView.setTag(R.id.tab_bar_item, item) // Add tag to allow showing existing view later.
         contentViewMap[item] = contentView // Store in the map to allow for state preservation.
 
         // Restore cache, if it exists.
@@ -121,5 +113,17 @@ internal class TabBarPresenter(view: View, component: TabBarComponent) :
         content.addView(contentView, layoutParams)
 
         return contentView
+    }
+
+    fun handlesScreenPop(): Boolean {
+        val activeItem = currentTabBarItemStateHolder.state
+        if (activeItem.contentViewHandlesPop(contentViewMap.getValue(activeItem))) {
+            return true
+        }
+        if (tabBarItems.indexOf(activeItem) != 0) {
+            currentTabBarItemStateHolder.state = tabBarItems.first()
+            return true
+        }
+        return false
     }
 }

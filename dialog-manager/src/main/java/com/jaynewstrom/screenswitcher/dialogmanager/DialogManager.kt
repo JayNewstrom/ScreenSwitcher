@@ -9,16 +9,11 @@ import com.jaynewstrom.concrete.Concrete
 import com.jaynewstrom.concrete.ConcreteWall
 import com.jaynewstrom.screenswitcher.Screen
 import com.jaynewstrom.screenswitcher.ScreenLifecycleListener
-import com.jaynewstrom.screenswitcher.ScreenSwitcherState
 import com.jaynewstrom.screenswitcher.screenSwitcherDataIfActive
 import com.jaynewstrom.screenswitcher.screenmanager.CompositeScreenLifecycleListener
-import com.jaynewstrom.screenswitcher.screenmanager.ScreenManager
-import com.jaynewstrom.screenswitcher.setupForViewExtensions
 import java.lang.ref.WeakReference
 
-class DialogManager(screenManager: ScreenManager, compositeScreenLifecycleListener: CompositeScreenLifecycleListener) {
-    private val dialogCallbackHelper = DialogCallbackHelper(screenManager)
-
+class DialogManager(compositeScreenLifecycleListener: CompositeScreenLifecycleListener) {
     private var dialogInformationList: MutableList<DialogInformation> = mutableListOf()
     private var savedDialogFactories: List<SavedDialogFactory>? = null
     private var activity: Activity? = null
@@ -45,7 +40,6 @@ class DialogManager(screenManager: ScreenManager, compositeScreenLifecycleListen
         } else {
             dialog.show()
         }
-        dialogCallbackHelper.bootstrap(dialog)
         dialogInformationList.add(DialogInformation(dialog, dialogFactory, screen))
     }
 
@@ -105,24 +99,19 @@ class DialogManager(screenManager: ScreenManager, compositeScreenLifecycleListen
  */
 fun View.dialogDisplayer(): DialogDisplayer? {
     val screenSwitcherData = screenSwitcherDataIfActive() ?: return null
-    val screenManager = screenSwitcherData.hostView.getTag(R.id.screen_manager) as ScreenManager
-    val dialogManager = screenSwitcherData.hostView.getTag(R.id.dialog_manager) as DialogManager
+    val dialogManager = Concrete.getComponent<DialogManagerComponent>(context).dialogManager
     val wall = Concrete.findWall<ConcreteWall<*>>(context)
     return DialogDisplayer(
         screenSwitcherData.screen,
         wall,
-        screenManager,
-        dialogManager,
-        screenSwitcherData.screenSwitcherState
+        dialogManager
     )
 }
 
 class DialogDisplayer internal constructor(
     private val screen: Screen,
     private val wall: ConcreteWall<*>,
-    private val screenManager: ScreenManager,
-    private val dialogManager: DialogManager,
-    private val state: ScreenSwitcherState
+    private val dialogManager: DialogManager
 ) {
     fun show(dialogFactory: DialogFactory) {
         dialogManager.show(WrapperDialogFactory(dialogFactory), screen)
@@ -130,14 +119,7 @@ class DialogDisplayer internal constructor(
 
     private inner class WrapperDialogFactory(private val dialogFactory: DialogFactory) : DialogFactory {
         override fun createDialog(context: Context): Dialog {
-            val dialog = dialogFactory.createDialog(wall.createContext(context))
-            val contentView = dialog.findViewById<View>(android.R.id.content)
-            contentView.setTag(R.id.screen_switcher_screen, screen)
-            val parent = contentView.parent as View
-            parent.setTag(R.id.screen_manager, screenManager)
-            parent.setTag(R.id.dialog_manager, dialogManager)
-            parent.setupForViewExtensions(screenManager.screenSwitcher!!, state)
-            return dialog
+            return dialogFactory.createDialog(wall.createContext(context))
         }
     }
 }

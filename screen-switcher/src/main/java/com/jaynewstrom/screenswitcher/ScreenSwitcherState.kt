@@ -64,6 +64,13 @@ class ScreenSwitcherState
         }
     }
 
+    /**
+     * Create a nested [ScreenSwitcherState] object, reusing the [ScreenLifecycleListener], for use with a new [ScreenSwitcher].
+     */
+    fun createNestedState(screens: List<Screen>): ScreenSwitcherState {
+        return ScreenSwitcherState(lifecycleListener, screens)
+    }
+
     internal fun removeActiveScreenTransition(): ((ScreenSwitcher) -> Unit)? {
         if (screens.isEmpty()) return null
         return transitionMap.remove(screens.last())
