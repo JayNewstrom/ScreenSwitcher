@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="tab_bar_item" format="reference" type="id"/>
+    <item name="tab_bar_presenter" format="reference" type="id"/>
 </resources>

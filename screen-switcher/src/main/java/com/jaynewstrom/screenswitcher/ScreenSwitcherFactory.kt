@@ -12,7 +12,6 @@ object ScreenSwitcherFactory {
         state: ScreenSwitcherState,
         popHandler: ScreenSwitcherPopHandler
     ): ScreenSwitcher {
-        state.validate()
         return RealScreenSwitcher(state, ActivityScreenSwitcherHost(activity, popHandler))
     }
 
@@ -24,12 +23,6 @@ object ScreenSwitcherFactory {
         state: ScreenSwitcherState,
         popHandler: ScreenSwitcherPopHandler
     ): ScreenSwitcher {
-        state.validate()
         return RealScreenSwitcher(state, ViewScreenSwitcherHost(viewGroup, popHandler))
-    }
-
-    @Suppress("NOTHING_TO_INLINE") // Deduplicate code, no need for a method jump.
-    @JvmStatic private inline fun ScreenSwitcherState.validate() {
-        checkArgument(screens.isNotEmpty()) { "state needs screens in order to initialize a ScreenSwitcher" }
     }
 }

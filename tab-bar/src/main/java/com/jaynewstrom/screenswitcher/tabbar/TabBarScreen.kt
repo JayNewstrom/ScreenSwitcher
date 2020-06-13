@@ -59,7 +59,8 @@ private class TabBarScreen(
     override fun layoutId(): Int = TabBarPresenter.layoutId
 
     override fun bindView(view: View, component: TabBarComponent) {
-        TabBarPresenter(view, component)
+        val presenter = TabBarPresenter(view, component)
+        view.setTag(R.id.tab_bar_presenter, presenter)
     }
 }
 

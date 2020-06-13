@@ -167,4 +167,12 @@ class ScreenSwitcherStateTest {
         state.removeScreen(screen)
         assertThat(state.removeViewHierarchyState(screen)).isNull() // It's gone!
     }
+
+    @Test fun createNestedStateCopiesLifecycleListener() {
+        val rootScreen = mock(Screen::class.java)
+        val state = ScreenTestUtils.defaultState(rootScreen)
+        val nestedScreen = mock(Screen::class.java)
+        val nestedState = state.createNestedState(listOf(nestedScreen))
+        assertThat(state.lifecycleListener).isSameAs(nestedState.lifecycleListener)
+    }
 }

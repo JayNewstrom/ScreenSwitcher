@@ -13,12 +13,12 @@ interface ScreenSwitcher {
     val isTransitioning: Boolean
 
     /**
-     * Add the given [Screen].
+     * Add the given [Screen] to the back stack, and display it with it's transition.
      */
     fun push(screen: Screen)
 
     /**
-     * Will try to pop the top `numberToPop` [Screen]s.
+     * Will try to pop the top `numberToPop` [Screen]s, and transition away using it's transition.
      *
      * If there is a [ScreenPopListener] that overrides one of the [Screen]s being popped, it will pop up until that point.
      */

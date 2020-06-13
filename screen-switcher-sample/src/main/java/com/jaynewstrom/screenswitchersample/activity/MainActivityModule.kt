@@ -6,7 +6,6 @@ import com.jaynewstrom.screenswitcher.ScreenSwitcherState
 import com.jaynewstrom.screenswitcher.dialogmanager.DialogManager
 import com.jaynewstrom.screenswitcher.dialogmanager.dialogDisplayer
 import com.jaynewstrom.screenswitcher.screenmanager.CompositeScreenLifecycleListener
-import com.jaynewstrom.screenswitcher.screenmanager.ScreenManager
 import com.jaynewstrom.screenswitcher.tabbar.TabBarItem
 import com.jaynewstrom.screenswitcher.tabbar.TabBarScreenFactory
 import com.jaynewstrom.screenswitchersample.R
@@ -19,9 +18,6 @@ import timber.log.Timber
 
 @Module
 internal object MainActivityModule {
-    @JvmStatic @Provides @ForMainActivity
-    internal fun provideScreenManager() = ScreenManager()
-
     @JvmStatic @Provides @ForMainActivity
     fun provideScreenSwitcherState(
         lifecycleListener: ScreenLifecycleListener,
@@ -60,7 +56,6 @@ internal object MainActivityModule {
 
     @JvmStatic @Provides @ForMainActivity
     internal fun provideDialogManager(
-        screenManager: ScreenManager,
         screenLifecycleListener: CompositeScreenLifecycleListener
-    ) = DialogManager(screenManager, screenLifecycleListener)
+    ) = DialogManager(screenLifecycleListener)
 }

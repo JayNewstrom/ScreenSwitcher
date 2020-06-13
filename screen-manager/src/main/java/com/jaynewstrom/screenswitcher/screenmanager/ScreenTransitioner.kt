@@ -7,24 +7,6 @@ import com.jaynewstrom.screenswitcher.ScreenSwitcher
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState
 import com.jaynewstrom.screenswitcher.screenSwitcherDataIfActive
 
-class ScreenManager {
-    var screenSwitcher: ScreenSwitcher? = null
-
-    private fun isSameImplementation(screenSwitcher: ScreenSwitcher): Boolean {
-        return this.screenSwitcher === screenSwitcher
-    }
-
-    fun take(screenSwitcher: ScreenSwitcher) {
-        this.screenSwitcher = screenSwitcher
-    }
-
-    fun drop(screenSwitcher: ScreenSwitcher) {
-        if (isSameImplementation(screenSwitcher)) {
-            this.screenSwitcher = null
-        }
-    }
-}
-
 fun View.screenTransitioner(): ScreenTransitioner? {
     val associatedData = screenSwitcherDataIfActive() ?: return null
 
