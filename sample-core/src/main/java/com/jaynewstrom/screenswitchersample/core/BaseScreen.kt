@@ -10,6 +10,8 @@ import com.jaynewstrom.screenswitcher.Screen
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState
 import com.jaynewstrom.screenswitcher.ScreenTransition
 
+private const val LEAK_WATCHER_DESCRIPTION = "Screen Has Been Removed"
+
 abstract class BaseScreen<C> : Screen {
     private var state: BaseScreenState<C>? = null
 
@@ -42,9 +44,9 @@ abstract class BaseScreen<C> : Screen {
         val state = state!!
         val component = state.screenWall.component
         state.screenWall.destroy()
-        state.leakWatcher.watch(this)
-        state.leakWatcher.watch(viewToDestroy)
-        state.leakWatcher.watch(component)
+        state.leakWatcher.watch(this, LEAK_WATCHER_DESCRIPTION)
+        state.leakWatcher.watch(viewToDestroy, LEAK_WATCHER_DESCRIPTION)
+        state.leakWatcher.watch(component, LEAK_WATCHER_DESCRIPTION)
     }
 
     override fun transition(): ScreenTransition = DefaultScreenTransition
