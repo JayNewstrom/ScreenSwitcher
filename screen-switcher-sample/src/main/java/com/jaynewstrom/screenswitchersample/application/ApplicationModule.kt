@@ -13,8 +13,8 @@ internal class ApplicationModule(private val applicationContext: Context) {
     @Module
     companion object {
         @Provides @JvmStatic @Singleton fun provideLeakWatcher(context: Context) = object : LeakWatcher {
-            override fun <T> watch(t: T) {
-                ScreenSwitcherApplication.watchObject(context, t)
+            override fun <T> watch(t: T, description: String) {
+                ScreenSwitcherApplication.watchObject(context, t, description)
             }
         }
     }

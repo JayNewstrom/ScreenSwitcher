@@ -4,18 +4,18 @@ import android.app.Application
 import android.content.Context
 import com.jaynewstrom.concrete.Concrete
 import com.jaynewstrom.concrete.ConcreteWall
-import com.squareup.leakcanary.LeakCanary
-import com.squareup.leakcanary.RefWatcher
+import leakcanary.AppWatcher
+import leakcanary.ObjectWatcher
 import timber.log.Timber
 
 class ScreenSwitcherApplication : Application() {
     private lateinit var foundation: ConcreteWall<ApplicationComponent>
-    private lateinit var refWatcher: RefWatcher
+    private lateinit var objectWatcher: ObjectWatcher
 
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
-        refWatcher = LeakCanary.install(this)
+        objectWatcher = AppWatcher.objectWatcher
         foundation = Concrete.pourFoundation(applicationComponent())
     }
 
@@ -30,9 +30,9 @@ class ScreenSwitcherApplication : Application() {
     }
 
     companion object {
-        fun <T> watchObject(context: Context, watchedReference: T) {
+        fun <T> watchObject(context: Context, watchedReference: T, description: String) {
             val application = context.applicationContext as ScreenSwitcherApplication
-            application.refWatcher.watch(watchedReference as Any)
+            application.objectWatcher.watch(watchedReference as Any, description)
         }
     }
 }
