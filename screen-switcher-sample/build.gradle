@@ -43,9 +43,6 @@ dependencies {
     implementation deps.dagger
     kapt deps.daggerCompiler
 
-    implementation 'com.jakewharton:butterknife:10.1.0'
-    kapt 'com.jakewharton:butterknife-compiler:10.1.0'
-
     implementation deps.timber
 
     implementation deps.constraintLayout
