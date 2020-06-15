@@ -18,6 +18,7 @@ android {
         versionName '1.0'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         testApplicationId 'com.jaynewstrom.screenswitchersample.androidTest'
+        testInstrumentationRunnerArgument "listener", "leakcanary.FailTestOnLeakRunListener"
     }
 
     lintOptions {
@@ -37,8 +38,9 @@ dependencies {
 
     implementation deps.concrete
 
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
-    implementation 'com.squareup.leakcanary:leakcanary-object-watcher-android:2.4'
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:${leakCanaryVersion}"
+    implementation "com.squareup.leakcanary:leakcanary-object-watcher-android:${leakCanaryVersion}"
+    androidTestImplementation "com.squareup.leakcanary:leakcanary-android-instrumentation:${leakCanaryVersion}"
 
     implementation deps.dagger
     kapt deps.daggerCompiler
