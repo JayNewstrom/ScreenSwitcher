@@ -28,7 +28,7 @@ ext.deps = [
         androidTestRunner: 'androidx.test:runner:1.2.0',
         androidTestRules: 'androidx.test:rules:1.2.0',
         androidTestJunitRunner: 'androidx.test.ext:junit:1.1.1',
-        espressoCore: 'androidx.test.espresso:espresso-core:3.2.0'
+        espressoCore: 'androidx.test.espresso:espresso-core:3.2.0',
 ]
 
 buildscript {
