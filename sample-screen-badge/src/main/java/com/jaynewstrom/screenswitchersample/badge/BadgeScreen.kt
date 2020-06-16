@@ -4,6 +4,8 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jaynewstrom.concrete.ConcreteBlock
+import com.jaynewstrom.recyclerview.RecyclerItemViewFactory
+import com.jaynewstrom.recyclerview.RecyclerStateHolder
 import com.jaynewstrom.screenswitcher.Screen
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState
 import com.jaynewstrom.screenswitchersample.core.BaseScreen
@@ -41,11 +43,21 @@ internal annotation class BadgeCount
 @Component(modules = [BadgeModule::class])
 internal interface BadgeComponent {
     fun inject(presenter: BadgePresenter)
+    fun inject(presenter: BadgeItemPresenter)
 }
 
 @Module
 internal class BadgeModule(private val badgeCountRelay: BehaviorRelay<Int>) {
     @Provides @BadgeCount fun provideBadgeCountRelay() = badgeCountRelay
+
+    @Provides fun provideRecyclerStateHolder(): RecyclerStateHolder {
+        val factories = mutableListOf<RecyclerItemViewFactory<*>>()
+        (1..50).forEach { count ->
+            factories += BadgeItemViewFactory(count)
+            factories += BadgeItemViewFactory(-count)
+        }
+        return RecyclerStateHolder(factories)
+    }
 }
 
 private class BadgeScreenBlock(private val badgeCountRelay: BehaviorRelay<Int>) : ConcreteBlock<BadgeComponent> {

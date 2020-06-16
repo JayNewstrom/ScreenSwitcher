@@ -21,6 +21,7 @@ dependencies {
     api deps.kotlinRuntime
     api deps.rxJava
     implementation deps.constraintLayout
+    implementation deps.recyclerView
 
     implementation deps.dagger
     kapt deps.daggerCompiler

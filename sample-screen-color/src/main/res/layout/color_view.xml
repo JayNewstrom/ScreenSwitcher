@@ -1,42 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    android:orientation="vertical"
     >
 
-    <View
-        android:id="@+id/color_view"
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        />
-
-    <TextView
-        android:id="@+id/color_text_view"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textStyle="bold"
-        />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:orientation="vertical"
         >
 
-        <EditText
-            android:id="@+id/edit_text"
+        <TextView
+            android:id="@+id/color_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="New Color"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
             />
-    </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/submit_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Submit"
-        />
-</LinearLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <EditText
+                android:id="@+id/edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="New Color"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/submit_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            />
+
+        <View
+            android:id="@+id/color_view"
+            android:layout_width="match_parent"
+            android:layout_height="2000dp"
+            android:layout_marginTop="20dp"
+            />
+    </LinearLayout>
+</ScrollView>
