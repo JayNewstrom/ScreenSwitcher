@@ -64,4 +64,5 @@ dependencies {
     androidTestImplementation deps.androidTestJunitRunner
     androidTestImplementation deps.androidTestRules
     androidTestImplementation deps.espressoCore
+    androidTestImplementation deps.fest
 }
