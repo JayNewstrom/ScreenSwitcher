@@ -4,7 +4,9 @@ import android.os.Parcelable
 import android.util.SparseArray
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ScrollView
 import androidx.annotation.DrawableRes
+import androidx.recyclerview.widget.RecyclerView
 import com.jaynewstrom.screenswitcher.Screen
 import com.jaynewstrom.screenswitcher.ScreenSwitcher
 import com.jaynewstrom.screenswitcher.ScreenSwitcherFactory
@@ -63,6 +65,7 @@ class TabBarItem(
     internal fun popContentToRoot(contentView: View) {
         val screenSwitcherState = contentView.getTag(R.id.screen_switcher_state) as ScreenSwitcherState
         if (screenSwitcherState.screenCount() <= 1) {
+            (contentView as ViewGroup).getChildAt(0).smoothScrollToTop()
             return
         }
         val screenSwitcher = contentView.getTag(R.id.screen_switcher) as ScreenSwitcher
@@ -73,5 +76,13 @@ class TabBarItem(
 private class IllegalStateExceptionScreenSwitcherPopHandler(private val message: String) : ScreenSwitcherPopHandler {
     override fun onLastScreenPopped(popCompleteHandler: ScreenSwitcherPopHandler.PopCompleteHandler) {
         throw IllegalStateException(message)
+    }
+}
+
+private fun View.smoothScrollToTop() {
+    if (this is ScrollView) {
+        smoothScrollTo(0, 0)
+    } else if (this is RecyclerView) {
+        smoothScrollToPosition(0)
     }
 }

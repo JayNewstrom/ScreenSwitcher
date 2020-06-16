@@ -2,7 +2,9 @@ package com.jaynewstrom.screenswitchersample.badge
 
 import android.view.View
 import androidx.annotation.LayoutRes
-import com.jakewharton.rxrelay2.BehaviorRelay
+import androidx.recyclerview.widget.RecyclerView
+import com.jaynewstrom.recyclerview.RecyclerStateHolder
+import com.jaynewstrom.recyclerview.bootstrapRecyclerView
 import com.jaynewstrom.screenswitchersample.core.ViewPresenter
 import javax.inject.Inject
 
@@ -12,17 +14,12 @@ internal class BadgePresenter private constructor(view: View, component: BadgeCo
         fun bindView(view: View, component: BadgeComponent) = BadgePresenter(view, component)
     }
 
-    @Inject @BadgeCount lateinit var badgeCountRelay: BehaviorRelay<Int>
+    @Inject lateinit var recyclerStateHolder: RecyclerStateHolder
+
+    private val recyclerView = bindView<RecyclerView>(R.id.recycler_view)
 
     init {
         component.inject(this)
-
-        bindClick(R.id.increment_button) {
-            badgeCountRelay.accept(badgeCountRelay.value!! + 1)
-        }
-
-        bindClick(R.id.decrement_button) {
-            badgeCountRelay.accept(badgeCountRelay.value!! - 1)
-        }
+        bootstrapRecyclerView(recyclerView, recyclerStateHolder)
     }
 }

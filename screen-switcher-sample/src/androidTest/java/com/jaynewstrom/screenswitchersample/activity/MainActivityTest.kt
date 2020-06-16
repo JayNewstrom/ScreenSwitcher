@@ -108,11 +108,11 @@ class MainActivityTest {
     @Test fun testBadgeIconUpdate() {
         onView(withText("Badge")).perform(click())
         onView(withTextView(id = R.id.bottom_bar_badge_text_view, text = "5")).check(matches(isDisplayed()))
-        onView(withText("Increment")).perform(click())
+        onView(withText("Increment 1")).perform(click())
         onView(withTextView(id = R.id.bottom_bar_badge_text_view, text = "6")).check(matches(isDisplayed()))
-        onView(withText("Increment")).perform(click(), click())
+        onView(withText("Increment 1")).perform(click(), click())
         onView(withTextView(id = R.id.bottom_bar_badge_text_view, text = "8")).check(matches(isDisplayed()))
-        onView(withText("Decrement")).perform(click(), click(), click(), click())
+        onView(withText("Decrement 1")).perform(click(), click(), click(), click())
         onView(withTextView(id = R.id.bottom_bar_badge_text_view, text = "4")).check(matches(isDisplayed()))
     }
 }
