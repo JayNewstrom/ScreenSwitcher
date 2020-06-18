@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require 'English'
+
 def run_command(command)
   system(command)
   system_status = $CHILD_STATUS.exitstatus
