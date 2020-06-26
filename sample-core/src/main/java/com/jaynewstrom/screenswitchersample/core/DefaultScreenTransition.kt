@@ -3,9 +3,9 @@ package com.jaynewstrom.screenswitchersample.core
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.view.View
-import com.jaynewstrom.screenswitcher.ScreenTransition
+import com.jaynewstrom.screenswitcher.Screen
 
-object DefaultScreenTransition : ScreenTransition {
+object DefaultScreenTransition : Screen.Transition {
     override fun transitionIn(foregroundView: View, backgroundView: View, onTransitionCompleted: Runnable) {
         foregroundView.x = (foregroundView.parent as View).measuredWidth.toFloat()
         foregroundView.animate()

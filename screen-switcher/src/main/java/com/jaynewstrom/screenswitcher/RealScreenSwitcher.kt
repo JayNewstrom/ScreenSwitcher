@@ -244,7 +244,7 @@ internal class RealScreenSwitcher(
             isTransitioning = false
             hideAllButTopScreen()
             val transitionFunction = state.removeActiveScreenTransition()
-            transitionFunction?.invoke(this@RealScreenSwitcher)
+            transitionFunction?.invoke(currentScreenSwitcherData())
         }
     }
 
@@ -274,8 +274,17 @@ internal class RealScreenSwitcher(
             isTransitioning = false
             hideAllButTopScreen()
             val transitionFunction = state.removeActiveScreenTransition()
-            transitionFunction?.invoke(this@RealScreenSwitcher)
+            transitionFunction?.invoke(currentScreenSwitcherData())
         }
+    }
+
+    private fun currentScreenSwitcherData(): ScreenSwitcherData {
+        return ScreenSwitcherData(
+            screenSwitcher = this,
+            screenSwitcherState = state,
+            screen = state.screens.last(),
+            hostView = host.hostView()
+        )
     }
 
     companion object {

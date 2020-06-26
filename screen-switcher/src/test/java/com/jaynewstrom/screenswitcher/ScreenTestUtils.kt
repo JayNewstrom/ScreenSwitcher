@@ -53,7 +53,7 @@ internal object ScreenTestUtils {
 
     fun addTransitionOut(screen: Screen): AtomicReference<Runnable> {
         val transitionCompletedRunnable = AtomicReference<Runnable>()
-        val secondScreenTransition = object : ScreenTransition {
+        val secondScreenTransition = object : Screen.Transition {
             override fun transitionIn(foregroundView: View, backgroundView: View, onTransitionCompleted: Runnable) {
                 fail()
             }
@@ -68,7 +68,7 @@ internal object ScreenTestUtils {
 
     fun addTransitionIn(screenToTransition: Screen): AtomicReference<Runnable> {
         val transitionCompletedRunnable = AtomicReference<Runnable>()
-        val secondScreenTransition = object : ScreenTransition {
+        val secondScreenTransition = object : Screen.Transition {
             override fun transitionIn(foregroundView: View, backgroundView: View, onTransitionCompleted: Runnable) {
                 transitionCompletedRunnable.getAndSet(onTransitionCompleted)
             }

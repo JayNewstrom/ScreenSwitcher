@@ -25,11 +25,34 @@ interface Screen {
      * Will be called when the [Screen] is removed from the [ScreenSwitcher] for good.
      * Note, this will only be called once.
      */
-    fun destroyScreen(viewToDestroy: View)
+    fun destroyScreen(associatedView: View)
 
     /**
-     * The [ScreenTransition] to perform when calling [ScreenSwitcher] methods.
+     * The [Transition] to perform when calling [ScreenSwitcher] methods.
      * Note, this is only called when transitioning between two [Screen]s.
      */
-    fun transition(): ScreenTransition
+    fun transition(): Transition
+
+    /**
+     * Performs the transition between screens.
+     */
+    interface Transition {
+        /**
+         * The transition that occurs when adding a screen. See [ScreenSwitcher.push].
+         *
+         * @param foregroundView The view that will become the focus after than transition is complete.
+         * @param backgroundView The view that was the focus before the transition started.
+         * @param onTransitionCompleted A block of code that must be called after the transition is complete.
+         */
+        fun transitionIn(foregroundView: View, backgroundView: View, onTransitionCompleted: Runnable)
+
+        /**
+         * The transition that occurs when removing a screen. See [ScreenSwitcher.pop].
+         *
+         * @param foregroundView The view that was the focus before the transition started, and should be animated away.
+         * @param backgroundView The view that will become the focus after the transition is complete.
+         * @param onTransitionCompleted A block of code that must be called after the transition is complete.
+         */
+        fun transitionOut(foregroundView: View, backgroundView: View, onTransitionCompleted: Runnable)
+    }
 }

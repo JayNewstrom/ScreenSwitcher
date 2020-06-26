@@ -57,44 +57,44 @@ fun View.screenSwitcher(): ScreenSwitcher? {
  * If 🛳 is in the backstack, and not the active screen, it'll be executed when the screen becomes the active screen.
  * If 🛳 is not in the backstack, it'll be completely ignored.
  */
-fun View.enqueueTransition(performTransitionFunction: (ScreenSwitcher) -> Unit) {
-    val (screenSwitcher, state, screen) = screenSwitcherData()
-    if (state.isActiveScreen(screen) && !screenSwitcher.isTransitioning) {
-        performTransitionFunction(screenSwitcher)
+fun View.enqueueTransition(performTransitionFunction: (ScreenSwitcherData) -> Unit) {
+    val data = screenSwitcherData()
+    if (data.screenSwitcherState.isActiveScreen(data.screen) && !data.screenSwitcher.isTransitioning) {
+        performTransitionFunction(data)
     } else {
-        state.enqueueTransition(screen, performTransitionFunction)
+        data.screenSwitcherState.enqueueTransition(data.screen, performTransitionFunction)
     }
 }
 
 /**
- * Returns [ScreenSwitcherViewExtensionData] if the view is associated with the active [Screen].
+ * Returns [ScreenSwitcherData] if the view is associated with the active [Screen].
  */
-fun View.screenSwitcherDataIfActive(): ScreenSwitcherViewExtensionData? {
+fun View.screenSwitcherDataIfActive(): ScreenSwitcherData? {
     val associatedData = screenSwitcherData()
     return if (associatedData.screenSwitcherState.isActiveScreen(associatedData.screen)) associatedData else null
 }
 
 /**
- * Returns [ScreenSwitcherViewExtensionData] for the associated [Screen].
+ * Returns [ScreenSwitcherData] for the associated [Screen].
  */
-tailrec fun View.screenSwitcherData(): ScreenSwitcherViewExtensionData {
+tailrec fun View.screenSwitcherData(): ScreenSwitcherData {
     val parent = parent as? ViewGroup ?: throw IllegalStateException("View is not associated with a Screen.")
     val screen = getTag(R.id.screen_switcher_screen) as? Screen?
     if (screen != null) {
         val screenSwitcher = parent.getTag(R.id.screen_switcher) as ScreenSwitcher
         val screenSwitcherState = parent.getTag(R.id.screen_switcher_state) as ScreenSwitcherState
-        return ScreenSwitcherViewExtensionData(screenSwitcher, screenSwitcherState, screen, parent)
+        return ScreenSwitcherData(screenSwitcher, screenSwitcherState, screen, parent)
     }
 
     // When we detect we found the screen switcher, but no screen, return a dummy screen, rather than crashing on the
     // next recursion.
     if (ScreenSwitcherConfig.failSilentlyWhenPossible && getTag(R.id.screen_switcher) != null) {
         ScreenSwitcherConfig.logger(
-            "Returning ScreenSwitcherViewExtensionData with NoScreenFoundScreen from #screenSwitcherData - $this"
+            "Returning ScreenSwitcherData with NoScreenFoundScreen from #screenSwitcherData - $this"
         )
         val screenSwitcher = getTag(R.id.screen_switcher) as ScreenSwitcher
         val screenSwitcherState = getTag(R.id.screen_switcher_state) as ScreenSwitcherState
-        return ScreenSwitcherViewExtensionData(screenSwitcher, screenSwitcherState, NoScreenFoundScreen, parent)
+        return ScreenSwitcherData(screenSwitcher, screenSwitcherState, NoScreenFoundScreen, parent)
     }
 
     return parent.screenSwitcherData()
@@ -108,7 +108,7 @@ private fun ScreenSwitcherState.isActiveScreen(screen: Screen): Boolean {
  * The [ScreenSwitcher] data for an associated view.
  * This object is not safe to hold outside the view lifecycle.
  */
-data class ScreenSwitcherViewExtensionData(
+data class ScreenSwitcherData(
     val screenSwitcher: ScreenSwitcher,
     val screenSwitcherState: ScreenSwitcherState,
     val screen: Screen,
