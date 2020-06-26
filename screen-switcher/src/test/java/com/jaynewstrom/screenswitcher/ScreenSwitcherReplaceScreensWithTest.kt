@@ -79,7 +79,7 @@ class ScreenSwitcherReplaceScreensWithTest {
         mockCreateView(screen1)
         val screen2 = mock(Screen::class.java)
         mockCreateView(screen2)
-        `when`(screen2.transition()).thenReturn(mock(ScreenTransition::class.java))
+        `when`(screen2.transition()).thenReturn(mock(Screen.Transition::class.java))
         val state = ScreenTestUtils.defaultState(listOf(screen1, screen2))
         val activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state)
         testCallingTransitionHelper(activityScreenSwitcher)

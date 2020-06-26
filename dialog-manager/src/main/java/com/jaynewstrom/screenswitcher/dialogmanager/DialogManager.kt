@@ -11,7 +11,7 @@ import com.jaynewstrom.screenswitcher.Screen
 import com.jaynewstrom.screenswitcher.ScreenLifecycleListener
 import com.jaynewstrom.screenswitcher.ScreenSwitcher
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState
-import com.jaynewstrom.screenswitcher.ScreenSwitcherViewExtensionData
+import com.jaynewstrom.screenswitcher.ScreenSwitcherData
 import com.jaynewstrom.screenswitcher.screenSwitcherDataIfActive
 import com.jaynewstrom.screenswitcher.screenmanager.CompositeScreenLifecycleListener
 import com.jaynewstrom.screenswitcher.setupForViewExtensions
@@ -113,17 +113,17 @@ fun View.dialogDisplayer(): DialogDisplayer? {
 }
 
 class DialogDisplayer internal constructor(
-    screenSwitcherViewExtensionData: ScreenSwitcherViewExtensionData,
+    screenSwitcherData: ScreenSwitcherData,
     private val wall: ConcreteWall<*>,
     private val dialogManager: DialogManager
 ) : ScreenSwitcherState.ScreenSwitcherCreatedListener {
-    private val screen: Screen = screenSwitcherViewExtensionData.screen
-    private val screenSwitcherState: ScreenSwitcherState = screenSwitcherViewExtensionData.screenSwitcherState
+    private val screen: Screen = screenSwitcherData.screen
+    private val screenSwitcherState: ScreenSwitcherState = screenSwitcherData.screenSwitcherState
     private var screenSwitcher: ScreenSwitcher? = null
 
     init {
-        screenSwitcherViewExtensionData.screenSwitcherState.registerScreenSwitcherCreatedListener(screen, this)
-        screenSwitcher = screenSwitcherViewExtensionData.screenSwitcher
+        screenSwitcherData.screenSwitcherState.registerScreenSwitcherCreatedListener(screen, this)
+        screenSwitcher = screenSwitcherData.screenSwitcher
     }
 
     fun show(dialogFactory: DialogFactory) {

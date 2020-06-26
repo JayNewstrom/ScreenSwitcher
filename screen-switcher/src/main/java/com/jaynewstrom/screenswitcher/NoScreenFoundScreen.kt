@@ -7,7 +7,7 @@ import android.view.ViewGroup
  * A dummy screen to prevent exceptions from being thrown for APIs that expect a screen.
  * See [ScreenSwitcherConfig.failSilentlyWhenPossible].
  */
-object NoScreenFoundScreen : Screen {
+internal object NoScreenFoundScreen : Screen {
     override fun createView(hostView: ViewGroup, screenSwitcherState: ScreenSwitcherState): View {
         throw UnsupportedOperationException("createView should not be called on NoScreenFoundScreen.")
     }
@@ -16,11 +16,11 @@ object NoScreenFoundScreen : Screen {
         throw UnsupportedOperationException("bindView should not be called on NoScreenFoundScreen.")
     }
 
-    override fun destroyScreen(viewToDestroy: View) {
+    override fun destroyScreen(associatedView: View) {
         throw UnsupportedOperationException("destroyScreen should not be called on NoScreenFoundScreen.")
     }
 
-    override fun transition(): ScreenTransition {
+    override fun transition(): Screen.Transition {
         throw UnsupportedOperationException("transition should not be called on NoScreenFoundScreen.")
     }
 }

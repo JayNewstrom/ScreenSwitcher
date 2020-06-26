@@ -8,7 +8,6 @@ import com.jaynewstrom.concrete.ConcreteBlock
 import com.jaynewstrom.concrete.ConcreteWall
 import com.jaynewstrom.screenswitcher.Screen
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState
-import com.jaynewstrom.screenswitcher.ScreenTransition
 
 private const val LEAK_WATCHER_DESCRIPTION = "Screen Has Been Removed"
 
@@ -40,16 +39,16 @@ abstract class BaseScreen<C> : Screen {
         bindView(view, state!!.screenWall.component)
     }
 
-    final override fun destroyScreen(viewToDestroy: View) {
+    final override fun destroyScreen(associatedView: View) {
         val state = state!!
         val component = state.screenWall.component
         state.screenWall.destroy()
         state.leakWatcher.watch(this, LEAK_WATCHER_DESCRIPTION)
-        state.leakWatcher.watch(viewToDestroy, LEAK_WATCHER_DESCRIPTION)
+        state.leakWatcher.watch(associatedView, LEAK_WATCHER_DESCRIPTION)
         state.leakWatcher.watch(component, LEAK_WATCHER_DESCRIPTION)
     }
 
-    override fun transition(): ScreenTransition = DefaultScreenTransition
+    override fun transition(): Screen.Transition = DefaultScreenTransition
 }
 
 private data class BaseScreenState<C>(

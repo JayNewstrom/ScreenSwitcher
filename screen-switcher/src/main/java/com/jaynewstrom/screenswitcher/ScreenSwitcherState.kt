@@ -16,7 +16,7 @@ class ScreenSwitcherState
  */
 (internal val lifecycleListener: ScreenLifecycleListener, screens: List<Screen>) {
     internal val screens: MutableList<Screen>
-    private val transitionMap: MutableMap<Screen, (ScreenSwitcher) -> Unit> = mutableMapOf()
+    private val transitionMap: MutableMap<Screen, (ScreenSwitcherData) -> Unit> = mutableMapOf()
     private val popListenerMap: MutableMap<Screen, ScreenPopListener> = mutableMapOf()
     private val screenViewStateMap: MutableMap<Screen, SparseArray<Parcelable>> = mutableMapOf()
     private val screenSwitcherCreatedListenerMap: MutableMap<Screen, MutableList<ScreenSwitcherCreatedListener>> =
@@ -66,7 +66,7 @@ class ScreenSwitcherState
      * Enqueued transitions are only executed when another transition is complete.
      * If there are no transitions occurring, this will not be executed immediately.
      */
-    fun enqueueTransition(fromScreen: Screen, transitionFunction: (screenSwitcher: ScreenSwitcher) -> Unit) {
+    fun enqueueTransition(fromScreen: Screen, transitionFunction: (data: ScreenSwitcherData) -> Unit) {
         if (screens.contains(fromScreen)) {
             transitionMap[fromScreen] = transitionFunction
         }
@@ -79,7 +79,7 @@ class ScreenSwitcherState
         return ScreenSwitcherState(lifecycleListener, screens)
     }
 
-    internal fun removeActiveScreenTransition(): ((ScreenSwitcher) -> Unit)? {
+    internal fun removeActiveScreenTransition(): ((ScreenSwitcherData) -> Unit)? {
         if (screens.isEmpty()) return null
         return transitionMap.remove(screens.last())
     }
