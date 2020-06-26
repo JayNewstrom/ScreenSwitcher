@@ -36,9 +36,15 @@ class ScreenSwitcherState
      *
      * @param screen The [Screen] to be notified of before it gets popped.
      * @param popListener The [ScreenPopListener] to call when the [Screen] is trying to be popped.
+     *
+     * @return true if the pop listener was added.
      */
-    fun registerPopListener(screen: Screen, popListener: ScreenPopListener) {
-        popListenerMap[screen] = popListener
+    fun setPopListener(screen: Screen, popListener: ScreenPopListener): Boolean {
+        if (screens.contains(screen)) {
+            popListenerMap[screen] = popListener
+            return true
+        }
+        return false
     }
 
     /**
@@ -93,10 +99,7 @@ class ScreenSwitcherState
         screenSwitcherCreatedListenerMap.remove(screen)
     }
 
-    /**
-     * Checks to see if this [screen] consumes the pop.
-     */
-    fun handlesPop(view: View, screen: Screen): Boolean {
+    internal fun handlesPop(view: View, screen: Screen): Boolean {
         val popListener = popListenerMap[screen]
         return popListener != null && popListener.onScreenPop(view, screen)
     }

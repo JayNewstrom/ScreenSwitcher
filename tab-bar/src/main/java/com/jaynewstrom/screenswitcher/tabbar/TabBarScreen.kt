@@ -49,7 +49,7 @@ private class TabBarScreen(
                     tabBarItem.badgeCountObservable?.let { wallComponent.compositeDisposable.add(it.subscribe()) }
                 }
 
-                screenSwitcherState.registerPopListener(this, wallComponent.tabBarPopHandler)
+                screenSwitcherState.setPopListener(this, wallComponent.tabBarPopHandler)
 
                 wall.addDestructionAction { component -> component.compositeDisposable.dispose() }
             }

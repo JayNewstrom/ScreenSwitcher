@@ -25,7 +25,7 @@ private class SecondScreen(private val navigator: SecondNavigator) : BaseScreen<
             },
             { wall ->
                 val component = wall.component
-                screenSwitcherState.registerPopListener(this, component.secondPopListener)
+                screenSwitcherState.setPopListener(this, component.secondPopListener)
             }
         )
     }
