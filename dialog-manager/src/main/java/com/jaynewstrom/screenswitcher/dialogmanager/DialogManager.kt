@@ -10,8 +10,8 @@ import com.jaynewstrom.concrete.ConcreteWall
 import com.jaynewstrom.screenswitcher.Screen
 import com.jaynewstrom.screenswitcher.ScreenLifecycleListener
 import com.jaynewstrom.screenswitcher.ScreenSwitcher
-import com.jaynewstrom.screenswitcher.ScreenSwitcherState
 import com.jaynewstrom.screenswitcher.ScreenSwitcherData
+import com.jaynewstrom.screenswitcher.ScreenSwitcherState
 import com.jaynewstrom.screenswitcher.screenSwitcherDataIfActive
 import com.jaynewstrom.screenswitcher.screenmanager.CompositeScreenLifecycleListener
 import com.jaynewstrom.screenswitcher.setupForViewExtensions
