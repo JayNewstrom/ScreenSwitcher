@@ -29,5 +29,9 @@ internal class FirstPresenter private constructor(private val view: View, compon
         view.findViewById<View>(R.id.btn_show_first_dialog).setOnClickListener {
             view.dialogDisplayer()?.show(dialogFactoryProvider.get())
         }
+
+        view.findViewById<View>(R.id.btn_show_navigate_dialog).setOnClickListener {
+            view.dialogDisplayer()?.show(NavigateDialogFactory())
+        }
     }
 }

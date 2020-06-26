@@ -35,6 +35,7 @@ private class FirstScreen(private val navigator: FirstNavigator) : BaseScreen<Fi
 @Component(modules = [FirstModule::class])
 internal interface FirstComponent {
     fun inject(presenter: FirstPresenter)
+    fun inject(presenter: NavigateDialogPresenter)
 }
 
 @Module

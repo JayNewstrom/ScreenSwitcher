@@ -37,7 +37,7 @@ internal class TabBarPresenter(view: View, component: TabBarComponent) :
         content.saveStateDelegate = this
         addItemsToContainer()
 
-        registerObservable(currentTabBarItemStateHolder.stateObservable, ::setContentView)
+        registerStateHolder(currentTabBarItemStateHolder, ::setContentView)
     }
 
     private fun addItemsToContainer() {

@@ -19,6 +19,8 @@ class ScreenSwitcherState
     private val transitionMap: MutableMap<Screen, (ScreenSwitcher) -> Unit> = mutableMapOf()
     private val popListenerMap: MutableMap<Screen, ScreenPopListener> = mutableMapOf()
     private val screenViewStateMap: MutableMap<Screen, SparseArray<Parcelable>> = mutableMapOf()
+    private val screenSwitcherCreatedListenerMap: MutableMap<Screen, MutableList<ScreenSwitcherCreatedListener>> =
+        mutableMapOf()
 
     init {
         checkArgument(screens.isNotEmpty()) { "screens must contain at least one screen" }
@@ -88,6 +90,7 @@ class ScreenSwitcherState
         popListenerMap.remove(screen)
         screenViewStateMap.remove(screen)
         lifecycleListener.onScreenRemoved(screen)
+        screenSwitcherCreatedListenerMap.remove(screen)
     }
 
     /**
@@ -104,5 +107,47 @@ class ScreenSwitcherState
 
     internal fun removeViewHierarchyState(screen: Screen): SparseArray<Parcelable>? {
         return screenViewStateMap.remove(screen)
+    }
+
+    /**
+     * Listen to all subsequent screen switchers that get created within the context of the attached [ScreenSwitcherState].
+     */
+    interface ScreenSwitcherCreatedListener {
+        fun screenSwitcherCreated(screenSwitcher: ScreenSwitcher)
+    }
+
+    /**
+     * Add a [ScreenSwitcherCreatedListener] for any new screen switcher that's created with this [ScreenSwitcherState].
+     * The [Screen] is passed as context, so the listener can be automatically removed when the screen is removed.
+     *
+     * See [ScreenSwitcherState#unregisterScreenSwitcherCreatedListener].
+     *
+     * @return true if the listener was added.
+     */
+    fun registerScreenSwitcherCreatedListener(screen: Screen, listener: ScreenSwitcherCreatedListener): Boolean {
+        if (screens.contains(screen)) {
+            return screenSwitcherCreatedListenerMap.getOrPut(screen) { mutableListOf() }.add(listener)
+        }
+        return false
+    }
+
+    /**
+     * Remove the [ScreenSwitcherCreatedListener] for the given [Screen].
+     * The listener will only be removed for the given screen. If the listener is reused for other screens, they will remain.
+     *
+     * See [ScreenSwitcherState#registerScreenSwitcherCreatedListener].
+     *
+     * @return true if the listener was removed.
+     */
+    fun unregisterScreenSwitcherCreatedListener(screen: Screen, listener: ScreenSwitcherCreatedListener): Boolean {
+        return screenSwitcherCreatedListenerMap[screen]?.remove(listener) == true
+    }
+
+    internal fun screenSwitcherCreated(screenSwitcher: ScreenSwitcher) {
+        for (listenerList in screenSwitcherCreatedListenerMap.values) {
+            for (listener in listenerList) {
+                listener.screenSwitcherCreated(screenSwitcher)
+            }
+        }
     }
 }

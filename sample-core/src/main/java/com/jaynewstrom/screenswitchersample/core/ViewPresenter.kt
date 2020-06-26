@@ -42,4 +42,9 @@ abstract class ViewPresenter(protected val view: View) {
     fun <T> registerObservable(observable: Observable<T>, subscriber: (t: T) -> Unit): () -> Disposable? {
         return view.registerObservable(observable, subscriber)
     }
+
+    fun <T> registerStateHolder(stateHolder: StateHolder<T>, subscriber: (t: T) -> Unit): () -> Disposable? {
+        subscriber(stateHolder.state)
+        return registerObservable(stateHolder.stateObservable, subscriber)
+    }
 }

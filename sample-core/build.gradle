@@ -22,7 +22,7 @@ dependencies {
     api project(':screen-switcher')
     api deps.appCompat
     api deps.dagger
-    implementation deps.timber
+    api deps.timber
     api deps.rxJava
     implementation deps.rxRelay
 }

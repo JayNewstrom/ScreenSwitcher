@@ -35,6 +35,7 @@ internal class RealScreenSwitcher(
         this.screenViewMap = LinkedHashMap()
         host.hostView().setupForViewExtensions(this, state)
         setupHostViewForHidingKeyboard()
+        state.screenSwitcherCreated(this)
         initializeViewState()
     }
 
@@ -51,9 +52,9 @@ internal class RealScreenSwitcher(
         val view = screen.createView(host.hostView(), state)
         view.setTag(R.id.screen_switcher_screen, screen)
         screenViewMap[screen] = view
-        screen.bindView(view)
-        checkArgument(view.parent == null) { "createView/bindView should not return a view that has a parent." }
+        checkArgument(view.parent == null) { "createView should not return a view that has a parent." }
         host.addView(view)
+        screen.bindView(view)
         state.removeViewHierarchyState(screen)?.let(view::restoreHierarchyState)
         return view
     }
