@@ -8,8 +8,10 @@ import org.junit.Assert.fail
 import org.junit.Test
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.never
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
+import org.mockito.Mockito.verifyNoMoreInteractions
 
 class ScreenSwitcherStateTest {
     @Test fun constructorMakesDefensiveCopyOfScreensPassedIn() {
@@ -174,5 +176,61 @@ class ScreenSwitcherStateTest {
         val nestedScreen = mock(Screen::class.java)
         val nestedState = state.createNestedState(listOf(nestedScreen))
         assertThat(state.lifecycleListener).isSameAs(nestedState.lifecycleListener)
+    }
+
+    @Test fun testScreenSwitcherCreatedListenerNotAddedWhenScreenDoesNotExist() {
+        val rootScreen = mock(Screen::class.java)
+        val state = ScreenTestUtils.defaultState(rootScreen)
+        val associatedScreen = mock(Screen::class.java)
+        val listener = mock(ScreenSwitcherState.ScreenSwitcherCreatedListener::class.java)
+        assertThat(state.registerScreenSwitcherCreatedListener(associatedScreen, listener)).isFalse
+        state.screenSwitcherCreated(mock(ScreenSwitcher::class.java))
+        verify(listener, never()).screenSwitcherCreated(kotlinAny())
+        assertThat(state.unregisterScreenSwitcherCreatedListener(associatedScreen, listener)).isFalse
+    }
+
+    @Test fun testScreenSwitcherCreatedListenerHappyPath() {
+        val rootScreen = mock(Screen::class.java)
+        val associatedScreen = mock(Screen::class.java)
+        val state = ScreenTestUtils.defaultState(listOf(rootScreen, associatedScreen))
+        val listener = mock(ScreenSwitcherState.ScreenSwitcherCreatedListener::class.java)
+        assertThat(state.registerScreenSwitcherCreatedListener(associatedScreen, listener)).isTrue
+        state.screenSwitcherCreated(mock(ScreenSwitcher::class.java))
+        verify(listener).screenSwitcherCreated(kotlinAny())
+        verifyNoMoreInteractions(listener)
+        assertThat(state.unregisterScreenSwitcherCreatedListener(associatedScreen, listener)).isTrue
+        state.screenSwitcherCreated(mock(ScreenSwitcher::class.java))
+        assertThat(state.unregisterScreenSwitcherCreatedListener(associatedScreen, listener)).isFalse
+    }
+
+    @Test fun testScreenSwitcherCreatedListenerMultipleListenersCalled() {
+        val rootScreen = mock(Screen::class.java)
+        val associatedScreen = mock(Screen::class.java)
+        val state = ScreenTestUtils.defaultState(listOf(rootScreen, associatedScreen))
+        val listener1 = mock(ScreenSwitcherState.ScreenSwitcherCreatedListener::class.java)
+        val listener2 = mock(ScreenSwitcherState.ScreenSwitcherCreatedListener::class.java)
+        assertThat(state.registerScreenSwitcherCreatedListener(associatedScreen, listener1)).isTrue
+        assertThat(state.registerScreenSwitcherCreatedListener(associatedScreen, listener2)).isTrue
+        state.screenSwitcherCreated(mock(ScreenSwitcher::class.java))
+        verify(listener1).screenSwitcherCreated(kotlinAny())
+        verify(listener2).screenSwitcherCreated(kotlinAny())
+        assertThat(state.unregisterScreenSwitcherCreatedListener(associatedScreen, listener1)).isTrue
+        assertThat(state.unregisterScreenSwitcherCreatedListener(associatedScreen, listener2)).isTrue
+        verifyNoMoreInteractions(listener1, listener2)
+        state.screenSwitcherCreated(mock(ScreenSwitcher::class.java))
+    }
+
+    @Test fun testScreenSwitcherCreatedListenerIsRemovedWhenScreenIsRemoved() {
+        val rootScreen = mock(Screen::class.java)
+        val associatedScreen = mock(Screen::class.java)
+        val state = ScreenTestUtils.defaultState(listOf(rootScreen, associatedScreen))
+        val listener = mock(ScreenSwitcherState.ScreenSwitcherCreatedListener::class.java)
+        assertThat(state.registerScreenSwitcherCreatedListener(associatedScreen, listener)).isTrue
+        state.screenSwitcherCreated(mock(ScreenSwitcher::class.java))
+        verify(listener).screenSwitcherCreated(kotlinAny())
+        verifyNoMoreInteractions(listener)
+        state.removeScreen(associatedScreen)
+        state.screenSwitcherCreated(mock(ScreenSwitcher::class.java))
+        assertThat(state.unregisterScreenSwitcherCreatedListener(associatedScreen, listener)).isFalse
     }
 }

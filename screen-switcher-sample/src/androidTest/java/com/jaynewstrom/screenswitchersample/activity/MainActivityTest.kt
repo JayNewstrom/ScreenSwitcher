@@ -115,6 +115,21 @@ class MainActivityTest {
         onView(withText("Decrement 1")).perform(click(), click(), click(), click())
         onView(withTextView(id = R.id.bottom_bar_badge_text_view, text = "4")).check(matches(isDisplayed()))
     }
+
+    @Test fun testDialogWithNavigationWorks() {
+        onView(withId(R.id.btn_show_navigate_dialog)).perform(click())
+        onView(withId(R.id.navigate_to_second_screen_button)).perform(click())
+        pressBack()
+        onView(withId(R.id.btn_confirm_pop)).perform(click())
+        onView(withId(R.id.btn_show_navigate_dialog)).perform(click())
+        activityTestRule.recreateActivity()
+        onView(withId(R.id.navigate_to_second_screen_button)).perform(click())
+        pressBack()
+        onView(withId(R.id.btn_confirm_pop)).check(matches(isDisplayed())).perform(click())
+
+        // Ensure removing the screen doesn't leak anything!
+        onView(withId(R.id.btn_replace_with_second)).perform(click())
+    }
 }
 
 private fun ActivityTestRule<*>.recreateActivity() {

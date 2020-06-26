@@ -80,4 +80,15 @@ class ScreenSwitcherTest {
         verify(view1, never()).restoreHierarchyState(kotlinAny())
         verify(view2, never()).restoreHierarchyState(kotlinAny())
     }
+
+    @Test fun ensureScreenSwitcherCreatedListenerIsCalled() {
+        val screen1 = mock(Screen::class.java)
+        ScreenTestUtils.mockCreateView(screen1)
+        val activity = mock(Activity::class.java)
+        val state = ScreenTestUtils.defaultState(screen1)
+        val listener = mock(ScreenSwitcherState.ScreenSwitcherCreatedListener::class.java)
+        state.registerScreenSwitcherCreatedListener(screen1, listener)
+        ScreenTestUtils.testScreenSwitcher(activity, state)
+        verify(listener).screenSwitcherCreated(kotlinAny())
+    }
 }

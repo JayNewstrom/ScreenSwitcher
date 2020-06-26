@@ -20,4 +20,5 @@ dependencies {
     api deps.concrete
     api deps.kotlinRuntime
     api project(':screen-manager')
+    implementation deps.timber
 }
