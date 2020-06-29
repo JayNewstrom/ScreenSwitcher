@@ -7,10 +7,10 @@ import android.view.WindowManager
 
 internal class ActivityScreenSwitcherHost(
     private val activity: Activity,
-    private val popHandler: ScreenSwitcherPopHandler
+    private val finishHandler: ScreenSwitcherFinishHandler
 ) : ScreenSwitcherHost {
-    override fun onLastScreenPopped(popCompleteHandler: ScreenSwitcherPopHandler.PopCompleteHandler) {
-        popHandler.onLastScreenPopped(popCompleteHandler)
+    override fun onScreenSwitcherFinished(finishCompleteHandler: ScreenSwitcherFinishHandler.FinishCompleteHandler) {
+        finishHandler.onScreenSwitcherFinished(finishCompleteHandler)
         activity.finish()
     }
 

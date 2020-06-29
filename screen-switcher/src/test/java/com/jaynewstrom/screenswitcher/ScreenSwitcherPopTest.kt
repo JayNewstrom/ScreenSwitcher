@@ -161,30 +161,32 @@ class ScreenSwitcherPopTest {
         assertThat(activityScreenSwitcher.isTransitioning).isFalse
     }
 
-    @Test fun poppingLastScreenCallsPopHandler() {
+    @Test fun poppingLastScreenCallsFinishHandler() {
         val activity = mock(Activity::class.java)
         val screen1 = mock(Screen::class.java)
         mockCreateView(screen1)
         val state = ScreenTestUtils.defaultState(listOf(screen1))
-        val popHandler = mock(ScreenSwitcherPopHandler::class.java)
-        val activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state, popHandler)
+        val finishHandler = mock(ScreenSwitcherFinishHandler::class.java)
+        val activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state, finishHandler)
         activityScreenSwitcher.pop(1)
-        verify(popHandler).onLastScreenPopped(kotlinAny())
+        verify(finishHandler).onScreenSwitcherFinished(kotlinAny())
         assertThat(state.screenCount()).isEqualTo(0)
         assertThat(activityScreenSwitcher.isTransitioning).isTrue
     }
 
-    @Test fun poppingLastScreenAndCallingPopHandlerDestroysScreen() {
+    @Test fun poppingLastScreenAndCallingFinishHandlerDestroysScreen() {
         val activity = mock(Activity::class.java)
         val screen1 = mock(Screen::class.java)
         mockCreateView(screen1)
         val state = ScreenTestUtils.defaultState(listOf(screen1))
-        val popHandler = object : ScreenSwitcherPopHandler {
-            override fun onLastScreenPopped(popCompleteHandler: ScreenSwitcherPopHandler.PopCompleteHandler) {
-                popCompleteHandler.popComplete()
+        val finishHandler = object : ScreenSwitcherFinishHandler {
+            override fun onScreenSwitcherFinished(
+                finishCompleteHandler: ScreenSwitcherFinishHandler.FinishCompleteHandler
+            ) {
+                finishCompleteHandler.finishComplete()
             }
         }
-        val activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state, popHandler)
+        val activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state, finishHandler)
         activityScreenSwitcher.pop(1)
         assertThat(state.screenCount()).isEqualTo(0)
         assertThat(activityScreenSwitcher.isTransitioning).isTrue

@@ -10,9 +10,9 @@ object ScreenSwitcherFactory {
     @JvmStatic fun activityScreenSwitcher(
         activity: Activity,
         state: ScreenSwitcherState,
-        popHandler: ScreenSwitcherPopHandler
+        finishHandler: ScreenSwitcherFinishHandler
     ): ScreenSwitcher {
-        return RealScreenSwitcher(state, ActivityScreenSwitcherHost(activity, popHandler))
+        return RealScreenSwitcher(state, ActivityScreenSwitcherHost(activity, finishHandler))
     }
 
     /**
@@ -21,8 +21,8 @@ object ScreenSwitcherFactory {
     @JvmStatic fun viewScreenSwitcher(
         viewGroup: ViewGroup,
         state: ScreenSwitcherState,
-        popHandler: ScreenSwitcherPopHandler
+        finishHandler: ScreenSwitcherFinishHandler
     ): ScreenSwitcher {
-        return RealScreenSwitcher(state, ViewScreenSwitcherHost(viewGroup, popHandler))
+        return RealScreenSwitcher(state, ViewScreenSwitcherHost(viewGroup, finishHandler))
     }
 }

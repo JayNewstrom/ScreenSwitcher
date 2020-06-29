@@ -5,10 +5,10 @@ import android.view.ViewGroup
 
 internal class ViewScreenSwitcherHost(
     private val viewGroup: ViewGroup,
-    private val popHandler: ScreenSwitcherPopHandler
+    private val finishHandler: ScreenSwitcherFinishHandler
 ) : ScreenSwitcherHost {
-    override fun onLastScreenPopped(popCompleteHandler: ScreenSwitcherPopHandler.PopCompleteHandler) {
-        popHandler.onLastScreenPopped(popCompleteHandler)
+    override fun onScreenSwitcherFinished(finishCompleteHandler: ScreenSwitcherFinishHandler.FinishCompleteHandler) {
+        finishHandler.onScreenSwitcherFinished(finishCompleteHandler)
     }
 
     override fun addView(view: View) = viewGroup.addView(view)

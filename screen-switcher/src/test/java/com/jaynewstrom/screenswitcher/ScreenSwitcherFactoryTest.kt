@@ -15,7 +15,7 @@ class ScreenSwitcherFactoryTest {
     private lateinit var activity: Activity
     private lateinit var view: ViewGroup
     private lateinit var state: ScreenSwitcherState
-    private lateinit var popHandler: ScreenSwitcherPopHandler
+    private lateinit var finishHandler: ScreenSwitcherFinishHandler
 
     @Before fun setup() {
         activity = mock(Activity::class.java)
@@ -27,13 +27,13 @@ class ScreenSwitcherFactoryTest {
         val screen = mock(Screen::class.java)
         ScreenTestUtils.mockCreateView(screen)
         state = ScreenTestUtils.defaultState(screen)
-        popHandler = mock(ScreenSwitcherPopHandler::class.java)
+        finishHandler = mock(ScreenSwitcherFinishHandler::class.java)
     }
 
     @Test fun activityScreenSwitcherRejectsStateWithNoScreens() {
         try {
             state.removeScreen(state.screens[0])
-            ScreenSwitcherFactory.activityScreenSwitcher(activity, state, popHandler)
+            ScreenSwitcherFactory.activityScreenSwitcher(activity, state, finishHandler)
             fail()
         } catch (expected: IllegalArgumentException) {
             assertThat(expected).hasMessage("state needs screens in order to initialize a ScreenSwitcher")
@@ -41,14 +41,14 @@ class ScreenSwitcherFactoryTest {
     }
 
     @Test fun activityScreenSwitcherIsCreated() {
-        val screenSwitcher = ScreenSwitcherFactory.activityScreenSwitcher(activity, state, popHandler)
+        val screenSwitcher = ScreenSwitcherFactory.activityScreenSwitcher(activity, state, finishHandler)
         assertThat(screenSwitcher).isNotNull
     }
 
     @Test fun viewScreenSwitcherRejectsStateWithNoScreens() {
         try {
             state.removeScreen(state.screens[0])
-            ScreenSwitcherFactory.viewScreenSwitcher(view, state, popHandler)
+            ScreenSwitcherFactory.viewScreenSwitcher(view, state, finishHandler)
             fail()
         } catch (expected: IllegalArgumentException) {
             assertThat(expected).hasMessage("state needs screens in order to initialize a ScreenSwitcher")
@@ -56,7 +56,7 @@ class ScreenSwitcherFactoryTest {
     }
 
     @Test fun viewScreenSwitcherIsCreated() {
-        val screenSwitcher = ScreenSwitcherFactory.viewScreenSwitcher(view, state, popHandler)
+        val screenSwitcher = ScreenSwitcherFactory.viewScreenSwitcher(view, state, finishHandler)
         assertThat(screenSwitcher).isNotNull
     }
 }
