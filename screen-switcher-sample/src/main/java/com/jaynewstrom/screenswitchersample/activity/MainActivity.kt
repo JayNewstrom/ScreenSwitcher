@@ -19,7 +19,7 @@ class MainActivity : Activity(), ScreenSwitcherFinishHandler {
     @Inject internal lateinit var screenSwitcherState: ScreenSwitcherState
     @Inject internal lateinit var dialogManager: DialogManager
 
-    private lateinit var activityScreenSwitcher: ScreenSwitcher
+    private lateinit var screenSwitcher: ScreenSwitcher
     private lateinit var activityWall: ConcreteWall<MainActivityComponent>
     private var finishCompleteHandler: ScreenSwitcherFinishHandler.FinishCompleteHandler? = null
 
@@ -30,7 +30,7 @@ class MainActivity : Activity(), ScreenSwitcherFinishHandler {
         activityWall.component.inject(this)
         setContentView(R.layout.main_activity)
         val screenHost = findViewById<ViewGroup>(R.id.screen_host)
-        activityScreenSwitcher = ScreenSwitcherFactory.viewScreenSwitcher(screenHost, screenSwitcherState, this)
+        screenSwitcher = ScreenSwitcherFactory.viewScreenSwitcher(screenHost, screenSwitcherState, this)
         dialogManager.attachActivity(this)
         dialogManager.restoreState()
 
@@ -39,13 +39,14 @@ class MainActivity : Activity(), ScreenSwitcherFinishHandler {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        activityScreenSwitcher.saveViewHierarchyStateToScreenSwitcherState()
+        screenSwitcher.saveViewHierarchyStateToScreenSwitcherState()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         dialogManager.dropActivity(this)
         finishCompleteHandler?.finishComplete()
+        finishCompleteHandler = null
         if (isFinishing) {
             activityWall.destroy()
         } else {
@@ -54,12 +55,12 @@ class MainActivity : Activity(), ScreenSwitcherFinishHandler {
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
-        return activityScreenSwitcher.isTransitioning || super.dispatchTouchEvent(ev)
+        return screenSwitcher.isTransitioning || super.dispatchTouchEvent(ev)
     }
 
     override fun onBackPressed() {
-        if (!activityScreenSwitcher.isTransitioning && !isFinishing) {
-            activityScreenSwitcher.pop(1)
+        if (!screenSwitcher.isTransitioning && !isFinishing) {
+            screenSwitcher.pop(1)
         }
     }
 
@@ -73,5 +74,6 @@ class MainActivity : Activity(), ScreenSwitcherFinishHandler {
 
     override fun onScreenSwitcherFinished(finishCompleteHandler: ScreenSwitcherFinishHandler.FinishCompleteHandler) {
         this.finishCompleteHandler = finishCompleteHandler
+        finish()
     }
 }
