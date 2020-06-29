@@ -192,8 +192,8 @@ internal class RealScreenSwitcher(
             for (screen in ArrayList(state.screens)) {
                 state.removeScreen(screen)
             }
-            host.onLastScreenPopped(object : ScreenSwitcherPopHandler.PopCompleteHandler {
-                override fun popComplete() {
+            host.onScreenSwitcherFinished(object : ScreenSwitcherFinishHandler.FinishCompleteHandler {
+                override fun finishComplete() {
                     for (screen in ArrayList(screenViewMap.keys)) {
                         removeScreen(screen, false)
                     }

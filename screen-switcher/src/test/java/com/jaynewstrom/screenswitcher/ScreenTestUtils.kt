@@ -36,8 +36,8 @@ internal object ScreenTestUtils {
         `when`(hostView.context).thenReturn(activity)
         `when`(activity.findViewById<View>(android.R.id.content)).thenReturn(hostView)
         val state = ScreenTestUtils.defaultState(screens)
-        val popHandler = mock(ScreenSwitcherPopHandler::class.java)
-        return ScreenSwitcherFactory.activityScreenSwitcher(activity, state, popHandler) as RealScreenSwitcher
+        val finishHandler = mock(ScreenSwitcherFinishHandler::class.java)
+        return ScreenSwitcherFactory.activityScreenSwitcher(activity, state, finishHandler) as RealScreenSwitcher
     }
 
     fun mockCreateView(screen: Screen, createViewCallback: (() -> Unit)? = null): View {
@@ -82,14 +82,14 @@ internal object ScreenTestUtils {
     }
 
     fun testScreenSwitcher(activity: Activity, state: ScreenSwitcherState): ScreenSwitcher {
-        val popHandler = mock(ScreenSwitcherPopHandler::class.java)
-        return testScreenSwitcher(activity, state, popHandler)
+        val finishHandler = mock(ScreenSwitcherFinishHandler::class.java)
+        return testScreenSwitcher(activity, state, finishHandler)
     }
 
     fun testScreenSwitcher(
         activity: Activity,
         state: ScreenSwitcherState,
-        popHandler: ScreenSwitcherPopHandler
+        finishHandler: ScreenSwitcherFinishHandler
     ): ScreenSwitcher {
         val hostView = mock(ViewGroup::class.java)
         `when`(hostView.context).thenReturn(activity)
@@ -99,7 +99,7 @@ internal object ScreenTestUtils {
             `when`<ViewParent>(childView.parent).thenReturn(invocation.mock as ViewGroup)
             null
         }.`when`(hostView).addView(kotlinAny())
-        return ScreenSwitcherFactory.viewScreenSwitcher(hostView, state, popHandler)
+        return ScreenSwitcherFactory.viewScreenSwitcher(hostView, state, finishHandler)
     }
 }
 

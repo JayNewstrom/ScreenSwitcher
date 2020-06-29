@@ -28,13 +28,6 @@ tailrec fun View.associatedScreen(): Screen {
         return screen
     }
 
-    // When we detect we found the screen switcher, but no screen, return a dummy screen, rather than crashing on the
-    // next recursion.
-    if (ScreenSwitcherConfig.failSilentlyWhenPossible && getTag(R.id.screen_switcher) != null) {
-        ScreenSwitcherConfig.logger("Returning NoScreenFoundScreen from #associatedScreen - $this")
-        return NoScreenFoundScreen
-    }
-
     return parent.associatedScreen()
 }
 
@@ -84,17 +77,6 @@ tailrec fun View.screenSwitcherData(): ScreenSwitcherData {
         val screenSwitcher = parent.getTag(R.id.screen_switcher) as ScreenSwitcher
         val screenSwitcherState = parent.getTag(R.id.screen_switcher_state) as ScreenSwitcherState
         return ScreenSwitcherData(screenSwitcher, screenSwitcherState, screen, parent)
-    }
-
-    // When we detect we found the screen switcher, but no screen, return a dummy screen, rather than crashing on the
-    // next recursion.
-    if (ScreenSwitcherConfig.failSilentlyWhenPossible && getTag(R.id.screen_switcher) != null) {
-        ScreenSwitcherConfig.logger(
-            "Returning ScreenSwitcherData with NoScreenFoundScreen from #screenSwitcherData - $this"
-        )
-        val screenSwitcher = getTag(R.id.screen_switcher) as ScreenSwitcher
-        val screenSwitcherState = getTag(R.id.screen_switcher_state) as ScreenSwitcherState
-        return ScreenSwitcherData(screenSwitcher, screenSwitcherState, NoScreenFoundScreen, parent)
     }
 
     return parent.screenSwitcherData()

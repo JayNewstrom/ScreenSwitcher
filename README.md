@@ -26,13 +26,13 @@ Bootstrap
 ------------
 
 There is a fair amount of work to get ScreenSwitcher integrated in your app. 
-Please see the [bootstrapping guide][bootstrap] or clone the sample for a full example.
+Please clone the sample for a full example.
 
 Dialogs
 -------
 
-In order to ensure dialogs are restored properly, there is an example `DialogHub`. The `DialogHub` is a pattern that makes it possible to save/restore dialogs without leaking a context.
-You can see the code in the `dialog-hub` module. You can see example usages in the `screen-switcher-sample` module.
+In order to ensure dialogs are restored properly, there is an example `DialogManager`. The `DialogManager` is a pattern that makes it possible to save/restore dialogs without leaking a context.
+You can see the code in the `dialog-manager` module. You can see example usages in the `screen-switcher-sample` module.
 
 Setup
 ------------
@@ -69,5 +69,3 @@ License
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-
-[bootstrap]: Bootstrap.md

@@ -37,7 +37,7 @@ class DialogManager(compositeScreenLifecycleListener: CompositeScreenLifecycleLi
     }
 
     internal fun show(dialogFactory: DialogFactory, screen: Screen? = null, savedState: Bundle? = null) {
-        val activity = activity ?: throw IllegalStateException("DialogHub is not attached to the activity.")
+        val activity = activity ?: throw IllegalStateException("DialogManager is not attached to the activity.")
         val dialog = dialogFactory.createDialog(activity)
         if (savedState != null) {
             dialog.onRestoreInstanceState(savedState)

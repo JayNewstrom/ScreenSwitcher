@@ -8,20 +8,20 @@ import com.jaynewstrom.concrete.Concrete
 import com.jaynewstrom.concrete.ConcreteWall
 import com.jaynewstrom.screenswitcher.ScreenSwitcher
 import com.jaynewstrom.screenswitcher.ScreenSwitcherFactory
-import com.jaynewstrom.screenswitcher.ScreenSwitcherPopHandler
+import com.jaynewstrom.screenswitcher.ScreenSwitcherFinishHandler
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState
 import com.jaynewstrom.screenswitcher.dialogmanager.DialogManager
 import com.jaynewstrom.screenswitchersample.R
 import com.jaynewstrom.screenswitchersample.application.ApplicationComponent
 import javax.inject.Inject
 
-class MainActivity : Activity(), ScreenSwitcherPopHandler {
+class MainActivity : Activity(), ScreenSwitcherFinishHandler {
     @Inject internal lateinit var screenSwitcherState: ScreenSwitcherState
     @Inject internal lateinit var dialogManager: DialogManager
 
     private lateinit var activityScreenSwitcher: ScreenSwitcher
     private lateinit var activityWall: ConcreteWall<MainActivityComponent>
-    private var popCompleteHandler: ScreenSwitcherPopHandler.PopCompleteHandler? = null
+    private var finishCompleteHandler: ScreenSwitcherFinishHandler.FinishCompleteHandler? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +45,7 @@ class MainActivity : Activity(), ScreenSwitcherPopHandler {
     override fun onDestroy() {
         super.onDestroy()
         dialogManager.dropActivity(this)
-        popCompleteHandler?.popComplete()
+        finishCompleteHandler?.finishComplete()
         if (isFinishing) {
             activityWall.destroy()
         } else {
@@ -71,7 +71,7 @@ class MainActivity : Activity(), ScreenSwitcherPopHandler {
         }
     }
 
-    override fun onLastScreenPopped(popCompleteHandler: ScreenSwitcherPopHandler.PopCompleteHandler) {
-        this.popCompleteHandler = popCompleteHandler
+    override fun onScreenSwitcherFinished(finishCompleteHandler: ScreenSwitcherFinishHandler.FinishCompleteHandler) {
+        this.finishCompleteHandler = finishCompleteHandler
     }
 }

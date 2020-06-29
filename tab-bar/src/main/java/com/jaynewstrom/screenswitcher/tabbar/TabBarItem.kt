@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jaynewstrom.screenswitcher.Screen
 import com.jaynewstrom.screenswitcher.ScreenSwitcher
 import com.jaynewstrom.screenswitcher.ScreenSwitcherFactory
-import com.jaynewstrom.screenswitcher.ScreenSwitcherPopHandler
+import com.jaynewstrom.screenswitcher.ScreenSwitcherFinishHandler
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState
 import com.jaynewstrom.screenswitcher.screenSwitcherState
 import com.jaynewstrom.screenswitchersample.core.inflate
@@ -40,8 +40,8 @@ class TabBarItem(
         screenHost.isSaveFromParentEnabled = false
 
         val message = "Nested Screen Switchers cannot have zero screens. Handle this in the parent screen switcher."
-        val popHandler = IllegalStateExceptionScreenSwitcherPopHandler(message)
-        val screenSwitcher = ScreenSwitcherFactory.viewScreenSwitcher(screenHost, state, popHandler)
+        val finishHandler = IllegalStateExceptionScreenSwitcherFinishHandler(message)
+        val screenSwitcher = ScreenSwitcherFactory.viewScreenSwitcher(screenHost, state, finishHandler)
 
         screenHost.saveStateDelegate = object : StateAwareFrameLayout.SaveStateDelegate {
             override fun dispatchSaveInstanceState(container: SparseArray<Parcelable>) {
@@ -73,8 +73,10 @@ class TabBarItem(
     }
 }
 
-private class IllegalStateExceptionScreenSwitcherPopHandler(private val message: String) : ScreenSwitcherPopHandler {
-    override fun onLastScreenPopped(popCompleteHandler: ScreenSwitcherPopHandler.PopCompleteHandler) {
+private class IllegalStateExceptionScreenSwitcherFinishHandler(
+    private val message: String
+) : ScreenSwitcherFinishHandler {
+    override fun onScreenSwitcherFinished(finishCompleteHandler: ScreenSwitcherFinishHandler.FinishCompleteHandler) {
         throw IllegalStateException(message)
     }
 }
