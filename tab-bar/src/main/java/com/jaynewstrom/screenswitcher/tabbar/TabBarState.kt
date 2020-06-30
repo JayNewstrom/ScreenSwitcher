@@ -2,8 +2,8 @@ package com.jaynewstrom.screenswitcher.tabbar
 
 import android.os.Parcelable
 import android.util.SparseArray
-import com.jaynewstrom.screenswitchersample.core.ScreenScope
-import com.jaynewstrom.screenswitchersample.core.StateHolder
+import screenswitchersample.core.screen.ScreenScope
+import screenswitchersample.core.state.StateHolder
 import javax.inject.Inject
 
 @ScreenScope

@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Testing App</string>
+    <string name="launcher_name">@string/app_name</string>
+</resources>

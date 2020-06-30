@@ -30,6 +30,11 @@ ext.deps = [
         androidTestRules: 'androidx.test:rules:1.2.0',
         androidTestJunitRunner: 'androidx.test.ext:junit:1.1.1',
         espressoCore: 'androidx.test.espresso:espresso-core:3.2.0',
+        espressoIntent: 'androidx.test.espresso:espresso-intents:3.2.0',
+        androidTestCore: 'androidx.test:core:1.2.0',
+        espressoContrib: 'androidx.test.espresso:espresso-contrib:3.2.0',
+        rxIdler: 'com.squareup.rx.idler:rx2-idler:0.11.0',
+        leakCanaryInstrumentation: "com.squareup.leakcanary:leakcanary-android-instrumentation:${leakCanaryVersion}",
 ]
 
 buildscript {

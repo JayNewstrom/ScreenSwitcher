@@ -13,8 +13,8 @@ import com.jaynewstrom.screenswitcher.ScreenSwitcherFactory
 import com.jaynewstrom.screenswitcher.ScreenSwitcherFinishHandler
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState
 import com.jaynewstrom.screenswitcher.screenSwitcherState
-import com.jaynewstrom.screenswitchersample.core.inflate
 import io.reactivex.Observable
+import screenswitchersample.core.view.inflate
 
 class TabBarItem(
     screen: Screen,

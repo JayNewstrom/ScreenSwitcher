@@ -2,9 +2,9 @@ package com.jaynewstrom.recyclerview
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.jaynewstrom.screenswitchersample.core.StateHolder
-import com.jaynewstrom.screenswitchersample.core.ViewPresenter
 import io.reactivex.Observable
+import screenswitchersample.core.state.StateHolder
+import screenswitchersample.core.view.ViewPresenter
 
 private typealias FactoryList = List<RecyclerItemViewFactory<*>>
 

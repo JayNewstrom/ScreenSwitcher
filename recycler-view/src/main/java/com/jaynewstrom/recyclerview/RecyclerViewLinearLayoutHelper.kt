@@ -1,7 +1,7 @@
 package com.jaynewstrom.recyclerview
 
 import android.widget.LinearLayout
-import com.jaynewstrom.screenswitchersample.core.inflate
+import screenswitchersample.core.view.inflate
 
 fun LinearLayout.addViewFactories(
     viewFactories: List<RecyclerItemViewFactory<*>>

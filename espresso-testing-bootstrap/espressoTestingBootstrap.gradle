@@ -1,0 +1,14 @@
+android {
+    defaultConfig {
+        testInstrumentationRunner 'screenswitchersample.espressotestingbootstrap.test.TestAndroidJunitRunner'
+        testInstrumentationRunnerArgument 'listener', 'leakcanary.FailTestOnLeakRunListener'
+        multiDexEnabled true
+    }
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+    }
+}
+
+dependencies {
+    androidTestImplementation project(':espresso-testing-bootstrap')
+}

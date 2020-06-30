@@ -7,8 +7,8 @@ import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.annotation.LayoutRes
-import com.jaynewstrom.screenswitchersample.core.ViewPresenter
-import com.jaynewstrom.screenswitchersample.core.setClickListener
+import screenswitchersample.core.view.ViewPresenter
+import screenswitchersample.core.view.setClickListener
 import javax.inject.Inject
 
 /**
