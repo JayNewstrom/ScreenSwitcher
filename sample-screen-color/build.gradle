@@ -28,3 +28,5 @@ dependencies {
     kapt deps.daggerCompiler
     implementation deps.timber
 }
+
+apply from: rootProject.file('espresso-testing-bootstrap/espressoTestingBootstrap.gradle')

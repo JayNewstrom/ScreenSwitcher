@@ -4,15 +4,15 @@ import android.view.View
 import com.jaynewstrom.concrete.ConcreteBlock
 import com.jaynewstrom.screenswitcher.Screen
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState
-import com.jaynewstrom.screenswitchersample.core.BaseScreen
-import com.jaynewstrom.screenswitchersample.core.DefaultScreenWallManager
-import com.jaynewstrom.screenswitchersample.core.ScreenParentComponent
-import com.jaynewstrom.screenswitchersample.core.ScreenScope
-import com.jaynewstrom.screenswitchersample.core.ScreenWallManager
 import dagger.Component
 import dagger.Module
 import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable
+import screenswitchersample.core.components.PassthroughComponent
+import screenswitchersample.core.screen.BaseScreen
+import screenswitchersample.core.screen.DefaultScreenWallManager
+import screenswitchersample.core.screen.ScreenScope
+import screenswitchersample.core.screen.ScreenWallManager
 import javax.inject.Qualifier
 
 object TabBarScreenFactory {
@@ -34,8 +34,8 @@ private class TabBarScreen(
 
     override fun createWallManager(screenSwitcherState: ScreenSwitcherState): ScreenWallManager<TabBarComponent> {
         return DefaultScreenWallManager(
-            { parentComponent ->
-                TabBarBlock(parentComponent, tabBarItems, popListener, screenSwitcherState)
+            { passthroughComponent ->
+                TabBarBlock(passthroughComponent, tabBarItems, popListener, screenSwitcherState)
             },
             { wall ->
                 externalInitializationAction()
@@ -70,10 +70,10 @@ internal annotation class PopListener
 
 @ScreenScope
 @Component(
-    dependencies = [ScreenParentComponent::class],
+    dependencies = [PassthroughComponent::class],
     modules = [TabBarModule::class]
 )
-internal interface TabBarComponent : ScreenParentComponent {
+internal interface TabBarComponent : PassthroughComponent {
     fun inject(tabBarPresenter: TabBarPresenter)
     val currentTabBarItemStateHolder: CurrentTabBarItemStateHolder
     val compositeDisposable: CompositeDisposable
@@ -98,7 +98,7 @@ private class TabBarModule(
 }
 
 private class TabBarBlock(
-    private val parentComponent: ScreenParentComponent,
+    private val passthroughComponent: PassthroughComponent,
     private val tabBarItems: List<TabBarItem>,
     private val popListener: (view: View) -> Boolean,
     private val screenSwitcherState: ScreenSwitcherState
@@ -108,7 +108,7 @@ private class TabBarBlock(
     override fun createComponent(): TabBarComponent {
         return DaggerTabBarComponent
             .builder()
-            .screenParentComponent(parentComponent)
+            .passthroughComponent(passthroughComponent)
             .tabBarModule(TabBarModule(tabBarItems, popListener, screenSwitcherState))
             .build()
     }

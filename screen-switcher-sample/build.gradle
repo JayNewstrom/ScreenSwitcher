@@ -40,7 +40,7 @@ dependencies {
 
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${leakCanaryVersion}"
     implementation "com.squareup.leakcanary:leakcanary-object-watcher-android:${leakCanaryVersion}"
-    androidTestImplementation "com.squareup.leakcanary:leakcanary-android-instrumentation:${leakCanaryVersion}"
+    androidTestImplementation deps.leakCanaryInstrumentation
 
     implementation deps.dagger
     kapt deps.daggerCompiler

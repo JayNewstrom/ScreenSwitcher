@@ -1,0 +1,39 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        testInstrumentationRunner 'screenswitchersample.espressotestingbootstrap.test.TestAndroidJunitRunner'
+        multiDexEnabled true
+
+        minSdkVersion rootProject.ext.minSdkVersion
+    }
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+    }
+}
+
+dependencies {
+    api deps.kotlinRuntime
+    implementation deps.timber
+    implementation deps.appCompat
+    implementation deps.rxIdler
+
+    implementation deps.dagger
+    kapt deps.daggerCompiler
+
+    implementation project(':sample-core')
+
+    api deps.espressoIntent
+    api deps.androidTestRunner
+    api deps.androidTestJunitRunner
+    api deps.androidTestRules
+    api deps.androidTestCore
+    api deps.espressoContrib
+    api deps.espressoCore
+    api deps.fest
+    api deps.leakCanaryInstrumentation
+}
