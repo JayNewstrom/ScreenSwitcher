@@ -1,4 +1,4 @@
-package screenswitchersample.activity
+package screenswitchersample.espressotestingbootstrap.matchers
 
 import android.view.View
 import android.widget.TextView

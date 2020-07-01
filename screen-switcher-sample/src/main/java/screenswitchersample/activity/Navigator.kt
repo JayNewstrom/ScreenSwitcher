@@ -2,6 +2,8 @@ package screenswitchersample.activity
 
 import android.view.View
 import com.jaynewstrom.screenswitcher.screenmanager.screenTransitioner
+import screenswitchersample.color.ColorScreenFactory
+import screenswitchersample.color.ColorScreenNavigator
 import screenswitchersample.first.FirstNavigator
 import screenswitchersample.second.SecondNavigator
 import screenswitchersample.second.SecondScreenFactory
@@ -9,7 +11,7 @@ import screenswitchersample.third.ThirdNavigator
 import screenswitchersample.third.ThirdScreenFactory
 import javax.inject.Inject
 
-internal class Navigator @Inject constructor() : FirstNavigator, SecondNavigator, ThirdNavigator {
+internal class Navigator @Inject constructor() : FirstNavigator, SecondNavigator, ThirdNavigator, ColorScreenNavigator {
     override fun pushToSecondScreen(fromView: View) {
         fromView.screenTransitioner()?.push(SecondScreenFactory.create(this))
     }
@@ -24,5 +26,9 @@ internal class Navigator @Inject constructor() : FirstNavigator, SecondNavigator
 
     override fun popToSecondScreen(fromView: View) {
         fromView.screenTransitioner()?.popTo(SecondScreenFactory.create(this))
+    }
+
+    override fun colorSubmitted(colorHex: String, fromView: View) {
+        fromView.screenTransitioner()?.push(ColorScreenFactory.create(this, colorHex))
     }
 }

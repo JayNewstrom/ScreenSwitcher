@@ -8,6 +8,7 @@ import android.content.Context.POWER_SERVICE
 import android.os.PowerManager
 import android.os.PowerManager.ACQUIRE_CAUSES_WAKEUP
 import android.os.PowerManager.ON_AFTER_RELEASE
+import android.util.Log
 import androidx.test.espresso.IdlingPolicies
 import androidx.test.runner.AndroidJUnitRunner
 import java.util.concurrent.TimeUnit
@@ -26,7 +27,7 @@ private fun turnOffAnimations() {
 }
 
 class TestAndroidJunitRunner : AndroidJUnitRunner() {
-    private lateinit var wakeLock: PowerManager.WakeLock
+    private var wakeLock: PowerManager.WakeLock? = null
 
     override fun onStart() {
         turnOffAnimations()
@@ -40,19 +41,27 @@ class TestAndroidJunitRunner : AndroidJUnitRunner() {
         val app = targetContext.applicationContext
         val name = TestAndroidJunitRunner::class.java.simpleName
 
-        // Unlock the device so that the tests can input keystrokes.
-        val keyguard = app.getSystemService(KEYGUARD_SERVICE) as KeyguardManager
-        @Suppress("DEPRECATION")
-        keyguard.newKeyguardLock(name).disableKeyguard()
+        try {
+            // Unlock the device so that the tests can input keystrokes.
+            val keyguard = app.getSystemService(KEYGUARD_SERVICE) as KeyguardManager
+            @Suppress("DEPRECATION")
+            keyguard.newKeyguardLock(name).disableKeyguard()
+        } catch (e: Exception) {
+            Log.d("TestAndroidJunitRunner", "Failed to disable keyguard")
+        }
 
-        // Wake up the screen.
-        val power = app.getSystemService(POWER_SERVICE) as PowerManager
-        wakeLock = power.newWakeLock(FULL_WAKE_LOCK or ACQUIRE_CAUSES_WAKEUP or ON_AFTER_RELEASE, name)
-        wakeLock.acquire()
+        try {
+            // Wake up the screen.
+            val power = app.getSystemService(POWER_SERVICE) as PowerManager
+            wakeLock = power.newWakeLock(FULL_WAKE_LOCK or ACQUIRE_CAUSES_WAKEUP or ON_AFTER_RELEASE, name)
+            wakeLock?.acquire()
+        } catch (e: Exception) {
+            Log.d("TestAndroidJunitRunner", "Failed to acquire wake lock")
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        wakeLock.release()
+        wakeLock?.release()
     }
 }

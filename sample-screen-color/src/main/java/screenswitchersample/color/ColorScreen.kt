@@ -14,14 +14,21 @@ import screenswitchersample.core.screen.ScreenScope
 import screenswitchersample.core.screen.ScreenWallManager
 import javax.inject.Qualifier
 
-object ColorScreenFactory {
-    fun create(colorHex: String): Screen = ColorScreen(colorHex)
+interface ColorScreenNavigator {
+    fun colorSubmitted(colorHex: String, fromView: View)
 }
 
-private class ColorScreen(private val colorHex: String) : BaseScreen<ColorComponent>() {
+object ColorScreenFactory {
+    fun create(navigator: ColorScreenNavigator, colorHex: String): Screen = ColorScreen(navigator, colorHex)
+}
+
+private class ColorScreen(
+    private val navigator: ColorScreenNavigator,
+    private val colorHex: String
+) : BaseScreen<ColorComponent>() {
     override fun createWallManager(screenSwitcherState: ScreenSwitcherState): ScreenWallManager<ColorComponent> {
         return DefaultScreenWallManager({
-            ColorScreenBlock(colorHex)
+            ColorScreenBlock(navigator, colorHex)
         })
     }
 
@@ -43,14 +50,18 @@ internal interface ColorComponent {
 }
 
 @Module
-internal class ColorModule(private val colorHex: String) {
+internal class ColorModule(private val navigator: ColorScreenNavigator, private val colorHex: String) {
     @Provides @ColorHex fun provideColorHex() = colorHex
+    @Provides fun provideNavigator() = navigator
 }
 
-private class ColorScreenBlock(private val colorHex: String) : ConcreteBlock<ColorComponent> {
+private class ColorScreenBlock(
+    private val navigator: ColorScreenNavigator,
+    private val colorHex: String
+) : ConcreteBlock<ColorComponent> {
     override fun name(): String = javaClass.name + colorHex
 
     override fun createComponent(): ColorComponent = DaggerColorComponent.builder()
-        .colorModule(ColorModule(colorHex))
+        .colorModule(ColorModule(navigator, colorHex))
         .build()
 }
