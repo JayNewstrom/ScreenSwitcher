@@ -1,7 +1,6 @@
 package screenswitchersample.activity
 
 import android.animation.ValueAnimator
-import android.os.SystemClock
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.click
@@ -19,6 +18,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import screenswitchersample.R
 import screenswitchersample.core.activity.ScreenSwitcherActivity
+import screenswitchersample.espressotestingbootstrap.matchers.withTextView
+import screenswitchersample.espressotestingbootstrap.test.recreateActivity
 
 @RunWith(AndroidJUnit4::class)
 class MainActivityTest {
@@ -130,16 +131,5 @@ class MainActivityTest {
 
         // Ensure removing the screen doesn't leak anything!
         onView(withId(R.id.btn_replace_with_second)).perform(click())
-    }
-}
-
-private fun ActivityTestRule<*>.recreateActivity() {
-    val previousHashCode = activity.hashCode()
-    runOnUiThread {
-        activity.recreate()
-    }
-    // Wait until we actually get a new activity!
-    while (previousHashCode == activity.hashCode()) {
-        SystemClock.sleep(100)
     }
 }

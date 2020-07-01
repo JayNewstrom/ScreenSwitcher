@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.LayoutRes
-import com.jaynewstrom.screenswitcher.screenmanager.screenTransitioner
 import screenswitchersample.core.view.ViewPresenter
 import javax.inject.Inject
 
@@ -16,6 +15,7 @@ internal class ColorPresenter private constructor(view: View, component: ColorCo
     }
 
     @Inject @ColorHex lateinit var colorHex: String
+    @Inject lateinit var navigator: ColorScreenNavigator
 
     private val newColorEditText = bindView<TextView>(R.id.edit_text)
 
@@ -31,7 +31,7 @@ internal class ColorPresenter private constructor(view: View, component: ColorCo
         val color = newColorEditText.text.toString()
         try {
             Color.parseColor(color)
-            view.screenTransitioner()?.push(ColorScreenFactory.create(color))
+            navigator.colorSubmitted(color, view)
         } catch (e: IllegalArgumentException) {
             Toast.makeText(context, "Invalid Color", Toast.LENGTH_LONG).show()
         }
