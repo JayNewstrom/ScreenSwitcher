@@ -52,9 +52,9 @@ internal class RealScreenSwitcher(
         val view = screen.createView(host.hostView(), state)
         view.setTag(R.id.screen_switcher_screen, screen)
         screenViewMap[screen] = view
-        checkArgument(view.parent == null) { "createView should not return a view that has a parent." }
-        host.addView(view)
         screen.bindView(view)
+        checkArgument(view.parent == null) { "createView/bindView should not return a view that has a parent." }
+        host.addView(view)
         state.removeViewHierarchyState(screen)?.let(view::restoreHierarchyState)
         return view
     }
