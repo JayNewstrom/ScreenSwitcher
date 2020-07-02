@@ -7,7 +7,6 @@ import com.jaynewstrom.screenswitcher.ScreenTestUtils.mockCreateView
 import org.fest.assertions.api.Assertions.assertThat
 import org.junit.Assert.fail
 import org.junit.Test
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
@@ -71,28 +70,6 @@ class ScreenSwitcherReplaceScreensWithTest {
         assertThat(activityScreenSwitcher.isTransitioning).isTrue
         transitionCompletedRunnable.get().run()
         assertThat(activityScreenSwitcher.isTransitioning).isFalse
-    }
-
-    @Test fun givesPreviousStacktraceWhenCallingTransitionWhenTransitioning() {
-        val activity = mock(Activity::class.java)
-        val screen1 = mock(Screen::class.java)
-        mockCreateView(screen1)
-        val screen2 = mock(Screen::class.java)
-        mockCreateView(screen2)
-        `when`(screen2.transition()).thenReturn(mock(Screen.Transition::class.java))
-        val state = ScreenTestUtils.defaultState(listOf(screen1, screen2))
-        val activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state)
-        testCallingTransitionHelper(activityScreenSwitcher)
-        try {
-            activityScreenSwitcher.replaceScreensWith(1, listOf(mock(Screen::class.java)))
-            fail()
-        } catch (expected: IllegalStateException) {
-            assertThat(expected).hasMessageContaining("testCallingTransitionHelper")
-        }
-    }
-
-    private fun testCallingTransitionHelper(screenSwitcher: ScreenSwitcher) {
-        screenSwitcher.pop(1)
     }
 
     @Test fun enqueuedTransitionIsExecutedAfterReplace() {

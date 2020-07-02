@@ -13,20 +13,10 @@ internal class RealScreenSwitcher(
     private val state: ScreenSwitcherState,
     private val host: ScreenSwitcherHost
 ) : ScreenSwitcher {
-    private var transitioningStackTrace: Array<StackTraceElement>? = null
     private val activity: Activity
     private val screenViewMap: MutableMap<Screen, View>
 
     override var isTransitioning: Boolean = false
-        set(transitioning) {
-            field = transitioning
-
-            transitioningStackTrace = if (transitioning) {
-                Throwable().stackTrace
-            } else {
-                null
-            }
-        }
 
     init {
         checkArgument(state.screens.isNotEmpty()) { "state needs screens in order to initialize a ScreenSwitcher" }
@@ -150,9 +140,8 @@ internal class RealScreenSwitcher(
     private fun ensureTransitionIsNotOccurring(transitionType: String) {
         checkState(!isTransitioning) {
             String.format(
-                "Can't %s while a transition is occurring.\nPrevious transition from: %s",
-                transitionType,
-                transitioningStackTrace?.contentToString()
+                "Can't %s while a transition is occurring.",
+                transitionType
             )
         }
     }
