@@ -120,6 +120,7 @@ class DialogDisplayer internal constructor(
     private val screen: Screen = screenSwitcherData.screen
     private val screenSwitcherState: ScreenSwitcherState = screenSwitcherData.screenSwitcherState
     private var screenSwitcher: ScreenSwitcher? = null
+    private var parentViewForViewExtensionSetup: View? = null
 
     init {
         screenSwitcherData.screenSwitcherState.registerScreenSwitcherCreatedListener(screen, this)
@@ -137,6 +138,7 @@ class DialogDisplayer internal constructor(
             contentView.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
                 override fun onViewDetachedFromWindow(v: View) {
                     screenSwitcher = null
+                    parentViewForViewExtensionSetup = null
                 }
 
                 override fun onViewAttachedToWindow(v: View) {
@@ -144,12 +146,19 @@ class DialogDisplayer internal constructor(
             })
             contentView.setTag(R.id.screen_switcher_screen, screen)
             val parent = contentView.parent as View
-            parent.setupForViewExtensions(screenSwitcher!!, screenSwitcherState)
+            val localScreenSwitcher = screenSwitcher
+            if (localScreenSwitcher == null) {
+                parentViewForViewExtensionSetup = parent
+            } else {
+                parent.setupForViewExtensions(localScreenSwitcher, screenSwitcherState)
+            }
             return dialog
         }
     }
 
     override fun screenSwitcherCreated(screenSwitcher: ScreenSwitcher) {
         this.screenSwitcher = screenSwitcher
+        parentViewForViewExtensionSetup?.setupForViewExtensions(screenSwitcher, screenSwitcherState)
+        parentViewForViewExtensionSetup = null
     }
 }

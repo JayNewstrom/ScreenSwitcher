@@ -29,6 +29,8 @@ dependencies {
     testImplementation deps.junit
     testImplementation deps.mockitoCore
     testImplementation deps.fest
+
+    androidTestImplementation project(':sample-core')
 }
 
 task sourcesJar(type: Jar) {
@@ -60,3 +62,5 @@ bintray {
         }
     }
 }
+
+apply from: rootProject.file('espresso-testing-bootstrap/espressoTestingBootstrap.gradle')
