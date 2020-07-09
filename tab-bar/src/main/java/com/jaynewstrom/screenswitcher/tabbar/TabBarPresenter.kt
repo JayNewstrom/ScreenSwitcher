@@ -24,6 +24,7 @@ internal class TabBarPresenter(view: View, component: TabBarComponent) :
     @Inject lateinit var tabBarItems: List<TabBarItem>
     @Inject lateinit var state: TabBarState
     @Inject lateinit var currentTabBarItemStateHolder: CurrentTabBarItemStateHolder
+    @Inject @PopListener lateinit var popListener: (view: @JvmSuppressWildcards View) -> Boolean
 
     private val contentViewMap: MutableMap<TabBarItem, View> = mutableMapOf()
 
@@ -102,7 +103,7 @@ internal class TabBarPresenter(view: View, component: TabBarComponent) :
     }
 
     private fun createAndRestoreViewForItem(item: TabBarItem): View {
-        val contentView = item.createContentView(content) // Create view.
+        val contentView = item.createContentView(content, this) // Create view.
         contentViewMap[item] = contentView // Store in the map to allow for state preservation.
 
         // Restore cache, if it exists.
@@ -115,15 +116,17 @@ internal class TabBarPresenter(view: View, component: TabBarComponent) :
         return contentView
     }
 
-    fun handlesScreenPop(): Boolean {
+    fun handleScreenPop() {
         val activeItem = currentTabBarItemStateHolder.state
-        if (activeItem.contentViewHandlesPop(contentViewMap.getValue(activeItem))) {
-            return true
-        }
-        if (tabBarItems.indexOf(activeItem) != 0) {
-            currentTabBarItemStateHolder.state = tabBarItems.first()
-            return true
-        }
-        return false
+        activeItem.handleScreenPop(contentViewMap.getValue(activeItem))
+    }
+
+    fun removeCurrentContentView() {
+        contentViewMap.remove(activeItem)
+        currentTabBarItemStateHolder.state = tabBarItems.first()
+    }
+
+    fun finishFirstTabCalled() {
+        popListener(view)
     }
 }

@@ -4,7 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 
 internal interface ScreenSwitcherHost {
-    fun onScreenSwitcherFinished(finishCompleteHandler: ScreenSwitcherFinishHandler.FinishCompleteHandler)
+    val finishHandler: ScreenSwitcherFinishHandler
 
     fun addView(view: View)
 

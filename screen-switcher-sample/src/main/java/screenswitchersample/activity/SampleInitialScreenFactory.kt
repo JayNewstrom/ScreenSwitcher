@@ -19,11 +19,11 @@ internal class SampleInitialScreenFactory @Inject constructor(
 ) : InitialScreenFactory {
     override fun create(intent: Intent?): List<Screen> {
         val tabBarItems = mutableListOf<TabBarItem>()
-        tabBarItems += TabBarItem(FirstScreenFactory.create(navigator), "Demo", R.drawable.ic_nav_demo)
-        tabBarItems += TabBarItem(ColorScreenFactory.create(navigator, "#FF0000"), "Color", R.drawable.ic_nav_color)
+        tabBarItems += TabBarItem({ FirstScreenFactory.create(navigator) }, "Demo", R.drawable.ic_nav_demo)
+        tabBarItems += TabBarItem({ ColorScreenFactory.create(navigator, "#FF0000") }, "Color", R.drawable.ic_nav_color)
         val badgeCountRelay = BehaviorRelay.createDefault(5)
         tabBarItems += TabBarItem(
-            screen = BadgeScreenFactory.create(badgeCountRelay),
+            initialScreenFactory = { BadgeScreenFactory.create(badgeCountRelay) },
             title = "Badge",
             icon = R.drawable.ic_nav_badge,
             badgeCountObservable = badgeCountRelay

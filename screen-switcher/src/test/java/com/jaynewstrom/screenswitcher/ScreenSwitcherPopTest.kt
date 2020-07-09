@@ -167,11 +167,26 @@ class ScreenSwitcherPopTest {
         mockCreateView(screen1)
         val state = ScreenTestUtils.defaultState(listOf(screen1))
         val finishHandler = mock(ScreenSwitcherFinishHandler::class.java)
+        `when`(finishHandler.screenSwitcherShouldFinish).thenReturn(true)
         val activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state, finishHandler)
         activityScreenSwitcher.pop(1)
         verify(finishHandler).onScreenSwitcherFinished(kotlinAny())
         assertThat(state.screenCount()).isEqualTo(0)
         assertThat(activityScreenSwitcher.isTransitioning).isTrue
+    }
+
+    @Test fun poppingLastScreenPreservesStateWhenFinishHandlerShouldFinishIsFalse() {
+        val activity = mock(Activity::class.java)
+        val screen1 = mock(Screen::class.java)
+        mockCreateView(screen1)
+        val state = ScreenTestUtils.defaultState(listOf(screen1))
+        val finishHandler = mock(ScreenSwitcherFinishHandler::class.java)
+        `when`(finishHandler.screenSwitcherShouldFinish).thenReturn(false)
+        val activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state, finishHandler)
+        activityScreenSwitcher.pop(1)
+        verify(finishHandler, never()).onScreenSwitcherFinished(kotlinAny())
+        assertThat(state.screenCount()).isEqualTo(1)
+        assertThat(activityScreenSwitcher.isTransitioning).isFalse
     }
 
     @Test fun poppingLastScreenAndCallingFinishHandlerDestroysScreen() {

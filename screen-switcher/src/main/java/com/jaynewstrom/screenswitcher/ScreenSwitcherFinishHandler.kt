@@ -5,6 +5,15 @@ package com.jaynewstrom.screenswitcher
  */
 interface ScreenSwitcherFinishHandler {
     /**
+     * In a nested screen switcher (ie, tab bar) it's useful to never finish the screen switcher.
+     * This prevents the root screen from ever being removed.
+     *
+     * @return true if the screen switcher should finish.
+     */
+    val screenSwitcherShouldFinish: Boolean
+        get() = true
+
+    /**
      * The [FinishCompleteHandler] should be stored in a field until the pop is complete (ie, the activity has been destroyed).
      * Once the finish is complete, it should call [FinishCompleteHandler.finishComplete].
      */
