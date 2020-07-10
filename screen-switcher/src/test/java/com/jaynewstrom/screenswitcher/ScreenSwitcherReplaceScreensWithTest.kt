@@ -128,7 +128,7 @@ class ScreenSwitcherReplaceScreensWithTest {
         state.setPopListener(
             screen2,
             object : ScreenPopListener {
-                override fun onScreenPop(view: View, screen: Screen, popContext: Any?): Boolean {
+                override fun onScreenPop(view: View, popContext: Any?): Boolean {
                     assertThat(popContext).isEqualTo("Not gonna pop!")
                     popListenerCalledCount.incrementAndGet()
                     return true

@@ -57,11 +57,11 @@ class ScreenSwitcherPopTest {
         val view2 = mockCreateView(screen2)
         val state = ScreenTestUtils.defaultState(listOf(screen1, screen2))
         val popListener = mock(ScreenPopListener::class.java)
-        `when`(popListener.onScreenPop(view2, screen2, null)).thenReturn(true)
+        `when`(popListener.onScreenPop(view2, null)).thenReturn(true)
         state.setPopListener(screen2, popListener)
         val activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state)
         activityScreenSwitcher.pop(1, null)
-        verify(popListener).onScreenPop(view2, screen2, null)
+        verify(popListener).onScreenPop(view2, null)
         assertThat(state.screens.size).isEqualTo(2)
     }
 
@@ -74,12 +74,12 @@ class ScreenSwitcherPopTest {
         val transitionCompletedRunnable = addTransitionOut(screen2)
         val state = ScreenTestUtils.defaultState(listOf(screen1, screen2))
         val popListener = mock(ScreenPopListener::class.java)
-        `when`(popListener.onScreenPop(view1, screen1, null)).thenReturn(true)
+        `when`(popListener.onScreenPop(view1, null)).thenReturn(true)
         state.setPopListener(screen1, popListener)
         val activityScreenSwitcher = ScreenTestUtils.testScreenSwitcher(activity, state)
         activityScreenSwitcher.pop(2, null)
         transitionCompletedRunnable.get().run()
-        verify(popListener).onScreenPop(view1, screen1, null)
+        verify(popListener).onScreenPop(view1, null)
         assertThat(state.screens.size).isEqualTo(1)
     }
 
@@ -271,7 +271,7 @@ class ScreenSwitcherPopTest {
         val state = ScreenTestUtils.defaultState(listOf(screen1, screen2))
         val popListenerCalledCount = AtomicInteger(0)
         val popListener = object : ScreenPopListener {
-            override fun onScreenPop(view: View, screen: Screen, popContext: Any?): Boolean {
+            override fun onScreenPop(view: View, popContext: Any?): Boolean {
                 assertThat(popContext).isEqualTo("Hello")
                 popListenerCalledCount.incrementAndGet()
                 return true
