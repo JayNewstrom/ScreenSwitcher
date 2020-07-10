@@ -72,18 +72,18 @@ internal class RealScreenSwitcher(
         state.lifecycleListener.onScreenBecameActive(screen)
     }
 
-    override fun pop(numberToPop: Int) {
+    override fun pop(numberToPop: Int, popContext: Any?) {
         ensureTransitionIsNotOccurring("pop")
         checkNumberToPop(numberToPop)
 
         hideKeyboard()
 
-        if (!popListenerConsumedPop(numberToPop)) {
+        if (!popListenerConsumedPop(numberToPop, popContext)) {
             performPop(numberToPop)
         }
     }
 
-    override fun replaceScreensWith(numberToPop: Int, newScreens: List<Screen>) {
+    override fun replaceScreensWith(numberToPop: Int, newScreens: List<Screen>, popContext: Any?) {
         ensureTransitionIsNotOccurring("replaceScreensWith")
         checkNumberToPop(numberToPop)
         checkArgument(newScreens.isNotEmpty()) { "screens must contain at least one screen" }
@@ -91,7 +91,7 @@ internal class RealScreenSwitcher(
 
         hideKeyboard()
 
-        if (!popListenerConsumedPop(numberToPop)) {
+        if (!popListenerConsumedPop(numberToPop, popContext)) {
             val screensToRemove = ArrayList<Screen>(numberToPop)
             for (i in numberToPop downTo 1) {
                 screensToRemove.add(state.screens[state.screens.size - i])
@@ -153,12 +153,12 @@ internal class RealScreenSwitcher(
         }
     }
 
-    private fun popListenerConsumedPop(numberToPop: Int): Boolean {
+    private fun popListenerConsumedPop(numberToPop: Int, popContext: Any?): Boolean {
         val screens = state.screens
         for (i in 1..numberToPop) {
             val screen = screens[screens.size - i]
             val view = screenViewMap.getValue(screen)
-            if (state.handlesPop(view, screen)) {
+            if (state.handlesPop(view, screen, popContext)) {
                 if (i > 1) {
                     performPop(i - 1)
                 }

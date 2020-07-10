@@ -99,9 +99,9 @@ class ScreenSwitcherState
         screenSwitcherCreatedListenerMap.remove(screen)
     }
 
-    internal fun handlesPop(view: View, screen: Screen): Boolean {
+    internal fun handlesPop(view: View, screen: Screen, popContext: Any?): Boolean {
         val popListener = popListenerMap[screen]
-        return popListener != null && popListener.onScreenPop(view, screen)
+        return popListener != null && popListener.onScreenPop(view, screen, popContext)
     }
 
     internal fun saveViewHierarchyState(screen: Screen, viewState: SparseArray<Parcelable>) {
