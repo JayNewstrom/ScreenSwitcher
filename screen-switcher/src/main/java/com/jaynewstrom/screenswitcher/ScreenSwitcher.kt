@@ -22,7 +22,7 @@ interface ScreenSwitcher {
      *
      * If there is a [ScreenPopListener] that overrides one of the [Screen]s being popped, it will pop up until that point.
      */
-    fun pop(@IntRange(from = 1) numberToPop: Int)
+    fun pop(@IntRange(from = 1) numberToPop: Int, popContext: Any?)
 
     /**
      * Will try to pop the `numberToPop` [Screen]s, then transition to the last [Screen] in `screens`.
@@ -30,7 +30,7 @@ interface ScreenSwitcher {
      * If there is a [ScreenPopListener] that overrides one of the [Screen]s being popped, it will pop up until that point
      * without pushing the `screens`.
      */
-    fun replaceScreensWith(@IntRange(from = 1) numberToPop: Int, newScreens: List<Screen>)
+    fun replaceScreensWith(@IntRange(from = 1) numberToPop: Int, newScreens: List<Screen>, popContext: Any?)
 
     /**
      * Trigger behavior to save the view hierarchy state to the [ScreenSwitcherState], which will be restored the next time each

@@ -11,6 +11,7 @@ import com.jaynewstrom.screenswitcher.ScreenSwitcherFinishHandler
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState
 import com.jaynewstrom.screenswitcher.dialogmanager.DialogManager
 import screenswitchersample.core.R
+import screenswitchersample.core.screen.SystemBackPressed
 import javax.inject.Inject
 
 class ScreenSwitcherActivity : Activity(), ScreenSwitcherFinishHandler {
@@ -59,7 +60,7 @@ class ScreenSwitcherActivity : Activity(), ScreenSwitcherFinishHandler {
 
     override fun onBackPressed() {
         if (!screenSwitcher.isTransitioning && !isFinishing) {
-            screenSwitcher.pop(1)
+            screenSwitcher.pop(1, SystemBackPressed)
         }
     }
 

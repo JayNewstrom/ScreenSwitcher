@@ -21,19 +21,19 @@ class ScreenTransitioner internal constructor(
     private val screenSwitcher: ScreenSwitcher,
     private val screenSwitcherState: ScreenSwitcherState
 ) {
-    fun pop(@IntRange(from = 1) numberToPop: Int = 1) {
-        screenSwitcher.pop(numberToPop)
+    fun pop(@IntRange(from = 1) numberToPop: Int = 1, popContext: Any? = null) {
+        screenSwitcher.pop(numberToPop, popContext)
     }
 
     fun push(screen: Screen) {
         screenSwitcher.push(screen)
     }
 
-    fun popTo(screen: Screen) {
-        pop(screenSwitcherState.screenCount() - screenSwitcherState.indexOf(screen) - 1)
+    fun popTo(screen: Screen, popContext: Any? = null) {
+        pop(screenSwitcherState.screenCount() - screenSwitcherState.indexOf(screen) - 1, popContext)
     }
 
-    fun replaceScreenWith(screen: Screen) {
-        screenSwitcher.replaceScreensWith(1, listOf(screen))
+    fun replaceScreenWith(screen: Screen, popContext: Any? = null) {
+        screenSwitcher.replaceScreensWith(1, listOf(screen), popContext)
     }
 }

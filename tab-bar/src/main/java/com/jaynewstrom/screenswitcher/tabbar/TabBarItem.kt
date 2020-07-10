@@ -14,6 +14,7 @@ import com.jaynewstrom.screenswitcher.ScreenSwitcherFinishHandler
 import com.jaynewstrom.screenswitcher.ScreenSwitcherState
 import com.jaynewstrom.screenswitcher.screenSwitcherState
 import io.reactivex.Observable
+import screenswitchersample.core.screen.TabPopToRoot
 import screenswitchersample.core.view.inflate
 
 class TabBarItem(
@@ -49,12 +50,12 @@ class TabBarItem(
         return screenHost
     }
 
-    internal fun handleScreenPop(contentView: View) {
+    internal fun handleScreenPop(contentView: View, popContext: Any?) {
         val screenSwitcher = contentView.getTag(R.id.screen_switcher) as ScreenSwitcher
         if (screenSwitcher.isTransitioning) {
             return
         }
-        screenSwitcher.pop(1)
+        screenSwitcher.pop(1, popContext)
     }
 
     internal fun popContentToRoot(contentView: View) {
@@ -64,7 +65,7 @@ class TabBarItem(
             return
         }
         val screenSwitcher = contentView.getTag(R.id.screen_switcher) as ScreenSwitcher
-        screenSwitcher.pop(screenSwitcherState.screenCount() - 1)
+        screenSwitcher.pop(screenSwitcherState.screenCount() - 1, TabPopToRoot)
     }
 
     private inner class TabScreenSwitcherFinishHandler(

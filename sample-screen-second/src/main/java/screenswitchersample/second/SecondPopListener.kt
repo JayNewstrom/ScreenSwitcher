@@ -15,7 +15,7 @@ internal class SecondPopListener @Inject constructor() : ScreenPopListener {
         hasConfirmedPop = true
     }
 
-    override fun onScreenPop(view: View, screen: Screen): Boolean {
+    override fun onScreenPop(view: View, screen: Screen, popContext: Any?): Boolean {
         if (!hasConfirmedPop) {
             (view.getTag(R.id.presenter) as SecondPresenter).showConfirmPop()
             return true

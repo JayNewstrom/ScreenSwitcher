@@ -116,9 +116,9 @@ internal class TabBarPresenter(view: View, component: TabBarComponent) :
         return contentView
     }
 
-    fun handleScreenPop() {
+    fun handleScreenPop(popContext: Any?) {
         val activeItem = currentTabBarItemStateHolder.state
-        activeItem.handleScreenPop(contentViewMap.getValue(activeItem))
+        activeItem.handleScreenPop(contentViewMap.getValue(activeItem), popContext)
     }
 
     fun removeCurrentContentView() {
