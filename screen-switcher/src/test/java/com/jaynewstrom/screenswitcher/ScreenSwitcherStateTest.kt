@@ -58,7 +58,7 @@ class ScreenSwitcherStateTest {
         val missingScreen = mock(Screen::class.java)
         assertThat(state.setPopListener(missingScreen, popListener)).isFalse
         assertThat(state.handlesPop(view, screen, null)).isFalse
-        verify(popListener, never()).onScreenPop(kotlinAny(), kotlinAny(), kotlinAny())
+        verify(popListener, never()).onScreenPop(kotlinAny(), kotlinAny())
     }
 
     @Test fun handlesPopIsFalseWhenPopListenerReturnsFalse() {
@@ -67,7 +67,7 @@ class ScreenSwitcherStateTest {
         val state = ScreenTestUtils.defaultState(screen)
         val popListener = mock(ScreenPopListener::class.java)
         state.setPopListener(screen, popListener)
-        `when`(popListener.onScreenPop(view, screen, null)).thenReturn(false)
+        `when`(popListener.onScreenPop(view, null)).thenReturn(false)
         assertThat(state.handlesPop(view, screen, null)).isFalse
     }
 
@@ -77,7 +77,7 @@ class ScreenSwitcherStateTest {
         val state = ScreenTestUtils.defaultState(screen)
         val popListener = mock(ScreenPopListener::class.java)
         state.setPopListener(screen, popListener)
-        `when`(popListener.onScreenPop(view, screen, null)).thenReturn(true)
+        `when`(popListener.onScreenPop(view, null)).thenReturn(true)
         assertThat(state.handlesPop(view, screen, null)).isTrue
     }
 
@@ -87,7 +87,7 @@ class ScreenSwitcherStateTest {
         val state = ScreenTestUtils.defaultState(screen)
         val popListener = mock(ScreenPopListener::class.java)
         state.setPopListener(screen, popListener)
-        `when`(popListener.onScreenPop(view, screen, null)).thenReturn(true)
+        `when`(popListener.onScreenPop(view, null)).thenReturn(true)
         assertThat(state.handlesPop(mock(View::class.java), mock(Screen::class.java), null)).isFalse
     }
 
@@ -97,7 +97,7 @@ class ScreenSwitcherStateTest {
         val state = ScreenTestUtils.defaultState(screen)
         val popListener = mock(ScreenPopListener::class.java)
         state.setPopListener(screen, popListener)
-        `when`(popListener.onScreenPop(view, screen, null)).thenReturn(true)
+        `when`(popListener.onScreenPop(view, null)).thenReturn(true)
         assertThat(state.handlesPop(view, screen, null)).isTrue
         state.removeScreen(screen)
         assertThat(state.handlesPop(view, screen, null)).isFalse
@@ -109,10 +109,10 @@ class ScreenSwitcherStateTest {
         val state = ScreenTestUtils.defaultState(screen)
         val popListener = mock(ScreenPopListener::class.java)
         state.setPopListener(screen, popListener)
-        `when`(popListener.onScreenPop(view, screen, null)).thenReturn(true)
+        `when`(popListener.onScreenPop(view, null)).thenReturn(true)
         assertThat(state.handlesPop(view, screen, null)).isTrue
         assertThat(state.handlesPop(view, screen, null)).isTrue
-        verify(popListener, times(2)).onScreenPop(view, screen, null)
+        verify(popListener, times(2)).onScreenPop(view, null)
     }
 
     @Test fun handlesPopPassesPopContextToPopListener() {
@@ -121,7 +121,7 @@ class ScreenSwitcherStateTest {
         val state = ScreenTestUtils.defaultState(screen)
         val popListenerCalledCount = AtomicInteger(0)
         val popListener = object : ScreenPopListener {
-            override fun onScreenPop(view: View, screen: Screen, popContext: Any?): Boolean {
+            override fun onScreenPop(view: View, popContext: Any?): Boolean {
                 @Suppress("UNCHECKED_CAST")
                 assertThat(popContext as Map<String, String>).contains(MapEntry.entry("Foo", "Bar"))
                 popListenerCalledCount.incrementAndGet()

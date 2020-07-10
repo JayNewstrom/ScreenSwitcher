@@ -1,7 +1,6 @@
 package screenswitchersample.second
 
 import android.view.View
-import com.jaynewstrom.screenswitcher.Screen
 import com.jaynewstrom.screenswitcher.ScreenPopListener
 import screenswitchersample.core.screen.ScreenScope
 import javax.inject.Inject
@@ -15,7 +14,7 @@ internal class SecondPopListener @Inject constructor() : ScreenPopListener {
         hasConfirmedPop = true
     }
 
-    override fun onScreenPop(view: View, screen: Screen, popContext: Any?): Boolean {
+    override fun onScreenPop(view: View, popContext: Any?): Boolean {
         if (!hasConfirmedPop) {
             (view.getTag(R.id.presenter) as SecondPresenter).showConfirmPop()
             return true
