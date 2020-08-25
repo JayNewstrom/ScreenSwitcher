@@ -20,11 +20,13 @@ class ScreenTestRule(
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION) // Remove enter animation.
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         launchActivity(intent)
-        application.registerActivityLifecycleCallbacks(object : AbstractActivityLifecycleCallbacks() {
-            override fun onActivityPaused(activity: Activity) {
-                activity.overridePendingTransition(0, 0) // Remove exit animation.
+        application.registerActivityLifecycleCallbacks(
+            object : AbstractActivityLifecycleCallbacks() {
+                override fun onActivityPaused(activity: Activity) {
+                    activity.overridePendingTransition(0, 0) // Remove exit animation.
+                }
             }
-        })
+        )
     }
 }
 

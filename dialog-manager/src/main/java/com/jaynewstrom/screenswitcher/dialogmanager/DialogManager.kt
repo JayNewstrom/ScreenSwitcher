@@ -135,15 +135,17 @@ class DialogDisplayer internal constructor(
         override fun createDialog(context: Context): Dialog {
             val dialog = dialogFactory.createDialog(wall.createContext(context))
             val contentView = dialog.findViewById<View>(android.R.id.content)
-            contentView.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
-                override fun onViewDetachedFromWindow(v: View) {
-                    screenSwitcher = null
-                    parentViewForViewExtensionSetup = null
-                }
+            contentView.addOnAttachStateChangeListener(
+                object : View.OnAttachStateChangeListener {
+                    override fun onViewDetachedFromWindow(v: View) {
+                        screenSwitcher = null
+                        parentViewForViewExtensionSetup = null
+                    }
 
-                override fun onViewAttachedToWindow(v: View) {
+                    override fun onViewAttachedToWindow(v: View) {
+                    }
                 }
-            })
+            )
             contentView.setTag(R.id.screen_switcher_screen, screen)
             val parent = contentView.parent as View
             val localScreenSwitcher = screenSwitcher
