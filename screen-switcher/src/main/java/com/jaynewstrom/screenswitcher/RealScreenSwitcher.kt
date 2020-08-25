@@ -185,13 +185,15 @@ internal class RealScreenSwitcher(
             for (screen in ArrayList(state.screens)) {
                 state.removeScreen(screen)
             }
-            host.finishHandler.onScreenSwitcherFinished(object : ScreenSwitcherFinishHandler.FinishCompleteHandler {
-                override fun finishComplete() {
-                    for (screen in ArrayList(screenViewMap.keys)) {
-                        removeScreen(screen, false)
+            host.finishHandler.onScreenSwitcherFinished(
+                object : ScreenSwitcherFinishHandler.FinishCompleteHandler {
+                    override fun finishComplete() {
+                        for (screen in ArrayList(screenViewMap.keys)) {
+                            removeScreen(screen, false)
+                        }
                     }
                 }
-            })
+            )
         }
     }
 

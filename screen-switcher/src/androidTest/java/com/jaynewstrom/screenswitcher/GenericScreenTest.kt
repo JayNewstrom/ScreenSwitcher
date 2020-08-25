@@ -53,15 +53,17 @@ class GenericScreen : Screen {
     }
 
     override fun bindView(view: View) {
-        view.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
-            override fun onViewDetachedFromWindow(v: View) {
-                screenEvents.countDown()
-            }
+        view.addOnAttachStateChangeListener(
+            object : View.OnAttachStateChangeListener {
+                override fun onViewDetachedFromWindow(v: View) {
+                    screenEvents.countDown()
+                }
 
-            override fun onViewAttachedToWindow(v: View) {
-                screenEvents.countDown()
+                override fun onViewAttachedToWindow(v: View) {
+                    screenEvents.countDown()
+                }
             }
-        })
+        )
 
         assertThat(view.isAttachedToWindow).isFalse
         screenEvents.countDown()
