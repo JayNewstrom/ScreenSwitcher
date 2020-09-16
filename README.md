@@ -10,6 +10,8 @@ The following decisions and features make managing the backstack trivial:
 - State is kept separate from the transitions
 - Overriding back button pressed behavior at the screen level
 - Only one transition can occur at a time
+- Navigation between screens happens in a type safe way, ensuring all required dependencies and data are passed to every screen
+- Design favors composition, and global callbacks allow custom behavior across an app
 
 Screen Switcher encourages the use of the following, however, none of the following are required:
 
@@ -38,7 +40,7 @@ Setup
 ------------
 ```groovy
 dependencies {
-    implementation 'com.jaynewstrom:screen-switcher:0.21.0'
+    implementation 'com.jaynewstrom:screen-switcher:1.0.0'
 }
 ```
 
