@@ -32,4 +32,7 @@ dependencies {
 }
 
 apply from: rootProject.file('espresso-testing-bootstrap/espressoTestingBootstrap.gradle')
-apply from: 'maven-push.gradle'
+
+if (hasProperty('NEXUS_USERNAME')) {
+    apply from: 'maven-push.gradle'
+}
