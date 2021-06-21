@@ -1,6 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.jfrog.bintray'
 apply plugin: 'kotlin-android'
 
 android {
@@ -33,34 +31,8 @@ dependencies {
     androidTestImplementation project(':sample-core')
 }
 
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-
-artifacts {
-    archives sourcesJar
-}
-
-group = PROJECT_GROUP_ID
-version = PROJECT_VERSION
-
-bintray {
-    user = System.getenv('JAY_NEWSTROM_BINTRAY_USER')
-    key = System.getenv('JAY_NEWSTROM_BINTRAY_API_KEY')
-    configurations = ['archives']
-    publish = true
-    pkg {
-        repo = PROJECT_REPO
-        name = 'screen-switcher'
-        userOrg = user
-        licenses = ['Apache-2.0']
-        vcsUrl = PROJECT_VCS_URL
-        version {
-            name = PROJECT_VERSION
-            desc = PROJECT_DESCRIPTION
-        }
-    }
-}
-
 apply from: rootProject.file('espresso-testing-bootstrap/espressoTestingBootstrap.gradle')
+
+if (hasProperty('NEXUS_USERNAME')) {
+    apply from: 'maven-push.gradle'
+}

@@ -19,7 +19,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
       - name: Run the build
-        run: ./gradlew build spotlessCheck test
+        run: ./gradlew assemble assembleAndroidTest spotlessCheck test
 
       - name: Run instrumentation tests
         uses: reactivecircus/android-emulator-runner@v2
